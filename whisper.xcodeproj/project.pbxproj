@@ -696,6 +696,7 @@
 					"$(SRCROOT)/Vendor/XMPPFramework/Vendor/libidn",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "A525E6B2-503F-4E81-9841-24A1B165CB40";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -715,6 +716,7 @@
 					"$(SRCROOT)/Vendor/XMPPFramework/Vendor/libidn",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "A525E6B2-503F-4E81-9841-24A1B165CB40";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
