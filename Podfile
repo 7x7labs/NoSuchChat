@@ -1,6 +1,6 @@
 platform :ios, '7.0'
 pod 'ReactiveCocoa'
-pod 'Expecta'
+pod 'Expecta', inhibit_warnings: true
 pod 'Specta'
 pod 'CocoaAsyncSocket'
 pod 'CocoaLumberjack'
