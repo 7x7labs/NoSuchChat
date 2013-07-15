@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface WHAppDelegate : UIResponder <UIApplicationDelegate>
-
 @property (strong, nonatomic) UIWindow *window;
 
+- (void)initTestContext;
 @end

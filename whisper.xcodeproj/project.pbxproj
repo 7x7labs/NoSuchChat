@@ -32,6 +32,13 @@
 		3F7127CB178F089200835DD2 /* XMPPStringPrep.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127B4178F089200835DD2 /* XMPPStringPrep.m */; };
 		3F7127D2178F0C6100835DD2 /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127CF178F0C6100835DD2 /* libidn.a */; };
 		3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127D3178F0D6F00835DD2 /* libresolv.dylib */; };
+		3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */; };
+		3F8D1B84179495430089B129 /* _Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B83179495430089B129 /* _Contact.m */; };
+		3F8D1B871794957B0089B129 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B861794957B0089B129 /* Contact.m */; };
+		3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
+		3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
+		3F8D1B8D1794A6690089B129 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8C1794A6690089B129 /* CoreData.framework */; };
+		3F8D1B8F1794CBF00089B129 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -41,7 +48,6 @@
 		3FA0C60C178CFDA1007E6ECC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C60A178CFDA1007E6ECC /* Main.storyboard */; };
 		3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C60E178CFDA1007E6ECC /* WHViewController.m */; };
 		3FA0C611178CFDA1007E6ECC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C610178CFDA1007E6ECC /* Images.xcassets */; };
-		3FA0C618178CFDA1007E6ECC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C617178CFDA1007E6ECC /* XCTest.framework */; };
 		3FA0C619178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
 		3FA0C622178CFDA1007E6ECC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C620178CFDA1007E6ECC /* InfoPlist.strings */; };
@@ -114,6 +120,15 @@
 		3F7127CF178F0C6100835DD2 /* libidn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libidn.a; sourceTree = "<group>"; };
 		3F7127D0178F0C6100835DD2 /* stringprep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringprep.h; sourceTree = "<group>"; };
 		3F7127D3178F0D6F00835DD2 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		3F8D1B80179494B10089B129 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		3F8D1B82179495430089B129 /* _Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _Contact.h; path = CoreData/_Contact.h; sourceTree = "<group>"; };
+		3F8D1B83179495430089B129 /* _Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _Contact.m; path = CoreData/_Contact.m; sourceTree = "<group>"; };
+		3F8D1B851794957B0089B129 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contact.h; path = Models/Contact.h; sourceTree = "<group>"; };
+		3F8D1B861794957B0089B129 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Contact.m; path = Models/Contact.m; sourceTree = "<group>"; };
+		3F8D1B881794A12E0089B129 /* WHCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHCoreData.h; sourceTree = "<group>"; };
+		3F8D1B891794A12E0089B129 /* WHCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHCoreData.m; sourceTree = "<group>"; };
+		3F8D1B8C1794A6690089B129 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -128,7 +143,7 @@
 		3FA0C60D178CFDA1007E6ECC /* WHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHViewController.h; sourceTree = "<group>"; };
 		3FA0C60E178CFDA1007E6ECC /* WHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHViewController.m; sourceTree = "<group>"; };
 		3FA0C610178CFDA1007E6ECC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3FA0C616178CFDA1007E6ECC /* whisperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = whisperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C616178CFDA1007E6ECC /* whisperTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = whisperTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C617178CFDA1007E6ECC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "whisperTests-Info.plist"; sourceTree = "<group>"; };
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -142,12 +157,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */,
+				3F8D1B8D1794A6690089B129 /* CoreData.framework in Frameworks */,
 				3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */,
-				3F7127D2178F0C6100835DD2 /* libidn.a in Frameworks */,
-				3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 				3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */,
+				3F7127D2178F0C6100835DD2 /* libidn.a in Frameworks */,
 				595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */,
+				3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */,
+				3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,9 +171,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FA0C618178CFDA1007E6ECC /* XCTest.framework in Frameworks */,
-				3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 				3FA0C619178CFDA1007E6ECC /* Foundation.framework in Frameworks */,
+				3F8D1B8F1794CBF00089B129 /* SenTestingKit.framework in Frameworks */,
+				3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,15 +341,33 @@
 			path = Vendor/XMPPFramework/Vendor/libidn;
 			sourceTree = "<group>";
 		};
+		3F8D1B7D1794949F0089B129 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3F8D1B851794957B0089B129 /* Contact.h */,
+				3F8D1B861794957B0089B129 /* Contact.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		3F8D1B7E179494A60089B129 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				3F8D1B82179495430089B129 /* _Contact.h */,
+				3F8D1B83179495430089B129 /* _Contact.m */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		3FA0C5EC178CFDA1007E6ECC = {
 			isa = PBXGroup;
 			children = (
-				FFED660267384000B03310C3 /* Pods.xcconfig */,
 				3FA0C5F7178CFDA1007E6ECC /* Frameworks */,
 				3FA0C5F6178CFDA1007E6ECC /* Products */,
 				3F712777178F068700835DD2 /* Vendor */,
 				3FA0C5FE178CFDA1007E6ECC /* whisper */,
 				3FA0C61D178CFDA1007E6ECC /* whisperTests */,
+				FFED660267384000B03310C3 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -341,7 +375,7 @@
 			isa = PBXGroup;
 			children = (
 				3FA0C5F5178CFDA1007E6ECC /* whisper.app */,
-				3FA0C616178CFDA1007E6ECC /* whisperTests.xctest */,
+				3FA0C616178CFDA1007E6ECC /* whisperTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -349,12 +383,14 @@
 		3FA0C5F7178CFDA1007E6ECC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3F7127D3178F0D6F00835DD2 /* libresolv.dylib */,
-				3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */,
+				3F8D1B8C1794A6690089B129 /* CoreData.framework */,
 				3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */,
+				3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */,
+				D4B7E38D9F734B8398B629FC /* libPods.a */,
+				3F7127D3178F0D6F00835DD2 /* libresolv.dylib */,
+				3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */,
 				3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */,
 				3FA0C617178CFDA1007E6ECC /* XCTest.framework */,
-				D4B7E38D9F734B8398B629FC /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -362,13 +398,18 @@
 		3FA0C5FE178CFDA1007E6ECC /* whisper */ = {
 			isa = PBXGroup;
 			children = (
+				3F8D1B7E179494A60089B129 /* CoreData */,
+				3F8D1B7D1794949F0089B129 /* Models */,
+				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
+				3FA0C610178CFDA1007E6ECC /* Images.xcassets */,
+				3FA0C60A178CFDA1007E6ECC /* Main.storyboard */,
+				3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */,
 				3FA0C607178CFDA1007E6ECC /* WHAppDelegate.h */,
 				3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */,
-				3FA0C60A178CFDA1007E6ECC /* Main.storyboard */,
+				3F8D1B881794A12E0089B129 /* WHCoreData.h */,
+				3F8D1B891794A12E0089B129 /* WHCoreData.m */,
 				3FA0C60D178CFDA1007E6ECC /* WHViewController.h */,
 				3FA0C60E178CFDA1007E6ECC /* WHViewController.m */,
-				3FA0C610178CFDA1007E6ECC /* Images.xcassets */,
-				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
 			);
 			path = whisper;
 			sourceTree = "<group>";
@@ -376,9 +417,9 @@
 		3FA0C5FF178CFDA1007E6ECC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3FA0C600178CFDA1007E6ECC /* whisper-Info.plist */,
 				3FA0C601178CFDA1007E6ECC /* InfoPlist.strings */,
 				3FA0C604178CFDA1007E6ECC /* main.m */,
+				3FA0C600178CFDA1007E6ECC /* whisper-Info.plist */,
 				3FA0C606178CFDA1007E6ECC /* whisper-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -387,8 +428,8 @@
 		3FA0C61D178CFDA1007E6ECC /* whisperTests */ = {
 			isa = PBXGroup;
 			children = (
-				3FA0C623178CFDA1007E6ECC /* whisperTests.m */,
 				3FA0C61E178CFDA1007E6ECC /* Supporting Files */,
+				3FA0C623178CFDA1007E6ECC /* whisperTests.m */,
 			);
 			path = whisperTests;
 			sourceTree = "<group>";
@@ -396,8 +437,8 @@
 		3FA0C61E178CFDA1007E6ECC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */,
 				3FA0C620178CFDA1007E6ECC /* InfoPlist.strings */,
+				3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -410,6 +451,7 @@
 			buildConfigurationList = 3FA0C627178CFDA1007E6ECC /* Build configuration list for PBXNativeTarget "whisper" */;
 			buildPhases = (
 				45BFFCACFBE0460A8383688C /* Check Pods Manifest.lock */,
+				3F8D1B7C179493F60089B129 /* ShellScript */,
 				3FA0C5F1178CFDA1007E6ECC /* Sources */,
 				3FA0C5F2178CFDA1007E6ECC /* Frameworks */,
 				3FA0C5F3178CFDA1007E6ECC /* Resources */,
@@ -439,7 +481,7 @@
 			);
 			name = whisperTests;
 			productName = whisperTests;
-			productReference = 3FA0C616178CFDA1007E6ECC /* whisperTests.xctest */;
+			productReference = 3FA0C616178CFDA1007E6ECC /* whisperTests.octest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -501,6 +543,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3F8D1B7C179493F60089B129 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\n/usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models";
+		};
 		45BFFCACFBE0460A8383688C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -538,32 +593,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F7127CB178F089200835DD2 /* XMPPStringPrep.m in Sources */,
-				3F7127CA178F089200835DD2 /* XMPPSRVResolver.m in Sources */,
-				3F7127BF178F089200835DD2 /* XMPPIQ.m in Sources */,
-				3F7127BC178F089200835DD2 /* NSNumber+XMPP.m in Sources */,
-				3F7127C7178F089200835DD2 /* GCDMulticastDelegate.m in Sources */,
-				3F7127C1178F089200835DD2 /* XMPPMessage.m in Sources */,
-				3F7127B7178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m in Sources */,
-				3F7127C5178F089200835DD2 /* XMPPStream.m in Sources */,
-				3F7127BB178F089200835DD2 /* NSData+XMPP.m in Sources */,
-				3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */,
-				3FA0C605178CFDA1007E6ECC /* main.m in Sources */,
-				3F7127BA178F089200835DD2 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
-				3F7127C0178F089200835DD2 /* XMPPJID.m in Sources */,
-				3F7127C3178F089200835DD2 /* XMPPParser.m in Sources */,
-				3F7127C2178F089200835DD2 /* XMPPModule.m in Sources */,
-				3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */,
-				3F7127BE178F089200835DD2 /* XMPPElement.m in Sources */,
-				3F7127B8178F089200835DD2 /* XMPPDigestMD5Authentication.m in Sources */,
-				3F7127C9178F089200835DD2 /* XMPPIDTracker.m in Sources */,
-				3F7127C4178F089200835DD2 /* XMPPPresence.m in Sources */,
-				3F7127B9178F089200835DD2 /* XMPPPlainAuthentication.m in Sources */,
-				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
-				3F7127BD178F089200835DD2 /* NSXMLElement+XMPP.m in Sources */,
+				3F8D1B84179495430089B129 /* _Contact.m in Sources */,
+				3F8D1B871794957B0089B129 /* Contact.m in Sources */,
 				3F7127C6178F089200835DD2 /* DDList.m in Sources */,
-				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
+				3F7127C7178F089200835DD2 /* GCDMulticastDelegate.m in Sources */,
+				3FA0C605178CFDA1007E6ECC /* main.m in Sources */,
+				3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */,
+				3F7127BB178F089200835DD2 /* NSData+XMPP.m in Sources */,
+				3F7127BC178F089200835DD2 /* NSNumber+XMPP.m in Sources */,
+				3F7127BD178F089200835DD2 /* NSXMLElement+XMPP.m in Sources */,
 				3F7127C8178F089200835DD2 /* RFImageToDataTransformer.m in Sources */,
+				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
+				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
+				3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */,
+				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
+				3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */,
+				3F7127B7178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m in Sources */,
+				3F7127B8178F089200835DD2 /* XMPPDigestMD5Authentication.m in Sources */,
+				3F7127BE178F089200835DD2 /* XMPPElement.m in Sources */,
+				3F7127C9178F089200835DD2 /* XMPPIDTracker.m in Sources */,
+				3F7127BF178F089200835DD2 /* XMPPIQ.m in Sources */,
+				3F7127C0178F089200835DD2 /* XMPPJID.m in Sources */,
+				3F7127C1178F089200835DD2 /* XMPPMessage.m in Sources */,
+				3F7127C2178F089200835DD2 /* XMPPModule.m in Sources */,
+				3F7127C3178F089200835DD2 /* XMPPParser.m in Sources */,
+				3F7127B9178F089200835DD2 /* XMPPPlainAuthentication.m in Sources */,
+				3F7127C4178F089200835DD2 /* XMPPPresence.m in Sources */,
+				3F7127CA178F089200835DD2 /* XMPPSRVResolver.m in Sources */,
+				3F7127C5178F089200835DD2 /* XMPPStream.m in Sources */,
+				3F7127CB178F089200835DD2 /* XMPPStringPrep.m in Sources */,
+				3F7127BA178F089200835DD2 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +630,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -744,6 +804,7 @@
 		};
 		3FA0C62B178CFDA1007E6ECC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFED660267384000B03310C3 /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/whisper.app/whisper";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -760,12 +821,13 @@
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
 		3FA0C62C178CFDA1007E6ECC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFED660267384000B03310C3 /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/whisper.app/whisper";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -778,7 +840,7 @@
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -813,6 +875,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3F8D1B80179494B10089B129 /* Model.xcdatamodel */,
+			);
+			currentVersion = 3F8D1B80179494B10089B129 /* Model.xcdatamodel */;
+			path = Models.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3FA0C5ED178CFDA1007E6ECC /* Project object */;
 }
