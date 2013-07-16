@@ -46,6 +46,8 @@
 		3F8D1BA0179598090089B129 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
 		3F8D1BA1179598090089B129 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
 		3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */; };
+		3F8D1BA81795F70D0089B129 /* WHXMPPWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */; };
+		3F8D1BA91795F70D0089B129 /* WHXMPPWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -53,7 +55,6 @@
 		3FA0C605178CFDA1007E6ECC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C604178CFDA1007E6ECC /* main.m */; };
 		3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */; };
 		3FA0C60C178CFDA1007E6ECC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C60A178CFDA1007E6ECC /* Main.storyboard */; };
-		3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C60E178CFDA1007E6ECC /* WHViewController.m */; };
 		3FA0C611178CFDA1007E6ECC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C610178CFDA1007E6ECC /* Images.xcassets */; };
 		3FA0C619178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -146,6 +147,8 @@
 		3F8D1B9F179598090089B129 /* _Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _Message.m; path = CoreData/_Message.m; sourceTree = "<group>"; };
 		3F8D1BA21795CBCF0089B129 /* WHChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatViewController.h; path = ViewControllers/WHChatViewController.h; sourceTree = "<group>"; };
 		3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatViewController.m; path = ViewControllers/WHChatViewController.m; sourceTree = "<group>"; };
+		3F8D1BA61795F70D0089B129 /* WHXMPPWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHXMPPWrapper.h; path = Communication/WHXMPPWrapper.h; sourceTree = "<group>"; };
+		3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHXMPPWrapper.m; path = Communication/WHXMPPWrapper.m; sourceTree = "<group>"; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -157,8 +160,6 @@
 		3FA0C607178CFDA1007E6ECC /* WHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHAppDelegate.h; sourceTree = "<group>"; };
 		3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHAppDelegate.m; sourceTree = "<group>"; };
 		3FA0C60B178CFDA1007E6ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		3FA0C60D178CFDA1007E6ECC /* WHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHViewController.h; sourceTree = "<group>"; };
-		3FA0C60E178CFDA1007E6ECC /* WHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHViewController.m; sourceTree = "<group>"; };
 		3FA0C610178CFDA1007E6ECC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3FA0C616178CFDA1007E6ECC /* whisperTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = whisperTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C617178CFDA1007E6ECC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -393,6 +394,15 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
+		3F8D1BA51795F5D00089B129 /* Communication */ = {
+			isa = PBXGroup;
+			children = (
+				3F8D1BA61795F70D0089B129 /* WHXMPPWrapper.h */,
+				3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */,
+			);
+			name = Communication;
+			sourceTree = "<group>";
+		};
 		3FA0C5EC178CFDA1007E6ECC = {
 			isa = PBXGroup;
 			children = (
@@ -432,6 +442,7 @@
 		3FA0C5FE178CFDA1007E6ECC /* whisper */ = {
 			isa = PBXGroup;
 			children = (
+				3F8D1BA51795F5D00089B129 /* Communication */,
 				3F8D1B7E179494A60089B129 /* CoreData */,
 				3F8D1B7D1794949F0089B129 /* Models */,
 				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
@@ -443,8 +454,6 @@
 				3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */,
 				3F8D1B881794A12E0089B129 /* WHCoreData.h */,
 				3F8D1B891794A12E0089B129 /* WHCoreData.m */,
-				3FA0C60D178CFDA1007E6ECC /* WHViewController.h */,
-				3FA0C60E178CFDA1007E6ECC /* WHViewController.m */,
 			);
 			path = whisper;
 			sourceTree = "<group>";
@@ -645,7 +654,7 @@
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
-				3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */,
+				3F8D1BA81795F70D0089B129 /* WHXMPPWrapper.m in Sources */,
 				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
 				3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */,
 				3F7127B7178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m in Sources */,
@@ -674,6 +683,7 @@
 				3F8D1B9D179597FC0089B129 /* Message.m in Sources */,
 				3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */,
+				3F8D1BA91795F70D0089B129 /* WHXMPPWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
