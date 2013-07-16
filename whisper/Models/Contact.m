@@ -58,16 +58,7 @@
 }
 
 - (NSArray *)orderedMessages {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
-    request.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"sent"
-                                                            ascending:NO]];
-
-    NSError *error;
-    NSArray *array = [[WHCoreData managedObjectContext] executeFetchRequest:request
-                                                                      error:&error];
-    if (!array)
-        NSLog(@"Error fetching messages: %@", error);
-    return array;
+    return [self.messages sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"sent" ascending:NO]]];
 }
 
 @end

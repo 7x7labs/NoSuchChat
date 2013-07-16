@@ -10,11 +10,14 @@
 
 #import "Contact.h"
 #import "WHCoreData.h"
+#import "WHChatViewController.h"
 
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
 @interface WHContactsViewController ()
 @property (nonatomic, strong) NSArray *contacts;
+
+@property (nonatomic, weak) Contact *sequeContact;
 @end
 
 @implementation WHContactsViewController
@@ -22,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.contacts = [Contact all];
     RAC(self.contacts) =
         [[NSNotificationCenter.defaultCenter
           rac_addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
@@ -32,16 +36,14 @@
     [RACAble(self.contacts) subscribeNext:^(id _) {
         [self.tableView reloadData];
     }];
+}
 
-    if ([self.contacts count] == 0) {
-        [Contact createWithName:@"a"];
-        [Contact createWithName:@"b"];
-        [Contact createWithName:@"c"];
-    }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"show chat"])
+        ((WHChatViewController *)segue.destinationViewController).contact = self.sequeContact;
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -57,4 +59,9 @@
     return cell;
 }
 
+#pragma mark UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.sequeContact = self.contacts[indexPath.row];
+    [self performSegueWithIdentifier:@"show chat" sender:self];
+}
 @end

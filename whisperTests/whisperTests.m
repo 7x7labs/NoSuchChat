@@ -71,6 +71,13 @@ describe(@"Contact", ^{
                 prevDate = message.sent;
             }
         });
+
+        it(@"should only return messages involving the current contact", ^{
+            Contact *contact2 = [Contact createWithName:@"second contact"];
+            [contact2 addSentMessage:@"message" date:[NSDate date]];
+            expect(contact.orderedMessages).to.haveCountOf(0);
+            expect(contact2.orderedMessages).to.haveCountOf(1);
+        });
     });
 });
 

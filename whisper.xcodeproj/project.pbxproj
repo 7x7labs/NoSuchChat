@@ -45,6 +45,7 @@
 		3F8D1B9D179597FC0089B129 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9B179597FC0089B129 /* Message.m */; };
 		3F8D1BA0179598090089B129 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
 		3F8D1BA1179598090089B129 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
+		3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -143,6 +144,8 @@
 		3F8D1B9B179597FC0089B129 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Message.m; path = Models/Message.m; sourceTree = "<group>"; };
 		3F8D1B9E179598090089B129 /* _Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _Message.h; path = CoreData/_Message.h; sourceTree = "<group>"; };
 		3F8D1B9F179598090089B129 /* _Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _Message.m; path = CoreData/_Message.m; sourceTree = "<group>"; };
+		3F8D1BA21795CBCF0089B129 /* WHChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatViewController.h; path = ViewControllers/WHChatViewController.h; sourceTree = "<group>"; };
+		3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatViewController.m; path = ViewControllers/WHChatViewController.m; sourceTree = "<group>"; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -382,6 +385,8 @@
 			children = (
 				3F8D1B971794E6A10089B129 /* WHAddContactViewController.h */,
 				3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */,
+				3F8D1BA21795CBCF0089B129 /* WHChatViewController.h */,
+				3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */,
 				3F8D1B911794DD200089B129 /* WHContactsViewController.h */,
 				3F8D1B921794DD200089B129 /* WHContactsViewController.m */,
 			);
@@ -637,6 +642,7 @@
 				3F7127C8178F089200835DD2 /* RFImageToDataTransformer.m in Sources */,
 				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
 				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
+				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */,
