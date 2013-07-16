@@ -9,8 +9,12 @@
 #import "_Contact.h"
 
 @interface Contact : _Contact
-@property (nonatomic, strong) NSString *name;
-
 + (NSArray *)all;
 + (Contact *)createWithName:(NSString *)name;
+
+- (void)addSentMessage:(NSString *)text date:(NSDate *)date;
+- (void)addReceivedMessage:(NSString *)text date:(NSDate *)date;
+
+//@property (nonatomic, readonly) NSArray *messages;
+@property (nonatomic, readonly) NSArray *orderedMessages;
 @end
