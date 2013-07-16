@@ -39,6 +39,8 @@
 		3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
 		3F8D1B8D1794A6690089B129 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8C1794A6690089B129 /* CoreData.framework */; };
 		3F8D1B8F1794CBF00089B129 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */; };
+		3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B921794DD200089B129 /* WHContactsViewController.m */; };
+		3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -129,6 +131,10 @@
 		3F8D1B891794A12E0089B129 /* WHCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHCoreData.m; sourceTree = "<group>"; };
 		3F8D1B8C1794A6690089B129 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		3F8D1B911794DD200089B129 /* WHContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHContactsViewController.h; path = ViewControllers/WHContactsViewController.h; sourceTree = "<group>"; };
+		3F8D1B921794DD200089B129 /* WHContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHContactsViewController.m; path = ViewControllers/WHContactsViewController.m; sourceTree = "<group>"; };
+		3F8D1B971794E6A10089B129 /* WHAddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAddContactViewController.h; path = ViewControllers/WHAddContactViewController.h; sourceTree = "<group>"; };
+		3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAddContactViewController.m; path = ViewControllers/WHAddContactViewController.m; sourceTree = "<group>"; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -359,6 +365,17 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
+		3F8D1B901794DC810089B129 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3F8D1B971794E6A10089B129 /* WHAddContactViewController.h */,
+				3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */,
+				3F8D1B911794DD200089B129 /* WHContactsViewController.h */,
+				3F8D1B921794DD200089B129 /* WHContactsViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		3FA0C5EC178CFDA1007E6ECC = {
 			isa = PBXGroup;
 			children = (
@@ -401,6 +418,7 @@
 				3F8D1B7E179494A60089B129 /* CoreData */,
 				3F8D1B7D1794949F0089B129 /* Models */,
 				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
+				3F8D1B901794DC810089B129 /* ViewControllers */,
 				3FA0C610178CFDA1007E6ECC /* Images.xcassets */,
 				3FA0C60A178CFDA1007E6ECC /* Main.storyboard */,
 				3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */,
@@ -603,7 +621,9 @@
 				3F7127BC178F089200835DD2 /* NSNumber+XMPP.m in Sources */,
 				3F7127BD178F089200835DD2 /* NSXMLElement+XMPP.m in Sources */,
 				3F7127C8178F089200835DD2 /* RFImageToDataTransformer.m in Sources */,
+				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
 				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
+				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3FA0C60F178CFDA1007E6ECC /* WHViewController.m in Sources */,
 				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
