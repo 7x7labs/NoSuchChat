@@ -29,6 +29,7 @@ PODS:
   - ReactiveCocoa/RACExtensions (1.9.5):
     - ReactiveCocoa/Core
   - Specta (0.1.10)
+  - SSKeychain (1.1.0)
 
 DEPENDENCIES:
   - CocoaAsyncSocket
@@ -39,6 +40,7 @@ DEPENDENCIES:
   - OpenSSL (from `podspecs/OpenSSL.podspec`)
   - ReactiveCocoa
   - Specta
+  - SSKeychain
 
 EXTERNAL SOURCES:
   NetPGP:
@@ -57,5 +59,6 @@ SPEC CHECKSUMS:
   OpenSSL: 0850a065f1d66877ad738baa83918b4e04a2257d
   ReactiveCocoa: 591f49bb58dc2756e4876d3c1c3df55730a05505
   Specta: 27e3e2801be07596d49e04b5a561fb1a8ecc21d1
+  SSKeychain: 54b6daee1d95af968beebef07522b583ff9a809c
 
 COCOAPODS: 0.22.2
