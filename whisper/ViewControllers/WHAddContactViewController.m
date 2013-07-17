@@ -12,11 +12,12 @@
 
 @interface WHAddContactViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *name;
+@property (weak, nonatomic) IBOutlet UITextField *jid;
 @end
 
 @implementation WHAddContactViewController
 - (IBAction)add {
-    [Contact createWithName:self.name.text];
+    [Contact createWithName:self.name.text jid:self.jid.text];
     [self.navigationController popViewControllerAnimated:YES];
 }
 @end

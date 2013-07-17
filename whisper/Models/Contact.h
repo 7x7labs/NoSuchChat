@@ -10,11 +10,10 @@
 
 @interface Contact : _Contact
 + (NSArray *)all;
-+ (Contact *)createWithName:(NSString *)name;
++ (Contact *)createWithName:(NSString *)name jid:(NSString *)jid;
 
 - (void)addSentMessage:(NSString *)text date:(NSDate *)date;
 - (void)addReceivedMessage:(NSString *)text date:(NSDate *)date;
 
-//@property (nonatomic, readonly) NSArray *messages;
 @property (nonatomic, readonly) NSArray *orderedMessages;
 @end
