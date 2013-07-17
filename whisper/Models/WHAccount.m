@@ -39,7 +39,7 @@ static NSString *generateRandomString() {
 
     // No currently existing account, so generate a new one
     WHAccount *account = [WHAccount new];
-    account.jid = generateRandomString();
+    account.jid = [generateRandomString() stringByAppendingString:@"@localhost"];
     account.password = generateRandomString();
 
     [SSKeychain setPassword:account.password forService:kServiceName account:account.jid];

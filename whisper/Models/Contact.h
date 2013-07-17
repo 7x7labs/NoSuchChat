@@ -14,6 +14,4 @@
 
 - (void)addSentMessage:(NSString *)text date:(NSDate *)date;
 - (void)addReceivedMessage:(NSString *)text date:(NSDate *)date;
-
-@property (nonatomic, readonly) NSArray *orderedMessages;
 @end

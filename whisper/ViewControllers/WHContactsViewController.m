@@ -11,11 +11,14 @@
 #import "Contact.h"
 #import "WHCoreData.h"
 #import "WHChatViewController.h"
+#import "WHChatClient.h"
 
+#import <EXTScope.h>
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
 @interface WHContactsViewController ()
 @property (nonatomic, strong) NSArray *contacts;
+@property (nonatomic, strong) WHChatClient *client;
 
 @property (nonatomic, weak) Contact *sequeContact;
 @end
@@ -25,15 +28,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.contacts = [Contact all];
-    RAC(self.contacts) =
-        [[NSNotificationCenter.defaultCenter
-          rac_addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
-          object:nil]
-         map:^(NSNotification *_) { return [Contact all]; }];
+    self.client = [WHChatClient clientForServer:@"localhost" port:5222];
 
-
+    @weakify(self)
+    RAC(self.contacts) = RACAbleWithStart(self.client, contacts);
     [RACAble(self.contacts) subscribeNext:^(id _) {
+        @strongify(self)
         [self.tableView reloadData];
     }];
 }
@@ -41,6 +41,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"show chat"])
         ((WHChatViewController *)segue.destinationViewController).contact = self.sequeContact;
+    [segue.destinationViewController setClient:self.client];
 }
 
 #pragma mark - Table view data source

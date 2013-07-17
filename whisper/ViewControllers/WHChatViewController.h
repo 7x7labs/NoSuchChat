@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class Contact;
+@class WHChatClient;
 
 @interface WHChatViewController : UIViewController
 @property (nonatomic, strong) Contact *contact;
+@property (nonatomic, strong) WHChatClient *client;
 @end

@@ -75,8 +75,4 @@ static NSManagedObjectContext *moc() {
         NSLog(@"Error saving message: %@", error);
 }
 
-- (NSArray *)orderedMessages {
-    return [self.messages sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"sent" ascending:NO]]];
-}
-
 @end

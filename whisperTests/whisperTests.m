@@ -63,23 +63,11 @@ describe(@"Contact", ^{
             expect([[contact.messages anyObject] text]).to.equal(@"test message");
         });
 
-        it(@"should sort messages by sent time in descending order", ^{
-            for (int i = 0; i < 10; ++i)
-                [contact addReceivedMessage:@"test message"
-                                       date:[NSDate dateWithTimeIntervalSinceNow:-(int)(arc4random() % 10000)]];
-            expect(contact.messages).to.haveCountOf(10);
-            NSDate *prevDate = [NSDate dateWithTimeIntervalSinceNow:1];
-            for (Message *message in contact.orderedMessages) {
-                expect(message.sent).to.beLessThanOrEqualTo(prevDate);
-                prevDate = message.sent;
-            }
-        });
-
         it(@"should only return messages involving the current contact", ^{
             Contact *contact2 = [Contact createWithName:@"second contact" jid:@"b@b.com"];
             [contact2 addSentMessage:@"message" date:[NSDate date]];
-            expect(contact.orderedMessages).to.haveCountOf(0);
-            expect(contact2.orderedMessages).to.haveCountOf(1);
+            expect(contact.messages).to.haveCountOf(0);
+            expect(contact2.messages).to.haveCountOf(1);
         });
     });
 

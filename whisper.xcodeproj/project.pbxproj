@@ -50,6 +50,8 @@
 		3F8D1BA91795F70D0089B129 /* WHXMPPWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */; };
 		3F8EB18C1796E639009F938D /* WHAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18B1796E639009F938D /* WHAccount.m */; };
 		3F8EB18D1796E639009F938D /* WHAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18B1796E639009F938D /* WHAccount.m */; };
+		3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
+		3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -153,6 +155,8 @@
 		3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHXMPPWrapper.m; path = Communication/WHXMPPWrapper.m; sourceTree = "<group>"; };
 		3F8EB18A1796E639009F938D /* WHAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAccount.h; path = Models/WHAccount.h; sourceTree = "<group>"; };
 		3F8EB18B1796E639009F938D /* WHAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAccount.m; path = Models/WHAccount.m; sourceTree = "<group>"; };
+		3F8EB18E1796FB7E009F938D /* WHChatClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatClient.h; path = Communication/WHChatClient.h; sourceTree = "<group>"; };
+		3F8EB18F1796FB7E009F938D /* WHChatClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatClient.m; path = Communication/WHChatClient.m; sourceTree = "<group>"; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -403,6 +407,8 @@
 		3F8D1BA51795F5D00089B129 /* Communication */ = {
 			isa = PBXGroup;
 			children = (
+				3F8EB18E1796FB7E009F938D /* WHChatClient.h */,
+				3F8EB18F1796FB7E009F938D /* WHChatClient.m */,
 				3F8D1BA61795F70D0089B129 /* WHXMPPWrapper.h */,
 				3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */,
 			);
@@ -658,6 +664,7 @@
 				3F8EB18C1796E639009F938D /* WHAccount.m in Sources */,
 				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
 				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
+				3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */,
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
@@ -689,6 +696,7 @@
 				3F8D1BA1179598090089B129 /* _Message.m in Sources */,
 				3F8D1B9D179597FC0089B129 /* Message.m in Sources */,
 				3F8EB18D1796E639009F938D /* WHAccount.m in Sources */,
+				3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */,
 				3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */,
 				3F8D1BA91795F70D0089B129 /* WHXMPPWrapper.m in Sources */,

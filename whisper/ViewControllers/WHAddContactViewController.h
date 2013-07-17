@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WHAddContactViewController : UIViewController
+@class WHChatClient;
 
+@interface WHAddContactViewController : UIViewController
+@property (nonatomic, strong) WHChatClient *client;
 @end

@@ -9,6 +9,7 @@
 #import "WHChatViewController.h"
 
 #import "Contact.h"
+#import "WHChatClient.h"
 
 #import <EXTScope.h>
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
@@ -28,19 +29,12 @@
 
     self.title = self.contact.name;
 
-    self.messages = self.contact.orderedMessages;
-    RAC(self.messages) =
-        [[NSNotificationCenter.defaultCenter
-          rac_addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
-          object:nil]
-         map:^(NSNotification *_) {
-             @strongify(self);
-             return self.contact.orderedMessages;
-         }];
-
-
+    RAC(self.messages) = [RACAbleWithStart(self.contact, messages)
+                          map:^id(id value) {
+                            return [value sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"sent" ascending:NO]]];
+                          }];
     [RACAble(self.messages) subscribeNext:^(id _) {
-        @strongify(self);
+        @strongify(self)
         [self.chatLog reloadData];
     }];
 
@@ -51,7 +45,7 @@
 }
 
 - (IBAction)sendMessage {
-    [self.contact addSentMessage:self.message.text date:[NSDate date]];
+    [self.client sendMessage:self.message.text to:self.contact];
     self.message.text = @"";
 }
 
@@ -61,12 +55,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.contact.orderedMessages count];
+    return [self.messages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    cell.textLabel.text = [self.contact.orderedMessages[indexPath.row] text];
+    cell.textLabel.text = [self.messages[indexPath.row] text];
     return cell;
 }
 @end
