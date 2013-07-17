@@ -8,11 +8,14 @@
 
 #import "Contact.h"
 #import "Message.h"
+#import "WHAccount.h"
 #import "WHCoreData.h"
 
 #import "Specta.h"
 #define EXP_SHORTHAND
 #import "Expecta.h"
+
+#import <SSKeychain/SSKeychain.h>
 
 SpecBegin(WhisperTests)
 
@@ -87,6 +90,22 @@ describe(@"Contact", ^{
             expect(c1).to.equal(c2);
         });
     });
+});
+
+describe(@"WHAccount", ^{
+    it(@"should return the same account from multiple calls to +get", ^{
+        WHAccount *a1 = [WHAccount get];
+        WHAccount *a2 = [WHAccount get];
+        expect(a1.jid).to.equal(a2.jid);
+        expect(a1.password).to.equal(a2.password);
+    });
+
+    afterEach(^{
+        for (NSDictionary *account in [SSKeychain allAccounts])
+            [SSKeychain deletePasswordForService:nil account:account[kSSKeychainAccountKey]];
+
+    });
+
 });
 
 SpecEnd
