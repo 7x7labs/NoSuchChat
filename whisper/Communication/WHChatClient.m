@@ -39,9 +39,11 @@
                                                    username:account.jid
                                                    password:account.password];
     [connectSignal subscribeError:^(NSError *error) {
-        // display error
-    } completed:^{
-        // ?
+        [[[UIAlertView alloc] initWithTitle:nil
+                                    message:[error localizedDescription]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
     }];
 
     RAC(self, contacts) =
