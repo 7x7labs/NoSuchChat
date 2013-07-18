@@ -68,7 +68,7 @@
     [self.xmpp.messages subscribeNext:^(id message) {
         @strongify(self)
         for (Contact *contact in self.contacts) {
-            if ([contact.name isEqualToString:[message senderJid]]) {
+            if ([contact.jid isEqualToString:[message senderJid]]) {
                 [contact addReceivedMessage:[message body] date:[NSDate date]];
                 return;
             }
