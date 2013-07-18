@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */; };
+		3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
 		3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277C178F089200835DD2 /* XMPPAnonymousAuthentication.m */; };
 		3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277F178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m */; };
 		3F7127B7178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712782178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m */; };
@@ -52,6 +54,10 @@
 		3F8EB18D1796E639009F938D /* WHAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18B1796E639009F938D /* WHAccount.m */; };
 		3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
 		3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
+		3F8EB1981798424C009F938D /* WHPGP.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1971798424C009F938D /* WHPGP.m */; };
+		3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB19D1798BF96009F938D /* NSData+Signature.m */; };
+		3F8EB1A11798C040009F938D /* NSData+SHA.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A01798C040009F938D /* NSData+SHA.m */; };
+		3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A31798DC8C009F938D /* WHKeyPair.m */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -78,6 +84,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Compression.h"; path = "Crypto/NSData+Compression.h"; sourceTree = "<group>"; };
+		3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Compression.m"; path = "Crypto/NSData+Compression.m"; sourceTree = "<group>"; };
+		3F5FCDA51799A1F40075D3F0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		3F71277B178F089200835DD2 /* XMPPAnonymousAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPAnonymousAuthentication.h; sourceTree = "<group>"; };
 		3F71277C178F089200835DD2 /* XMPPAnonymousAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMPPAnonymousAuthentication.m; sourceTree = "<group>"; };
 		3F71277E178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPDeprecatedDigestAuthentication.h; sourceTree = "<group>"; };
@@ -157,6 +166,14 @@
 		3F8EB18B1796E639009F938D /* WHAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAccount.m; path = Models/WHAccount.m; sourceTree = "<group>"; };
 		3F8EB18E1796FB7E009F938D /* WHChatClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatClient.h; path = Communication/WHChatClient.h; sourceTree = "<group>"; };
 		3F8EB18F1796FB7E009F938D /* WHChatClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatClient.m; path = Communication/WHChatClient.m; sourceTree = "<group>"; };
+		3F8EB1961798424C009F938D /* WHPGP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHPGP.h; path = Crypto/WHPGP.h; sourceTree = "<group>"; };
+		3F8EB1971798424C009F938D /* WHPGP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHPGP.m; path = Crypto/WHPGP.m; sourceTree = "<group>"; };
+		3F8EB19C1798BF96009F938D /* NSData+Signature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Signature.h"; path = "Crypto/NSData+Signature.h"; sourceTree = "<group>"; };
+		3F8EB19D1798BF96009F938D /* NSData+Signature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Signature.m"; path = "Crypto/NSData+Signature.m"; sourceTree = "<group>"; };
+		3F8EB19F1798C040009F938D /* NSData+SHA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+SHA.h"; path = "Crypto/NSData+SHA.h"; sourceTree = "<group>"; };
+		3F8EB1A01798C040009F938D /* NSData+SHA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+SHA.m"; path = "Crypto/NSData+SHA.m"; sourceTree = "<group>"; };
+		3F8EB1A21798DC8C009F938D /* WHKeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyPair.h; path = Crypto/WHKeyPair.h; sourceTree = "<group>"; };
+		3F8EB1A31798DC8C009F938D /* WHKeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyPair.m; path = Crypto/WHKeyPair.m; sourceTree = "<group>"; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -189,6 +206,7 @@
 				3F7127D2178F0C6100835DD2 /* libidn.a in Frameworks */,
 				595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */,
 				3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */,
+				3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */,
 				3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +433,23 @@
 			name = Communication;
 			sourceTree = "<group>";
 		};
+		3F8EB19517983EDE009F938D /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */,
+				3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */,
+				3F8EB19F1798C040009F938D /* NSData+SHA.h */,
+				3F8EB1A01798C040009F938D /* NSData+SHA.m */,
+				3F8EB19C1798BF96009F938D /* NSData+Signature.h */,
+				3F8EB19D1798BF96009F938D /* NSData+Signature.m */,
+				3F8EB1A21798DC8C009F938D /* WHKeyPair.h */,
+				3F8EB1A31798DC8C009F938D /* WHKeyPair.m */,
+				3F8EB1961798424C009F938D /* WHPGP.h */,
+				3F8EB1971798424C009F938D /* WHPGP.m */,
+			);
+			name = Crypto;
+			sourceTree = "<group>";
+		};
 		3FA0C5EC178CFDA1007E6ECC = {
 			isa = PBXGroup;
 			children = (
@@ -444,6 +479,7 @@
 				3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */,
 				D4B7E38D9F734B8398B629FC /* libPods.a */,
 				3F7127D3178F0D6F00835DD2 /* libresolv.dylib */,
+				3F5FCDA51799A1F40075D3F0 /* libz.dylib */,
 				3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */,
 				3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */,
 				3FA0C617178CFDA1007E6ECC /* XCTest.framework */,
@@ -456,6 +492,7 @@
 			children = (
 				3F8D1BA51795F5D00089B129 /* Communication */,
 				3F8D1B7E179494A60089B129 /* CoreData */,
+				3F8EB19517983EDE009F938D /* Crypto */,
 				3F8D1B7D1794949F0089B129 /* Models */,
 				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
 				3F8D1B901794DC810089B129 /* ViewControllers */,
@@ -657,6 +694,9 @@
 				3FA0C605178CFDA1007E6ECC /* main.m in Sources */,
 				3F8D1B9C179597FC0089B129 /* Message.m in Sources */,
 				3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */,
+				3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */,
+				3F8EB1A11798C040009F938D /* NSData+SHA.m in Sources */,
+				3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */,
 				3F7127BB178F089200835DD2 /* NSData+XMPP.m in Sources */,
 				3F7127BC178F089200835DD2 /* NSNumber+XMPP.m in Sources */,
 				3F7127BD178F089200835DD2 /* NSXMLElement+XMPP.m in Sources */,
@@ -668,6 +708,8 @@
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
+				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,
+				3F8EB1981798424C009F938D /* WHPGP.m in Sources */,
 				3F8D1BA81795F70D0089B129 /* WHXMPPWrapper.m in Sources */,
 				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
 				3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */,

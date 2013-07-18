@@ -8,10 +8,14 @@
 
 #import "Contact.h"
 #import "Message.h"
+#import "NSData+Compression.h"
+#import "NSData+SHA.h"
+#import "NSData+Signature.h"
 #import "WHAccount.h"
 #import "WHChatClient.h"
-#import "WHXMPPWrapper.h"
 #import "WHCoreData.h"
+#import "WHKeyPair.h"
+#import "WHXMPPWrapper.h"
 
 #import "Specta.h"
 #define EXP_SHORTHAND
@@ -177,6 +181,107 @@ describe(@"WHChatClient", ^{
             expect([[contact.messages anyObject] incoming]).to.beTruthy();
         });
 
+    });
+});
+
+describe(@"NSData+SHA", ^{
+    it(@"should correctly hash the empty string", ^{
+        const uint8_t expected[] = "\xe3\xb0\xc4\x42\x98\xfc\x1c\x14\x9a\xfb\xf4\xc8\x99\x6f\xb9\x24\x27\xae\x41\xe4\x64\x9b\x93\x4c\xa4\x95\x99\x1b\x78\x52\xb8\x55";
+        expect([[NSData data] sha256]).to.equal([NSData dataWithBytes:expected length:sizeof(expected)]);
+    });
+
+    it(@"should correctly hash a non-empty string", ^{
+        const uint8_t expected[] = "\xd7\xa8\xfb\xb3\x07\xd7\x80\x94\x69\xca\x9a\xbc\xb0\x08\x2e\x4f\x8d\x56\x51\xe4\x6d\x3c\xdb\x76\x2d\x02\xd0\xbf\x37\xc9\xe5\x92";
+        NSString *str = @"The quick brown fox jumps over the lazy dog";
+        expect([[NSData dataWithBytes:[str UTF8String] length:[str length]] sha256]).to.equal([NSData dataWithBytes:expected length:sizeof(expected)]);
+    });
+});
+
+describe(@"WHKeyPair", ^{
+    afterEach(^{
+        SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+    });
+    describe(@"createKeyPairForJid", ^{
+        it(@"should return a valid key pair", ^{
+            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            expect(kp.publicKey).notTo.beNil();
+            expect(kp.privateKey).notTo.beNil();
+            expect(kp.publicKeyBits).notTo.beNil();
+        });
+
+        it(@"should replace any existing key pairs for the given jid", ^{
+            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            NSData *initialBits = kp.publicKeyBits;
+            kp = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            expect(kp.publicKeyBits).notTo.equal(initialBits);
+        });
+    });
+
+    describe(@"getOwnKeyPairForJid", ^{
+        it(@"should return nil if no key pair has been generated", ^{
+            expect([WHKeyPair getOwnKeyPairForJid:@"foo@localhost"]).to.beNil();
+        });
+
+        it(@"should return a key pair after a call to createKeyPairForJid:", ^{
+            [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            expect([WHKeyPair getOwnKeyPairForJid:@"foo@localhost"]).notTo.beNil();
+        });
+    });
+
+    describe(@"getKeyFromJid", ^{
+        it(@"should return nil if not key for jid has been added", ^{
+            expect([WHKeyPair getKeyFromJid:@"foo@localhost"]).to.beNil();
+        });
+
+        it(@"should return the added key after addKey:fromJid:", ^{
+            NSData *key = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+            [WHKeyPair addKey:key fromJid:@"foo@localhost"];
+            WHKeyPair *kp = [WHKeyPair getKeyFromJid:@"foo@localhost"];
+            expect(kp).notTo.beNil();
+            expect(kp.publicKeyBits).to.equal(key);
+        });
+    });
+
+    describe(@"addKey:fromJid", ^{
+        it(@"should replace the existing key from a jid", ^{
+            NSData *key1 = [@"key1" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *key2 = [@"key2" dataUsingEncoding:NSUTF8StringEncoding];
+            [WHKeyPair addKey:key1 fromJid:@"foo@localhost"];
+            WHKeyPair *kp = [WHKeyPair addKey:key2 fromJid:@"foo@localhost"];
+            expect(kp.publicKeyBits).to.equal(key2);
+        });
+    });
+});
+
+describe(@"NSData+Signature", ^{
+});
+
+describe(@"NSData+Compression", ^{
+    describe(@"wh_compress", ^{
+        it(@"should return empty given empty", ^{
+            expect([[NSData data] wh_compress].length).to.equal(0);
+        });
+
+        it(@"should do stuff given non-empty input", ^{
+            NSData *data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+            expect([data wh_compress]).notTo.equal(data);
+        });
+    });
+
+    describe(@"wh_decompress", ^{
+        it(@"should return empty given empty", ^{
+            expect([[NSData data] wh_decompress].length).to.equal(0);
+        });
+
+        it(@"should return nil given garbage input", ^{
+            NSData *data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+            expect([data wh_decompress]).to.beNil();
+        });
+
+        it(@"should successfully reverse wh_compression", ^{
+            NSData *data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+            expect([[data wh_compress] wh_decompress]).to.equal(data);
+        });
     });
 });
 
