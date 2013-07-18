@@ -10,10 +10,12 @@
 
 @class Contact;
 @class RACSignal;
+@protocol WHXMPPStream;
 
 /// A class which binds together the CoreData entities and the XMPP stream
 @interface WHChatClient : NSObject
 + (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port;
++ (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port stream:(id<WHXMPPStream>)xmpp;
 
 - (void)sendMessage:(NSString *)body to:(Contact *)contact;
 

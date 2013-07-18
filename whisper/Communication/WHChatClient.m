@@ -18,26 +18,34 @@
 @interface WHChatClient ()
 @property (nonatomic, strong) NSObject<WHXMPPStream> *xmpp;
 @property (nonatomic, strong) NSArray *contacts;
-
-- (WHChatClient *)initForServer:(NSString *)host port:(uint16_t)port;
 @end
 
 @implementation WHChatClient
 + (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port {
-    return [[self alloc] initForServer:host port:port];
+    return [[self alloc] initForServer:host port:port stream:[WHXMPPWrapper new]];
 }
 
-- (WHChatClient *)initForServer:(NSString *)host port:(uint16_t)port {
++ (WHChatClient *)clientForServer:(NSString *)host
+                             port:(uint16_t)port
+                           stream:(id<WHXMPPStream>)xmpp
+{
+    return [[self alloc] initForServer:host port:port stream:xmpp];
+}
+
+- (WHChatClient *)initForServer:(NSString *)host
+                           port:(uint16_t)port
+                         stream:(id<WHXMPPStream>)xmpp
+{
     self = [super init];
     if (!self) return self;
 
-    self.xmpp = [WHXMPPWrapper new];
+    self.xmpp = xmpp;
 
     WHAccount *account = [WHAccount get];
     RACSignal *connectSignal = [self.xmpp connectToServer:host
-                                                       port:port
-                                                   username:account.jid
-                                                   password:account.password];
+                                                     port:port
+                                                 username:account.jid
+                                                 password:account.password];
     [connectSignal subscribeError:^(NSError *error) {
         [[[UIAlertView alloc] initWithTitle:nil
                                     message:[error localizedDescription]
