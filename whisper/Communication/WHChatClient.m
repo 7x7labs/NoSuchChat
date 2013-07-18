@@ -18,6 +18,7 @@
 @interface WHChatClient ()
 @property (nonatomic, strong) NSObject<WHXMPPStream> *xmpp;
 @property (nonatomic, strong) NSArray *contacts;
+@property (nonatomic, strong) RACSubject *cancelSignal;
 @end
 
 @implementation WHChatClient
@@ -54,10 +55,12 @@
                           otherButtonTitles:nil] show];
     }];
 
+    self.cancelSignal = [RACSubject subject];
     RAC(self, contacts) =
-        [[[NSNotificationCenter.defaultCenter
+        [[[[NSNotificationCenter.defaultCenter
            rac_addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
            object:nil]
+          takeUntil:self.cancelSignal]
           map:^(NSNotification *_) { return [Contact all]; }]
          startWith:[Contact all]];
 
@@ -78,5 +81,9 @@
 - (void)sendMessage:(NSString *)body to:(Contact *)contact {
     [contact addSentMessage:body date:[NSDate date]];
     [self.xmpp sendMessage:body to:contact.jid];
+}
+
+- (void)dealloc {
+    [self.cancelSignal sendCompleted];
 }
 @end
