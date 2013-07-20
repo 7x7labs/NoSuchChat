@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */; };
 		3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
+		3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
 		3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277C178F089200835DD2 /* XMPPAnonymousAuthentication.m */; };
 		3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277F178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m */; };
 		3F7127B7178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712782178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m */; };
@@ -87,6 +88,8 @@
 		3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Compression.h"; path = "Crypto/NSData+Compression.h"; sourceTree = "<group>"; };
 		3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Compression.m"; path = "Crypto/NSData+Compression.m"; sourceTree = "<group>"; };
 		3F5FCDA51799A1F40075D3F0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		3F5FCDA7179AD19B0075D3F0 /* NSData+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Encryption.h"; path = "Crypto/NSData+Encryption.h"; sourceTree = "<group>"; };
+		3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Encryption.m"; path = "Crypto/NSData+Encryption.m"; sourceTree = "<group>"; };
 		3F71277B178F089200835DD2 /* XMPPAnonymousAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPAnonymousAuthentication.h; sourceTree = "<group>"; };
 		3F71277C178F089200835DD2 /* XMPPAnonymousAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMPPAnonymousAuthentication.m; sourceTree = "<group>"; };
 		3F71277E178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPDeprecatedDigestAuthentication.h; sourceTree = "<group>"; };
@@ -438,6 +441,8 @@
 			children = (
 				3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */,
 				3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */,
+				3F5FCDA7179AD19B0075D3F0 /* NSData+Encryption.h */,
+				3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */,
 				3F8EB19F1798C040009F938D /* NSData+SHA.h */,
 				3F8EB1A01798C040009F938D /* NSData+SHA.m */,
 				3F8EB19C1798BF96009F938D /* NSData+Signature.h */,
@@ -695,6 +700,7 @@
 				3F8D1B9C179597FC0089B129 /* Message.m in Sources */,
 				3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */,
 				3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */,
+				3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */,
 				3F8EB1A11798C040009F938D /* NSData+SHA.m in Sources */,
 				3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */,
 				3F7127BB178F089200835DD2 /* NSData+XMPP.m in Sources */,

@@ -1,0 +1,47 @@
+//
+//  NSData+Encryption.m
+//  whisper
+//
+//  Created by Thomas Goyne on 7/20/13.
+//  Copyright (c) 2013 7x7 Labs. All rights reserved.
+//
+
+#import "NSData+Encryption.h"
+
+#import <CommonCrypto/CommonCryptor.h>
+
+@implementation NSData (Encryption)
++ (NSData *)wh_createSessionKey {
+    NSMutableData *data = [NSMutableData dataWithLength:kCCKeySizeAES256];
+	OSStatus err = SecRandomCopyBytes(kSecRandomDefault, kCCKeySizeAES256, [data mutableBytes]);
+    NSAssert(err == noErr, @"Error getting random bytes for session key: %d", (int)err);
+    return data;
+}
+
+- (NSData *)wh_DoEnryptOrDecrypt:(CCOperation)operation withKey:(NSData *)key {
+    NSAssert([key length] == kCCKeySizeAES256, @"Invalid key for AES256");
+
+    NSMutableData *encrypted = [NSMutableData dataWithLength:[self length] + kCCBlockSizeAES128];
+
+    size_t bytesEncrypted = 0;
+    CCCryptorStatus err = CCCrypt(operation, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
+                                  [key bytes], kCCKeySizeAES256,
+                                  NULL,
+                                  [self bytes], [self length],
+                                  [encrypted mutableBytes], [encrypted length],
+                                  &bytesEncrypted);
+
+    NSAssert(err == kCCSuccess, @"CCCrypt failed: %d", (int)err);
+
+    encrypted.length = bytesEncrypted;
+    return encrypted;
+}
+
+- (NSData *)wh_AES256EncryptWithKey:(NSData *)key {
+    return [self wh_DoEnryptOrDecrypt:kCCEncrypt withKey:key];
+}
+
+- (NSData *)wh_AES256DecryptWithKey:(NSData *)key {
+    return [self wh_DoEnryptOrDecrypt:kCCDecrypt withKey:key];
+}
+@end

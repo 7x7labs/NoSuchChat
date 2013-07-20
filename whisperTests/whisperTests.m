@@ -9,6 +9,7 @@
 #import "Contact.h"
 #import "Message.h"
 #import "NSData+Compression.h"
+#import "NSData+Encryption.h"
 #import "NSData+SHA.h"
 #import "NSData+Signature.h"
 #import "WHAccount.h"
@@ -281,6 +282,42 @@ describe(@"NSData+Compression", ^{
         it(@"should successfully reverse wh_compression", ^{
             NSData *data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
             expect([[data wh_compress] wh_decompress]).to.equal(data);
+        });
+    });
+});
+
+describe(@"NSData+Encryption", ^{
+    describe(@"wh_createSessionKey", ^{
+        it(@"should generate a 32-byte blob", ^{
+            expect([[NSData wh_createSessionKey] length]).to.equal(32);
+        });
+    });
+
+    describe(@"wh_AES256EncryptWithKey", ^{
+        it(@"should pad output to 16-byte multiples", ^{
+            NSData *key = [NSMutableData dataWithLength:32];
+            NSData *encrypted = [[@"hello" dataUsingEncoding:NSUTF8StringEncoding]
+                                 wh_AES256EncryptWithKey:key];
+            expect(encrypted.length).to.equal(16);
+        });
+
+        it(@"should return something different from the input", ^{
+            NSData *key = [NSMutableData dataWithLength:32];
+            NSData *plainText = [@"1234567890ABCDEF" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *encrypted = [plainText wh_AES256EncryptWithKey:key];
+            expect(encrypted.length).to.equal(16);
+            expect(encrypted).notTo.equal(plainText);
+        });
+    });
+
+    describe(@"wh_AES256DecryptWithKey", ^{
+        it(@"should reverse the effects of wh_AES256EncryptWithKey", ^{
+            NSData *key = [NSMutableData dataWithLength:32];
+            NSData *plainText = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *encrypted = [plainText wh_AES256EncryptWithKey:key];
+            NSData *decrypted = [encrypted wh_AES256DecryptWithKey:key];
+
+            expect(decrypted).to.equal(plainText);
         });
     });
 });

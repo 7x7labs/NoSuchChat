@@ -9,9 +9,15 @@
 #import "WHPGP.h"
 
 #import "NSData+Compression.h"
+#import "NSData+Encryption.h"
 #import "NSData+SHA.h"
 #import "NSData+Signature.h"
 #import "WHKeyPair.h"
+
+#import <CommonCrypto/CommonCrypto.h>
+
+#define kBlockSize  kCCBlockSizeAES128
+#define kKeySize    kCCKeySizeAES256
 
 @implementation WHPGP
 - (NSData *)sign:(NSString *)string withKey:(SecKeyRef)key {
@@ -43,8 +49,10 @@
 
     NSData *signedMessage = [self sign:string withKey:senderKey.privateKey];
     NSData *compressedMessage = [signedMessage wh_compress];
+    NSData *sessionKey = [NSData wh_createSessionKey];
+    NSData *encryptedMessage = [compressedMessage wh_AES256EncryptWithKey:sessionKey];
 
-    return nil;
+    return encryptedMessage;
 }
 
 - (NSString *)decrypt:(NSData *)data
