@@ -20,13 +20,47 @@
 #define kKeySize    kCCKeySizeAES256
 
 @implementation WHPGP
+- (NSData *)packData:(NSArray *)arr {
+    NSUInteger outputLength = [[arr valueForKeyPath:@"@sum.length"] unsignedIntegerValue]
+                               + [arr count] * 4;
+    NSMutableData *ret = [NSMutableData dataWithCapacity:outputLength];
+    uint8_t *dst = [ret mutableBytes];
+    for (NSData *sourceData in arr) {
+        NSUInteger length = [sourceData length];
+        for (size_t i = 0; i < 4; ++i) {
+            *dst++ = length & 0xFF;
+            length >>= 8;
+        }
+        memcpy(dst, [sourceData bytes], [sourceData length]);
+        dst += [sourceData length];
+    }
+    return ret;
+}
+
+- (NSArray *)unpackData:(NSData *)data {
+    NSMutableArray *ret = [NSMutableArray array];
+    const uint8_t *src = [data bytes];
+    const uint8_t *end = src + [data length];
+    while (end - src >= 4) {
+        NSUInteger length = 0;
+        for (size_t i = 0; i < 4; ++i) {
+            length <<= 8;
+            length += *src;
+        }
+
+        if (end - src < length)
+            break;
+        [ret addObject:[NSData dataWithBytes:src length:length]];
+        src += length;
+    }
+    return ret;
+}
+
 - (NSData *)sign:(NSString *)string withKey:(SecKeyRef)key {
     NSData *messageData = [string dataUsingEncoding:NSUTF8StringEncoding];
     NSData *hash = [messageData sha256];
     NSData *signedHash = [hash wh_sign:key];
-    NSMutableData *signedMessage = [NSMutableData dataWithData:messageData];
-    [signedMessage appendData:signedHash];
-    return signedMessage;
+    return [self packData:@[messageData, signedHash]];
 }
 
 - (NSData *)encrypt:(NSString *)string
@@ -52,10 +86,7 @@
     NSData *sessionKey = [NSData wh_createSessionKey];
     NSData *encryptedMessage = [compressedMessage wh_AES256EncryptWithKey:sessionKey];
     NSData *encryptedKey = [sessionKey wh_encryptWithKey:senderKey.privateKey];
-
-    NSMutableData *result = [encryptedKey mutableCopy];
-    [result appendData:encryptedMessage];
-    return result;
+    return [self packData:@[encryptedKey, encryptedMessage]];
 }
 
 - (NSString *)decrypt:(NSData *)data
