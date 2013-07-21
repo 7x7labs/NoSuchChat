@@ -85,7 +85,7 @@
     NSData *compressedMessage = [signedMessage wh_compress];
     NSData *sessionKey = [NSData wh_createSessionKey];
     NSData *encryptedMessage = [compressedMessage wh_AES256EncryptWithKey:sessionKey];
-    NSData *encryptedKey = [sessionKey wh_encryptWithKey:senderKey.privateKey];
+    NSData *encryptedKey = [sessionKey wh_encryptWithKey:receiverKey.publicKey];
     return [self packData:@[encryptedKey, encryptedMessage]];
 }
 
@@ -93,6 +93,15 @@
             senderKey:(WHKeyPair *)senderKey
           receiverKey:(WHKeyPair *)receiverKey
 {
-    return nil;
+    // The reverse of the above process, naturally
+    NSArray *keyAndMessage = [self unpackData:data];
+    NSData *sessionKey = [keyAndMessage[0] wh_decryptWithKey:receiverKey.privateKey];
+    NSData *compressedMessage = [keyAndMessage[1] wh_AES256DecryptWithKey:sessionKey];
+    NSData *signedMessage = [compressedMessage wh_decompress];
+    NSArray *messageAndSignedHash = [self unpackData:signedMessage];
+    NSData *hash = [messageAndSignedHash[0] sha256];
+    if ([hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey])
+        return nil; // maybe report error?
+    return messageAndSignedHash[0];
 }
 @end

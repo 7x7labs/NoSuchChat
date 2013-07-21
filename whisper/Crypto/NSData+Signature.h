@@ -8,5 +8,5 @@
 
 @interface NSData (Signature)
 - (NSData *)wh_sign:(SecKeyRef)key;
-- (BOOL)wh_verify:(SecKeyRef)key;
+- (BOOL)wh_verifySignature:(NSData *)signature withKey:(SecKeyRef)key;
 @end

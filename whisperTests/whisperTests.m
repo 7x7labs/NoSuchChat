@@ -255,6 +255,51 @@ describe(@"WHKeyPair", ^{
 });
 
 describe(@"NSData+Signature", ^{
+    __block SecKeyRef public, private;
+    __block SecKeyRef public2, private2;
+    __block NSData *message, *message2;
+
+    beforeAll(^{
+        NSDictionary *opt = @{
+            (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
+            (__bridge id)kSecAttrKeySizeInBits: @512,
+            (__bridge id)kSecAttrIsPermanent: @NO
+        };
+        SecKeyGeneratePair((__bridge CFDictionaryRef)opt, &public, &private);
+        SecKeyGeneratePair((__bridge CFDictionaryRef)opt, &public2, &private2);
+
+        message = [[@"hello" dataUsingEncoding:NSUTF8StringEncoding] sha256];
+        message2 = [[@"goodbye" dataUsingEncoding:NSUTF8StringEncoding] sha256];
+    });
+
+
+    describe(@"wh_sign", ^{
+        it(@"should return a blob of data", ^{
+            expect([message wh_sign:private]).notTo.beNil();
+        });
+
+        it(@"should return different blobs of data for different keys", ^{
+            expect([message wh_sign:private]).notTo.equal([message wh_sign:private2]);
+        });
+
+        it(@"should return different blobs of data for different messages", ^{
+            expect([message wh_sign:private]).notTo.equal([message2 wh_sign:private]);
+        });
+    });
+
+    describe(@"wh_verifySignature:withKey:", ^{
+        it(@"should return YES for signature with correct key", ^{
+            NSData *sig = [message wh_sign:private];
+            NSData *hash = [message sha256];
+            expect([hash wh_verifySignature:sig withKey:public]).to.beTruthy();
+        });
+
+        it(@"should return NO for signature with wrong key", ^{
+            NSData *sig = [message wh_sign:private];
+            NSData *hash = [message sha256];
+            expect([hash wh_verifySignature:sig withKey:public2]).to.beFalsy();
+        });
+    });
 });
 
 describe(@"NSData+Compression", ^{
@@ -305,8 +350,9 @@ describe(@"NSData+Encryption", ^{
             NSData *key = [NSMutableData dataWithLength:32];
             NSData *plainText = [@"1234567890ABCDEF" dataUsingEncoding:NSUTF8StringEncoding];
             NSData *encrypted = [plainText wh_AES256EncryptWithKey:key];
-            expect(encrypted.length).to.equal(16);
-            expect(encrypted).notTo.equal(plainText);
+            expect([encrypted rangeOfData:plainText
+                                  options:0
+                                    range:NSMakeRange(0, [encrypted length])].length).to.equal(0);
         });
     });
 

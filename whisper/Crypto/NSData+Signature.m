@@ -9,31 +9,29 @@
 #import "NSData+Signature.h"
 
 #import <CommonCrypto/CommonDigest.h>
-#import <EXTScope.h>
 
 @implementation NSData (Signature)
 - (NSData *)wh_sign:(SecKeyRef)key {
-	size_t hashSize = SecKeyGetBlockSize(key);
+    size_t hashSize = SecKeyGetBlockSize(key);
     uint8_t *bytes = malloc(hashSize);
-    @onExit { free(bytes); };
 
-	SecKeyRawSign(key,
-                  kSecPaddingPKCS1SHA256,
-                  [self bytes],
-                  [self length],
-                  bytes,
-                  &hashSize);
+    OSStatus err = SecKeyRawSign(key,
+                                 kSecPaddingPKCS1SHA256,
+                                 [self bytes],
+                                 [self length],
+                                 bytes,
+                                 &hashSize);
+    NSAssert(err == errSecSuccess, @"SecKeyRawSign failed: %d", (int)err);
 
-    return [NSData dataWithBytes:bytes length:hashSize];
+    return [NSData dataWithBytesNoCopy:bytes length:hashSize];
 }
 
-- (BOOL)wh_verify:(SecKeyRef)key {
-    if ([self length] < CC_SHA256_DIGEST_LENGTH) return NO;
-    return noErr == SecKeyRawVerify(key,
-                                    kSecPaddingPKCS1SHA256,
-                                    [self bytes],
-                                    CC_SHA256_DIGEST_LENGTH,
-                                    [self bytes] + CC_SHA256_DIGEST_LENGTH,
-                                    [self length] - CC_SHA256_DIGEST_LENGTH);
+- (BOOL)wh_verifySignature:(NSData *)signature withKey:(SecKeyRef)key {
+    return errSecSuccess == SecKeyRawVerify(key,
+                                            kSecPaddingPKCS1SHA256,
+                                            [self bytes],
+                                            [self length],
+                                            [signature bytes],
+                                            [signature length]);
 }
 @end
