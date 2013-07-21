@@ -51,8 +51,11 @@
     NSData *compressedMessage = [signedMessage wh_compress];
     NSData *sessionKey = [NSData wh_createSessionKey];
     NSData *encryptedMessage = [compressedMessage wh_AES256EncryptWithKey:sessionKey];
+    NSData *encryptedKey = [sessionKey wh_encryptWithKey:senderKey.privateKey];
 
-    return encryptedMessage;
+    NSMutableData *result = [encryptedKey mutableCopy];
+    [result appendData:encryptedMessage];
+    return result;
 }
 
 - (NSString *)decrypt:(NSData *)data

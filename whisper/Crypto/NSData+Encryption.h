@@ -13,4 +13,7 @@
 
 - (NSData *)wh_AES256EncryptWithKey:(NSData *)key;
 - (NSData *)wh_AES256DecryptWithKey:(NSData *)key;
+
+- (NSData *)wh_encryptWithKey:(SecKeyRef)key;
+- (NSData *)wh_decryptWithKey:(SecKeyRef)key;
 @end

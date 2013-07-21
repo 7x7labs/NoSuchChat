@@ -44,4 +44,32 @@
 - (NSData *)wh_AES256DecryptWithKey:(NSData *)key {
     return [self wh_DoEnryptOrDecrypt:kCCDecrypt withKey:key];
 }
+
+- (NSData *)wh_encryptWithKey:(SecKeyRef)key {
+    NSMutableData *data = [NSMutableData dataWithLength:SecKeyGetBlockSize(key)];
+    size_t size = [data length];
+
+	OSStatus err = SecKeyEncrypt(key,
+                                 kSecPaddingNone,
+                                 [self bytes], [self length],
+                                 [data mutableBytes], &size
+                                 );
+    NSAssert(err == errSecSuccess, @"SecKeyEncrypt failed: %d", (int)err);
+    data.length = size;
+    return data;
+}
+
+- (NSData *)wh_decryptWithKey:(SecKeyRef)key {
+    NSMutableData *data = [NSMutableData dataWithLength:SecKeyGetBlockSize(key)];
+    size_t size = [data length];
+
+	OSStatus err = SecKeyDecrypt(key,
+                                 kSecPaddingNone,
+                                 [self bytes], [self length],
+                                 [data mutableBytes], &size
+                                 );
+    NSAssert(err == errSecSuccess, @"SecKeyDecrypt failed: %d", (int)err);
+    data.length = size;
+    return data;
+}
 @end
