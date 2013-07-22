@@ -23,7 +23,7 @@
 - (NSData *)packData:(NSArray *)arr {
     NSUInteger outputLength = [[arr valueForKeyPath:@"@sum.length"] unsignedIntegerValue]
                                + [arr count] * 4;
-    NSMutableData *ret = [NSMutableData dataWithCapacity:outputLength];
+    NSMutableData *ret = [NSMutableData dataWithLength:outputLength];
     uint8_t *dst = [ret mutableBytes];
     for (NSData *sourceData in arr) {
         NSUInteger length = [sourceData length];
@@ -95,10 +95,12 @@
 {
     // The reverse of the above process, naturally
     NSArray *keyAndMessage = [self unpackData:data];
+    if ([keyAndMessage count] != 2) return nil;
     NSData *sessionKey = [keyAndMessage[0] wh_decryptWithKey:receiverKey.privateKey];
     NSData *compressedMessage = [keyAndMessage[1] wh_AES256DecryptWithKey:sessionKey];
     NSData *signedMessage = [compressedMessage wh_decompress];
     NSArray *messageAndSignedHash = [self unpackData:signedMessage];
+    if ([messageAndSignedHash count] != 2) return nil;
     NSData *hash = [messageAndSignedHash[0] sha256];
     if ([hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey])
         return nil; // maybe report error?
