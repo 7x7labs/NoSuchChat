@@ -124,14 +124,17 @@ describe(@"NSData+Signature", ^{
     describe(@"wh_verifySignature:withKey:", ^{
         it(@"should return YES for signature with correct key", ^{
             NSData *sig = [message wh_sign:private];
-            NSData *hash = [message sha256];
-            expect([hash wh_verifySignature:sig withKey:public]).to.beTruthy();
+            expect([message wh_verifySignature:sig withKey:public]).to.beTruthy();
         });
 
         it(@"should return NO for signature with wrong key", ^{
             NSData *sig = [message wh_sign:private];
-            NSData *hash = [message sha256];
-            expect([hash wh_verifySignature:sig withKey:public2]).to.beFalsy();
+            expect([message wh_verifySignature:sig withKey:public2]).to.beFalsy();
+        });
+
+        it(@"should return NO for signature for a different blob", ^{
+            NSData *sig = [message wh_sign:private];
+            expect([message2 wh_verifySignature:sig withKey:public]).to.beFalsy();
         });
     });
 });
