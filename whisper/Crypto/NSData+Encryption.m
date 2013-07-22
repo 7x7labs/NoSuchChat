@@ -19,7 +19,10 @@
 }
 
 - (NSData *)wh_DoEnryptOrDecrypt:(CCOperation)operation withKey:(NSData *)key {
-    NSAssert([key length] == kCCKeySizeAES256, @"Invalid key for AES256");
+    if ([key length] != kCCKeySizeAES256) {
+        NSLog(@"Bad key length for AES-256: %u", (unsigned)[key length]);
+        return nil;
+    }
 
     NSMutableData *encrypted = [NSMutableData dataWithLength:[self length] + kCCBlockSizeAES128];
 

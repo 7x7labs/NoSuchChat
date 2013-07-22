@@ -43,10 +43,8 @@
     const uint8_t *end = src + [data length];
     while (end - src >= 4) {
         NSUInteger length = 0;
-        for (size_t i = 0; i < 4; ++i) {
-            length <<= 8;
-            length += *src;
-        }
+        for (size_t i = 0; i < 4; ++i)
+            length += *src++ << (i * 8);
 
         if (end - src < length)
             break;
@@ -96,14 +94,19 @@
     // The reverse of the above process, naturally
     NSArray *keyAndMessage = [self unpackData:data];
     if ([keyAndMessage count] != 2) return nil;
+
     NSData *sessionKey = [keyAndMessage[0] wh_decryptWithKey:receiverKey.privateKey];
     NSData *compressedMessage = [keyAndMessage[1] wh_AES256DecryptWithKey:sessionKey];
     NSData *signedMessage = [compressedMessage wh_decompress];
     NSArray *messageAndSignedHash = [self unpackData:signedMessage];
     if ([messageAndSignedHash count] != 2) return nil;
+
     NSData *hash = [messageAndSignedHash[0] sha256];
-    if ([hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey])
-        return nil; // maybe report error?
+    if ([hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey]) {
+        NSLog(@"Failed to verify message signature");
+        return nil;
+    }
+
     return messageAndSignedHash[0];
 }
 @end

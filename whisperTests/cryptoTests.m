@@ -188,6 +188,13 @@ describe(@"NSData+Encryption", ^{
                                   options:0
                                     range:NSMakeRange(0, [encrypted length])].length).to.equal(0);
         });
+
+        it(@"should return nil given an invalid key", ^{
+            NSData *key = [NSMutableData dataWithLength:31];
+            NSData *encrypted = [[@"hello" dataUsingEncoding:NSUTF8StringEncoding]
+                                 wh_AES256EncryptWithKey:key];
+            expect(encrypted).to.beNil();
+        });
     });
 
     describe(@"wh_AES256DecryptWithKey", ^{
