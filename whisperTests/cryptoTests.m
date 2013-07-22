@@ -22,13 +22,13 @@ SpecBegin(CryptoTests)
 describe(@"NSData+SHA", ^{
     it(@"should correctly hash the empty string", ^{
         const uint8_t expected[] = "\xe3\xb0\xc4\x42\x98\xfc\x1c\x14\x9a\xfb\xf4\xc8\x99\x6f\xb9\x24\x27\xae\x41\xe4\x64\x9b\x93\x4c\xa4\x95\x99\x1b\x78\x52\xb8\x55";
-        expect([[NSData data] sha256]).to.equal([NSData dataWithBytes:expected length:sizeof(expected)]);
+        expect([[NSData data] sha256]).to.equal([NSData dataWithBytes:expected length:sizeof(expected) - 1]);
     });
 
     it(@"should correctly hash a non-empty string", ^{
         const uint8_t expected[] = "\xd7\xa8\xfb\xb3\x07\xd7\x80\x94\x69\xca\x9a\xbc\xb0\x08\x2e\x4f\x8d\x56\x51\xe4\x6d\x3c\xdb\x76\x2d\x02\xd0\xbf\x37\xc9\xe5\x92";
         NSString *str = @"The quick brown fox jumps over the lazy dog";
-        expect([[NSData dataWithBytes:[str UTF8String] length:[str length]] sha256]).to.equal([NSData dataWithBytes:expected length:sizeof(expected)]);
+        expect([[NSData dataWithBytes:[str UTF8String] length:[str length]] sha256]).to.equal([NSData dataWithBytes:expected length:sizeof(expected) - 1]);
     });
 });
 
