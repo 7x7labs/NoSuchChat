@@ -102,11 +102,12 @@
     if ([messageAndSignedHash count] != 2) return nil;
 
     NSData *hash = [messageAndSignedHash[0] sha256];
-    if ([hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey]) {
+    if (![hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey]) {
         NSLog(@"Failed to verify message signature");
         return nil;
     }
 
-    return messageAndSignedHash[0];
+    return [[NSString alloc] initWithData:messageAndSignedHash[0]
+                                 encoding:NSUTF8StringEncoding];
 }
 @end
