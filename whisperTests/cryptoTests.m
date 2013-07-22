@@ -69,7 +69,7 @@ describe(@"WHKeyPair", ^{
         });
 
         it(@"should return the added key after addKey:fromJid:", ^{
-            NSData *key = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *key = [WHKeyPair createKeyPairForJid:@"bar@localhost"].publicKeyBits;
             [WHKeyPair addKey:key fromJid:@"foo@localhost"];
             WHKeyPair *kp = [WHKeyPair getKeyFromJid:@"foo@localhost"];
             expect(kp).notTo.beNil();
