@@ -71,6 +71,7 @@
 		3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
 		3FA0C622178CFDA1007E6ECC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C620178CFDA1007E6ECC /* InfoPlist.strings */; };
 		3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C623178CFDA1007E6ECC /* whisperTests.m */; };
+		3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA8D01179CD6D20059E61B /* cryptoTests.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +195,7 @@
 		3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "whisperTests-Info.plist"; sourceTree = "<group>"; };
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3FA0C623178CFDA1007E6ECC /* whisperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = whisperTests.m; sourceTree = "<group>"; };
+		3FBA8D01179CD6D20059E61B /* cryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cryptoTests.m; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFED660267384000B03310C3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -527,6 +529,7 @@
 			isa = PBXGroup;
 			children = (
 				3FA0C61E178CFDA1007E6ECC /* Supporting Files */,
+				3FBA8D01179CD6D20059E61B /* cryptoTests.m */,
 				3FA0C623178CFDA1007E6ECC /* whisperTests.m */,
 			);
 			path = whisperTests;
@@ -742,6 +745,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F8D1BA1179598090089B129 /* _Message.m in Sources */,
+				3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */,
 				3F8D1B9D179597FC0089B129 /* Message.m in Sources */,
 				3F8EB18D1796E639009F938D /* WHAccount.m in Sources */,
 				3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */,
