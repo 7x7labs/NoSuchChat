@@ -38,21 +38,20 @@
     self.bonjourServer = [[WHBonjourServer alloc] initWithName:info[@"name"]
                                                           port:self.keyExchangeServer.port];
 
+    RACSignal *outgoingClients = [self.bonjourServerBrowser.netServices
+        flattenMap:^(NSNetService *service) {
+            return [[WHKeyExchangeClient alloc] initWithDomain:[service domain]
+                                                          port:[service port]
+                                                     introData:self.introData].peer;
+        }];
+
     @weakify(self);
-    void (^addPeer)(WHKeyExchangePeer *peer) = ^(WHKeyExchangePeer *peer) {
-        @strongify(self);
-        [self.peers addObject:peer];
-    };
-
-    [self.keyExchangeServer.clients subscribeNext:addPeer];
-
-    [self.bonjourServerBrowser.netServices subscribeNext:^(NSNetService *service) {
-        WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
-                                       initWithDomain:[service domain]
-                                       port:[service port]
-                                       introData:self.introData];
-        [client.peer subscribeNext:addPeer];
-    }];
+    [[RACSignal
+      merge:@[outgoingClients, self.keyExchangeServer.clients]]
+      subscribeNext:^(WHKeyExchangePeer *peer) {
+          @strongify(self);
+          [self.peers addObject:peer];
+      }];
 
     return self;
 }

@@ -19,4 +19,5 @@
 
 @property (nonatomic, readonly) RACSubject *peer;
 @property (nonatomic, readonly) RACSubject *publicKey;
+@property (nonatomic, readonly) NSData *introData;
 @end

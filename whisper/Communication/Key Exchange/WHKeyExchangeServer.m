@@ -41,6 +41,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [self.clients sendCompleted];
+}
+
 # pragma mark - GCDAsyncSocket delegate
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
     [self.clients sendNext:[[WHKeyExchangeClient alloc] initWithSocket:newSocket

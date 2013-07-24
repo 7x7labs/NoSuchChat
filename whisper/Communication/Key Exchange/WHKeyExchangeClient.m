@@ -14,6 +14,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHKeyExchangeClient ()
+@property (nonatomic, strong) dispatch_queue_t queue;
 @property (nonatomic, strong) GCDAsyncSocket *socket;
 @property (nonatomic, strong) NSData *introData;
 @property (nonatomic, strong) RACReplaySubject *peer;
@@ -33,7 +34,9 @@
 - (instancetype)initWithSocket:(GCDAsyncSocket *)socket introData:(NSData *)introData {
     self = [self init];
     if (self) {
+        self.introData = introData;
         self.socket = socket;
+        self.socket.delegate = self;
         [self.socket writeData:introData withTimeout:-1 tag:0];
         [self read];
     }
@@ -47,13 +50,15 @@
     self = [self init];
     if (!self) return self;
 
-    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:nil];
+    self.introData = introData;
+    self.queue = dispatch_queue_create("com.7x7labs.whisper.keyex.client", NULL);
+    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:self.queue];
 
     NSError *error;
     if (![self.socket connectToHost:domain onPort:port error:&error])
         [self.peer sendError:error];
 
-    [self.socket writeData:introData withTimeout:-1 tag:0];
+    [self writeData:introData];
     [self read];
 
     return self;
@@ -65,11 +70,14 @@
                             tag:0];
 }
 
+- (void)writeData:(NSData *)data {
+    [self.socket writeData:data withTimeout:-1 tag:0];
+    [self.socket writeData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
+}
+
 - (void)sendKey:(NSData *)key {
-    [self.socket writeData:[NSJSONSerialization dataWithJSONObject:@{@"key": key}
-                                                           options:0 error:nil]
-               withTimeout:-1
-                       tag:0];
+    [self writeData:[NSJSONSerialization dataWithJSONObject:@{@"key": key}
+                                                    options:0 error:nil]];
 }
 
 # pragma mark - GCDAsyncSocket delegate
