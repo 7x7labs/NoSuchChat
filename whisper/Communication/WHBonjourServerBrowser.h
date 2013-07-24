@@ -11,5 +11,5 @@
 @class RACSignal;
 
 @interface WHBonjourServerBrowser : NSObject
-- (RACSignal *)domainNames;
+- (RACSignal *)netServices;
 @end

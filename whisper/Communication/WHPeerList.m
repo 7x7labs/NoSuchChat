@@ -44,8 +44,10 @@
 
     [self.keyExchangeServer.clients subscribeNext:addPeer];
 
-    [self.bonjourServerBrowser.domainNames subscribeNext:^(NSString *domain) {
-        WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc] initWithDomain:domain port:0];
+    [self.bonjourServerBrowser.netServices subscribeNext:^(NSNetService *service) {
+        WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
+                                       initWithDomain:[service domain]
+                                       port:[service port]];
         [client.peer subscribeNext:addPeer];
     }];
 

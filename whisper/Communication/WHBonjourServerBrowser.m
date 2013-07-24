@@ -11,7 +11,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHBonjourServerBrowser () <NSNetServiceBrowserDelegate>
-@property (nonatomic, strong) RACSubject *domains;
+@property (nonatomic, strong) RACSubject *services;
 @property (nonatomic, strong) NSNetServiceBrowser *serviceBrowser;
 @end
 
@@ -20,7 +20,7 @@
     self = [super init];
     if (!self) return self;
 
-    self.domains = [RACSubject subject];
+    self.services = [RACSubject subject];
 
     self.serviceBrowser = [NSNetServiceBrowser new];
     self.serviceBrowser.delegate = self;
@@ -32,20 +32,20 @@
     [self.serviceBrowser stop];
 }
 
-- (RACSignal *)domainNames {
+- (RACSignal *)netServices {
     [self.serviceBrowser searchForServicesOfType:@"_whisper._tcp." inDomain:@"local."];
-    return self.domains;
+    return self.services;
 }
 
 #pragma mark -
 #pragma mark NSNetServiceBrowserDelegate
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser
-            didFindDomain:(NSString *)domainName
-               moreComing:(BOOL)moreDomainsComing
+           didFindService:(NSNetService *)netService
+               moreComing:(BOOL)moreServicesComing
 {
-    [self.domains sendNext:domainName];
-    if (!moreDomainsComing)
-        [self.domains sendCompleted];
+    [self.services sendNext:netService];
+    if (!moreServicesComing)
+        [self.services sendCompleted];
 }
 
 @end
