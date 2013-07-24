@@ -14,6 +14,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHKeyExchangeServer ()
+@property (nonatomic, strong) dispatch_queue_t queue;
 @property (nonatomic, strong) GCDAsyncSocket *socket;
 @property (nonatomic) uint16_t port;
 @property (nonatomic, strong) RACSubject *clients;
@@ -25,8 +26,8 @@
     self = [super init];
     if (!self) return self;
 
-    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:nil];
-    RACBind(self.port) = RACBind(self.socket.localPort);
+    self.queue = dispatch_queue_create("com.7x7labs.whisper.keyex.server", NULL);
+    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:self.queue];
     self.clients = [RACReplaySubject subject];
     self.introData = introData;
 
@@ -35,6 +36,7 @@
         NSLog(@"Error listening on socket: %@", error);
         return nil;
     }
+    self.port = [self.socket localPort];
 
     return self;
 }

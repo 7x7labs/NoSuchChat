@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F26B4AA17A023460075E1DB /* keyExchangeTests.m */; };
 		3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */; };
 		3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
 		3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
@@ -92,6 +93,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
 		3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Compression.h"; path = "Crypto/NSData+Compression.h"; sourceTree = "<group>"; };
 		3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Compression.m"; path = "Crypto/NSData+Compression.m"; sourceTree = "<group>"; };
 		3F5FCDA51799A1F40075D3F0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -576,6 +578,7 @@
 			children = (
 				3FA0C61E178CFDA1007E6ECC /* Supporting Files */,
 				3FBA8D01179CD6D20059E61B /* cryptoTests.m */,
+				3F26B4AA17A023460075E1DB /* keyExchangeTests.m */,
 				3FA0C623178CFDA1007E6ECC /* whisperTests.m */,
 			);
 			path = whisperTests;
@@ -798,6 +801,7 @@
 			files = (
 				3F8D1BA1179598090089B129 /* _Message.m in Sources */,
 				3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */,
+				3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */,
 				3F8D1B9D179597FC0089B129 /* Message.m in Sources */,
 				3F8EB18D1796E639009F938D /* WHAccount.m in Sources */,
 				3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */,

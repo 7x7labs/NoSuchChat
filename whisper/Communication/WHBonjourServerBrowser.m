@@ -24,6 +24,8 @@
 
     self.serviceBrowser = [NSNetServiceBrowser new];
     self.serviceBrowser.delegate = self;
+    [self.serviceBrowser scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+
 
     return self;
 }
@@ -45,6 +47,20 @@
                moreComing:(BOOL)moreServicesComing
 {
     [self.services sendNext:netService];
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser
+             didNotSearch:(NSDictionary *)errorInfo
+{
+    NSLog(@"did not search: %@", errorInfo);
+}
+
+- (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser {
+    NSLog(@"will search");
+}
+
+- (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser {
+    NSLog(@"stopped search");
 }
 
 @end
