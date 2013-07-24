@@ -11,14 +11,7 @@ PODS:
   - libextobjc/EXTScope (0.2.5):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.2.5)
-  - NetPGP (20101107):
-    - OpenSSL
   - OCMock (2.2)
-  - OpenSSL (1.0.1e):
-    - OpenSSL/ssl
-  - OpenSSL/crypto (1.0.1e)
-  - OpenSSL/ssl (1.0.1e):
-    - OpenSSL/crypto
   - ReactiveCocoa (1.9.5):
     - ReactiveCocoa/Core
     - ReactiveCocoa/RACExtensions
@@ -37,18 +30,10 @@ DEPENDENCIES:
   - CocoaLumberjack
   - Expecta
   - KissXML
-  - NetPGP (from `podspecs/NetPGP.podspec`)
   - OCMock
-  - OpenSSL (from `podspecs/OpenSSL.podspec`)
   - ReactiveCocoa
   - Specta
   - SSKeychain
-
-EXTERNAL SOURCES:
-  NetPGP:
-    :podspec: podspecs/NetPGP.podspec
-  OpenSSL:
-    :podspec: podspecs/OpenSSL.podspec
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 6e59036ecae1e93d6c78f5766149983ceac558ba
@@ -57,9 +42,7 @@ SPEC CHECKSUMS:
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   KissXML: 4c66b6f39ef49c23e6bb8d335b94136f12b1b615
   libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
-  NetPGP: 1d90641008b646771dd7349b70d05c40f44fdf6a
   OCMock: 5300ae6b75398fc3ae6cbf9102191333d35f6852
-  OpenSSL: 0850a065f1d66877ad738baa83918b4e04a2257d
   ReactiveCocoa: 591f49bb58dc2756e4876d3c1c3df55730a05505
   Specta: 27e3e2801be07596d49e04b5a561fb1a8ecc21d1
   SSKeychain: 54b6daee1d95af968beebef07522b583ff9a809c
