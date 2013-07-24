@@ -15,6 +15,7 @@
 
 @interface WHKeyExchangeClient ()
 @property (nonatomic, strong) GCDAsyncSocket *socket;
+@property (nonatomic, strong) NSData *introData;
 @property (nonatomic, strong) RACReplaySubject *peer;
 @property (nonatomic, strong) RACReplaySubject *publicKey;
 @end
@@ -29,16 +30,20 @@
     return self;
 }
 
-- (instancetype)initWithSocket:(GCDAsyncSocket *)socket {
+- (instancetype)initWithSocket:(GCDAsyncSocket *)socket introData:(NSData *)introData {
     self = [self init];
     if (self) {
         self.socket = socket;
+        [self.socket writeData:introData withTimeout:-1 tag:0];
         [self read];
     }
     return self;
 }
 
-- (instancetype)initWithDomain:(NSString *)domain port:(uint16_t)port {
+- (instancetype)initWithDomain:(NSString *)domain
+                          port:(uint16_t)port
+                     introData:(NSData *)introData
+{
     self = [self init];
     if (!self) return self;
 
@@ -47,6 +52,8 @@
     NSError *error;
     if (![self.socket connectToHost:domain onPort:port error:&error])
         [self.peer sendError:error];
+
+    [self.socket writeData:introData withTimeout:-1 tag:0];
     [self read];
 
     return self;

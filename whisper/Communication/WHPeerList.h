@@ -10,4 +10,6 @@
 
 @interface WHPeerList : NSObject
 @property (nonatomic, readonly) NSMutableArray *peers;
+
+- (instancetype)initWithInfo:(NSDictionary *)info;
 @end

@@ -10,8 +10,10 @@
 @class RACSubject;
 
 @interface WHKeyExchangeClient : NSObject
-- (instancetype)initWithDomain:(NSString *)domain port:(uint16_t)port;
-- (instancetype)initWithSocket:(GCDAsyncSocket *)socket;
+- (instancetype)initWithDomain:(NSString *)domain
+                          port:(uint16_t)port
+                     introData:(NSData *)introData;
+- (instancetype)initWithSocket:(GCDAsyncSocket *)socket introData:(NSData *)introData;
 
 - (void)sendKey:(NSData *)key;
 

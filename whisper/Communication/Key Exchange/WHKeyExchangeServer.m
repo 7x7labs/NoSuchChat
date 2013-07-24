@@ -14,21 +14,21 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHKeyExchangeServer ()
-@property (nonatomic, strong) dispatch_queue_t queue;
 @property (nonatomic, strong) GCDAsyncSocket *socket;
 @property (nonatomic) uint16_t port;
 @property (nonatomic, strong) RACSubject *clients;
+@property (nonatomic, strong) NSData *introData;
 @end
 
 @implementation WHKeyExchangeServer
-- (instancetype)init {
+- (instancetype)initWithIntroData:(NSData *)introData {
     self = [super init];
     if (!self) return self;
 
-    self.queue = dispatch_queue_create("com.7x7labs.whisper.keyex.server", NULL);
-    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:self.queue];
+    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:nil];
     RACBind(self.port) = RACBind(self.socket.localPort);
     self.clients = [RACReplaySubject subject];
+    self.introData = introData;
 
     NSError *error;
     if (![self.socket acceptOnPort:0 error:&error]) {
@@ -41,6 +41,7 @@
 
 # pragma mark - GCDAsyncSocket delegate
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
-    [self.clients sendNext:[[WHKeyExchangeClient alloc] initWithSocket:newSocket]];
+    [self.clients sendNext:[[WHKeyExchangeClient alloc] initWithSocket:newSocket
+                                                             introData:self.introData]];
 }
 @end

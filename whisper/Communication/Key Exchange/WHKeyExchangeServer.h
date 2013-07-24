@@ -11,4 +11,6 @@
 @interface WHKeyExchangeServer : NSObject
 @property (nonatomic, readonly) uint16_t port;
 @property (nonatomic, readonly) RACSubject *clients;
+
+- (instancetype)initWithIntroData:(NSData *)introData;
 @end

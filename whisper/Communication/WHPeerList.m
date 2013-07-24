@@ -20,20 +20,22 @@
 @interface WHPeerList ()
 @property (nonatomic, strong) NSMutableArray *peers;
 
+@property (nonatomic, strong) NSData *introData;
 @property (nonatomic, strong) WHBonjourServer *bonjourServer;
 @property (nonatomic, strong) WHBonjourServerBrowser *bonjourServerBrowser;
 @property (nonatomic, strong) WHKeyExchangeServer *keyExchangeServer;
 @end
 
 @implementation WHPeerList
-- (instancetype)init {
+- (instancetype)initWithInfo:(NSDictionary *)info {
     self = [super init];
     if (!self) return self;
 
     self.peers = [NSMutableArray array];
+    self.introData = [NSJSONSerialization dataWithJSONObject:info options:0 error:nil];
     self.bonjourServerBrowser = [WHBonjourServerBrowser new];
-    self.keyExchangeServer = [WHKeyExchangeServer new];
-    self.bonjourServer = [[WHBonjourServer alloc] initWithName:@"???"
+    self.keyExchangeServer = [[WHKeyExchangeServer alloc] initWithIntroData:self.introData];
+    self.bonjourServer = [[WHBonjourServer alloc] initWithName:info[@"name"]
                                                           port:self.keyExchangeServer.port];
 
     @weakify(self);
@@ -47,7 +49,8 @@
     [self.bonjourServerBrowser.netServices subscribeNext:^(NSNetService *service) {
         WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
                                        initWithDomain:[service domain]
-                                       port:[service port]];
+                                       port:[service port]
+                                       introData:self.introData];
         [client.peer subscribeNext:addPeer];
     }];
 
