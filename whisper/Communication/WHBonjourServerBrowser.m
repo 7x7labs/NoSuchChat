@@ -30,6 +30,7 @@
 
 - (void)dealloc {
     [self.serviceBrowser stop];
+    [self.services sendCompleted];
 }
 
 - (RACSignal *)netServices {
@@ -44,8 +45,6 @@
                moreComing:(BOOL)moreServicesComing
 {
     [self.services sendNext:netService];
-    if (!moreServicesComing)
-        [self.services sendCompleted];
 }
 
 @end
