@@ -82,6 +82,12 @@
 
 # pragma mark - GCDAsyncSocket delegate
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
+    if (![data length]) return;
+
+    // Remove NUL terminator if present
+    if (!*((uint8_t *)[data bytes] + [data length] - 1))
+        data = [data subdataWithRange:NSMakeRange(0, [data length] - 1)];
+
     NSError *error;
     NSDictionary *message = [NSJSONSerialization JSONObjectWithData:data
                                                             options:0

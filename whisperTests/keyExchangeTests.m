@@ -107,7 +107,7 @@ describe(@"Key Exchange", ^{
             }];
         });
 
-        xit(@"should create a peer upon connecting", ^AsyncBlock{
+        it(@"should create a peer upon connecting", ^AsyncBlock{
             WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:contactData1];
             WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
                                            initWithDomain:@"localhost"
@@ -116,6 +116,8 @@ describe(@"Key Exchange", ^{
             [client.peer
              subscribeNext:^(WHKeyExchangePeer *peer) {
                  expect(peer.name).to.equal(@"contact name");
+                 (void)server; // Capture in the block so it stays alive long enough
+                 (void)client;
                  done();
              }
              error:^(NSError *error) {
