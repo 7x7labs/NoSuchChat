@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) WHKeyExchangeClient *client;
 @property (nonatomic) BOOL wantsToConnect;
+@property (nonatomic) BOOL keySent;
+@property (nonatomic, strong) RACSubject *connectComplete;
 @end
 
 @implementation WHKeyExchangePeer
@@ -32,10 +34,13 @@
     self.name = name;
     self.jid = jid;
     self.client = client;
+    self.connectComplete = [RACSubject subject];
 
     [client.publicKey subscribeNext:^(NSData *key) {
         [WHKeyPair addKey:key fromJid:self.jid];
         self.wantsToConnect = YES;
+        if (self.keySent)
+            [self.connectComplete sendCompleted];
     } error:^(NSError *error) {
         NSLog(@"error: %@", error);
     }];
@@ -46,5 +51,12 @@
 - (void)connect {
     WHKeyPair *kp = [WHKeyPair createKeyPairForJid:self.jid];
     [self.client sendKey:kp.publicKeyBits];
+    if (self.wantsToConnect)
+        [self.connectComplete sendCompleted];
+    self.keySent = YES;
+}
+
+- (RACSignal *)connected {
+    return self.connectComplete;
 }
 @end

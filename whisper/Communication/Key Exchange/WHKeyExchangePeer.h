@@ -16,6 +16,7 @@
 @property (nonatomic, readonly) BOOL wantsToConnect;
 
 - (void)connect;
+- (RACSignal *)connected;
 
 - (instancetype)initWithName:(NSString *)name
                          jid:(NSString *)jid
