@@ -37,7 +37,7 @@
         self.introData = introData;
         self.socket = socket;
         self.socket.delegate = self;
-        [self.socket writeData:introData withTimeout:-1 tag:0];
+        [self writeData:introData];
         [self read];
     }
     return self;

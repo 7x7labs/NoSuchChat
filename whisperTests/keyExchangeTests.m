@@ -80,19 +80,23 @@ describe(@"Key Exchange", ^{
         NSData *contactData2 = [NSJSONSerialization dataWithJSONObject:contactInfo2
                                                                options:0 error:nil];
 
-        it(@"should write introData on creation", ^{
+        id (^mock)(NSData *) = ^(NSData *expectedData){
             id mockSocket = [OCMockObject mockForClass:[GCDAsyncSocket class]];
-            [[mockSocket expect] writeData:contactData1 withTimeout:-1 tag:0];
+            [[mockSocket expect] writeData:expectedData withTimeout:-1 tag:0];
             [[mockSocket expect] writeData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
             [[mockSocket stub] readDataToData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
+            [[mockSocket stub] setDelegate:OCMOCK_ANY];
+            return mockSocket;
+        };
+
+        it(@"should write introData on creation", ^{
+            id mockSocket = mock(contactData1);
             (void)[[WHKeyExchangeClient alloc] initWithSocket:mockSocket introData:contactData1];
             [mockSocket verify];
         });
 
         it(@"should create a peer when fed introData", ^AsyncBlock{
-            id mockSocket = [OCMockObject mockForClass:[GCDAsyncSocket class]];
-            [[mockSocket stub] writeData:contactData1 withTimeout:-1 tag:0];
-            [[mockSocket stub] readDataToData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
+            id mockSocket = mock(contactData1);
             WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
                                            initWithSocket:mockSocket
                                            introData:contactData1];
@@ -103,7 +107,7 @@ describe(@"Key Exchange", ^{
             }];
         });
 
-        it(@"should create a peer upon connecting", ^AsyncBlock{
+        xit(@"should create a peer upon connecting", ^AsyncBlock{
             WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:contactData1];
             WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
                                            initWithDomain:@"localhost"
