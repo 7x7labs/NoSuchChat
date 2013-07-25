@@ -10,6 +10,7 @@
 
 #import "WHKeyExchangePeer.h"
 
+#import "NSData+XMPP.h"
 #import <CocoaAsyncSocket/GCDAsyncSocket.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -76,7 +77,7 @@
 }
 
 - (void)sendKey:(NSData *)key {
-    [self writeData:[NSJSONSerialization dataWithJSONObject:@{@"key": key}
+    [self writeData:[NSJSONSerialization dataWithJSONObject:@{@"key": [key xmpp_base64Encoded]}
                                                     options:0 error:nil]];
 }
 
@@ -107,7 +108,9 @@
                                                                 jid:info[@"jid"]
                                                              client:self]];
     else if ((info = message[@"key"]))
-        [self.publicKey sendNext:info];
+        [self.publicKey sendNext:[[(NSString *)info dataUsingEncoding:NSUTF8StringEncoding]
+                                  xmpp_base64Decoded]];
+    [self read];
 }
 
 @end

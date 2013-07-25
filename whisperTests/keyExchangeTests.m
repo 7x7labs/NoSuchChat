@@ -11,6 +11,7 @@
 #import "WHKeyExchangeClient.h"
 #import "WHKeyExchangePeer.h"
 #import "WHKeyExchangeServer.h"
+#import "WHKeyPair.h"
 #import "WHPeerList.h"
 
 #import "Specta.h"
@@ -37,6 +38,15 @@ describe(@"Bonjour", ^{
 });
 
 describe(@"Key Exchange", ^{
+    NSDictionary *contactInfo1 = @{@"info": @{@"name": @"contact name",
+                                              @"jid": @"foo@localhost"}};
+    NSDictionary *contactInfo2 = @{@"info": @{@"name": @"second contact name",
+                                              @"jid": @"bar@localhost"}};
+    NSData *contactData1 = [NSJSONSerialization dataWithJSONObject:contactInfo1
+                                                           options:0 error:nil];
+    NSData *contactData2 = [NSJSONSerialization dataWithJSONObject:contactInfo2
+                                                           options:0 error:nil];
+
     describe(@"WHKeyExchangeServer", ^{
         it(@"should automatically pick a port", ^{
             WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:[NSData data]];
@@ -70,17 +80,9 @@ describe(@"Key Exchange", ^{
             expect([[server.clients first] introData]).to.equal(data);
         });
     });
-    describe(@"WHKeyExchangeClient", ^{
-        NSDictionary *contactInfo1 = @{@"info": @{@"name": @"contact name",
-                                                  @"jid": @"foo@localhost"}};
-        NSDictionary *contactInfo2 = @{@"info": @{@"name": @"second contact name",
-                                                  @"jid": @"bar@localhost"}};
-        NSData *contactData1 = [NSJSONSerialization dataWithJSONObject:contactInfo1
-                                                               options:0 error:nil];
-        NSData *contactData2 = [NSJSONSerialization dataWithJSONObject:contactInfo2
-                                                               options:0 error:nil];
 
-        id (^mock)(NSData *) = ^(NSData *expectedData){
+    describe(@"WHKeyExchangeClient", ^{
+        id (^mock)(NSData *) = ^(NSData *expectedData) {
             id mockSocket = [OCMockObject mockForClass:[GCDAsyncSocket class]];
             [[mockSocket expect] writeData:expectedData withTimeout:-1 tag:0];
             [[mockSocket expect] writeData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
@@ -124,6 +126,53 @@ describe(@"Key Exchange", ^{
                  expect(error).to.beNil();
                  done();
              }];
+        });
+    });
+
+    describe(@"WHKeyExchangePeer", ^{
+        __block WHKeyExchangeServer *server;
+        __block WHKeyExchangeClient *client1, *client2;
+        __block WHKeyExchangePeer *peer1, *peer2;
+
+        beforeEach(^{
+            server = [[WHKeyExchangeServer alloc] initWithIntroData:contactData1];
+            client1 = [[WHKeyExchangeClient alloc] initWithDomain:@"localhost"
+                                                             port:server.port
+                                                        introData:contactData2];
+            client2 = [server.clients first];
+            peer1 = [client1.peer first];
+            peer2 = [client2.peer first];
+        });
+
+        afterEach(^{
+            SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+        });
+
+        describe(@"wantsToConnect", ^{
+            it(@"should initially be false", ^{
+                expect(peer1.wantsToConnect).to.beFalsy();
+            });
+
+            it(@"should get set to true when a public key is received", ^{
+                [client1.publicKey sendNext:[NSData data]];
+                expect(peer1.wantsToConnect).to.beTruthy();
+            });
+        });
+
+        it(@"should create a keypair when receiving a key", ^{
+            WHKeyPair *key = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            [client1.publicKey sendNext:key.publicKeyBits];
+
+            expect([WHKeyPair getKeyFromJid:@"foo@localhost"]).notTo.beNil();
+        });
+
+        it(@"should send a new key over the socket when connect is called", ^AsyncBlock{
+            [RACAble(peer2, wantsToConnect) subscribeNext:^(id _) {
+                expect([WHKeyPair getKeyFromJid:@"foo@localhost"]).notTo.beNil();
+                done();
+            }];
+
+            [peer1 connect];
         });
     });
 });
