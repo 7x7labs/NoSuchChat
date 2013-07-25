@@ -31,7 +31,8 @@
 
     RAC(self.messages) = [RACAbleWithStart(self.contact, messages)
                           map:^id(id value) {
-                            return [value sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"sent" ascending:NO]]];
+                            return [value sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc]
+                                                                         initWithKey:@"sent" ascending:NO]]];
                           }];
     [RACAble(self.messages) subscribeNext:^(id _) {
         @strongify(self)

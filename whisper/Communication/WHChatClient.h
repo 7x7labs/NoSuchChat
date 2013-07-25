@@ -20,4 +20,5 @@
 - (void)sendMessage:(NSString *)body to:(Contact *)contact;
 
 @property (nonatomic, readonly) NSArray *contacts;
+@property (nonatomic, readonly) NSString *jid;
 @end

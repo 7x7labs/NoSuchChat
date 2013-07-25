@@ -9,6 +9,7 @@
 #import "WHAddContactViewController.h"
 
 #import "Contact.h"
+#import "WHChatClient.h"
 #import "WHKeyExchangePeer.h"
 #import "WHPeerList.h"
 
@@ -30,7 +31,7 @@
     self.possibleContacts.delegate = self;
 
     self.peerList = [[WHPeerList alloc] initWithInfo:@{@"name": @"Display name",
-                                                       @"jid": @"jid@localhost"}];
+                                                       @"jid": self.client.jid}];
 
     @weakify(self)
     [RACAble(self.peerList, peers) subscribeNext:^(id _) {

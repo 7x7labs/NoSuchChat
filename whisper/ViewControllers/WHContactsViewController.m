@@ -39,9 +39,11 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"show chat"])
-        ((WHChatViewController *)segue.destinationViewController).contact = self.sequeContact;
-    [segue.destinationViewController setClient:self.client];
+    id dest = segue.destinationViewController;
+    if ([dest respondsToSelector:@selector(setContact:)])
+        [dest setContact:self.sequeContact];
+    if ([dest respondsToSelector:@selector(setClient:)])
+        [dest setClient:self.client];
 }
 
 #pragma mark - Table view data source

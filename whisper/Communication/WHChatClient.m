@@ -18,6 +18,7 @@
 @interface WHChatClient ()
 @property (nonatomic, strong) NSObject<WHXMPPStream> *xmpp;
 @property (nonatomic, strong) NSArray *contacts;
+@property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) RACSubject *cancelSignal;
 @end
 
@@ -40,9 +41,10 @@
     self = [super init];
     if (!self) return self;
 
+    WHAccount *account = [WHAccount get];
+    self.jid = account.jid;
     self.xmpp = xmpp;
 
-    WHAccount *account = [WHAccount get];
     RACSignal *connectSignal = [self.xmpp connectToServer:host
                                                      port:port
                                                  username:account.jid
@@ -62,7 +64,7 @@
            object:nil]
           takeUntil:self.cancelSignal]
           map:^(NSNotification *_) { return [Contact all]; }]
-         startWith:[Contact all]];
+          startWith:[Contact all]];
 
     @weakify(self)
     [self.xmpp.messages subscribeNext:^(id message) {
