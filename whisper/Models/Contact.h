@@ -8,10 +8,15 @@
 
 #import "_Contact.h"
 
+@class WHKeyPair;
+
 @interface Contact : _Contact
 + (NSArray *)all;
 + (Contact *)createWithName:(NSString *)name jid:(NSString *)jid;
 
 - (void)addSentMessage:(NSString *)text date:(NSDate *)date;
 - (void)addReceivedMessage:(NSString *)text date:(NSDate *)date;
+
+@property (nonatomic, readonly) WHKeyPair *ownKey;
+@property (nonatomic, readonly) WHKeyPair *contactKey;
 @end

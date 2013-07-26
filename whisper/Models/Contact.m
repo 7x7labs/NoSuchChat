@@ -10,10 +10,17 @@
 
 #import "Message.h"
 #import "WHCoreData.h"
+#import "WHKeyPair.h"
 
 static NSManagedObjectContext *moc() {
     return [WHCoreData managedObjectContext];
 }
+
+@interface Contact () {
+    WHKeyPair *_ownKey;
+    WHKeyPair *_contactKey;
+}
+@end
 
 @implementation Contact
 + (NSArray *)all {
@@ -73,6 +80,18 @@ static NSManagedObjectContext *moc() {
     NSError *error;
     if (![moc() save:&error])
         NSLog(@"Error saving message: %@", error);
+}
+
+- (WHKeyPair *)ownKey {
+    if (!_ownKey)
+        _ownKey = [WHKeyPair getOwnKeyPairForJid:self.jid];
+    return _ownKey;
+}
+
+- (WHKeyPair *)contactKey {
+    if (!_contactKey)
+        _contactKey = [WHKeyPair getKeyFromJid:self.jid];
+    return _contactKey;
 }
 
 @end
