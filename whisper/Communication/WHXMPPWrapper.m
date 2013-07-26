@@ -44,6 +44,7 @@
     self.stream.hostName = server;
     self.stream.hostPort = port;
     self.stream.myJID = [XMPPJID jidWithString:username];
+    self.stream.enableBackgroundingOnSocket = YES;
 
     // Should dump this off on a queue rather than running synchronously
 	NSError *error = nil;
