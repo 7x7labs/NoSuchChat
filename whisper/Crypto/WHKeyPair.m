@@ -89,7 +89,7 @@ static NSData *tag(NSString *jid, NSString *type) {
 + (WHKeyPair *)getOwnKeyPairForJid:(NSString *)jid {
     WHKeyPair *keyPair = [WHKeyPair new];
     [keyPair getKey:&keyPair->_publicKey forJid:jid ofType:@"_public"];
-    [keyPair getKey:&keyPair->_privateKey forJid:jid ofType:@"_public"];
+    [keyPair getKey:&keyPair->_privateKey forJid:jid ofType:@"_private"];
     if (keyPair.publicKey && keyPair.privateKey) {
         [keyPair getKeyBitsForJid:jid ofType:@"_public"];
         return keyPair;

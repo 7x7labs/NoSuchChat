@@ -50,6 +50,12 @@ describe(@"WHKeyPair", ^{
             kp = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
             expect(kp.publicKeyBits).notTo.equal(initialBits);
         });
+
+        it(@"should generate a key pair which can be used for signing", ^{
+            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            NSData *data = [[@"hello" dataUsingEncoding:NSUTF8StringEncoding] sha256];
+            expect([data wh_sign:kp.privateKey]).notTo.beNil();
+        });
     });
 
     describe(@"getOwnKeyPairForJid", ^{
@@ -60,6 +66,13 @@ describe(@"WHKeyPair", ^{
         it(@"should return a key pair after a call to createKeyPairForJid:", ^{
             [WHKeyPair createKeyPairForJid:@"foo@localhost"];
             expect([WHKeyPair getOwnKeyPairForJid:@"foo@localhost"]).notTo.beNil();
+        });
+
+        it(@"should be possible to sign with the returned key", ^{
+            [WHKeyPair createKeyPairForJid:@"foo@localhost"];
+            WHKeyPair *kp = [WHKeyPair getOwnKeyPairForJid:@"foo@localhost"];
+            NSData *data = [[@"hello" dataUsingEncoding:NSUTF8StringEncoding] sha256];
+            expect([data wh_sign:kp.privateKey]).notTo.beNil();
         });
     });
 
