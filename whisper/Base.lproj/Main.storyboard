@@ -138,6 +138,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="displayName" destination="t0Z-rt-3We" id="E1i-B3-rH6"/>
+                        <outlet property="saveButton" destination="MME-5j-EnX" id="d9O-w9-n5B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t63-Z0-nyQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

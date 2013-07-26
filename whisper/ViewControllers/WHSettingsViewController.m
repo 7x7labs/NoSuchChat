@@ -8,19 +8,29 @@
 
 #import "WHSettingsViewController.h"
 
-#import "WHChatClient.h"
+#import "WHSettingsViewModel.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHSettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *displayName;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+
+@property (nonatomic, strong) WHSettingsViewModel *viewModel;
 @end
 
 @implementation WHSettingsViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    RAC(self.displayName.text) = RACAbleWithStart(self.client.displayName);
-    RAC(self.client.displayName) = self.displayName.rac_textSignal;
+    self.viewModel = [[WHSettingsViewModel alloc] initWithClient:self.client];
+
+    RAC(self.displayName.text) = RACAbleWithStart(self.viewModel.displayName);
+    RAC(self.viewModel.displayName) = self.displayName.rac_textSignal;
+
+    self.saveButton.rac_command = [RACCommand commandWithCanExecuteSignal:RACAbleWithStart(self.viewModel.valid)];
+    [self.saveButton.rac_command subscribeNext:^(id _) {
+        [self.viewModel save];
+    }];
 }
 @end
