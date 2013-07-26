@@ -43,8 +43,14 @@
 
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
-    self.displayName = @"Placeholder";
     self.xmpp = xmpp;
+
+    self.displayName = [[NSUserDefaults standardUserDefaults] stringForKey:@"displayName"];
+    if (!self.displayName)
+        self.displayName = @"Display Name";
+    [RACAble(self, displayName) subscribeNext:^(NSString *displayName) {
+        [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:@"displayName"];
+    }];
 
     RACSignal *connectSignal = [self.xmpp connectToServer:host
                                                      port:port
