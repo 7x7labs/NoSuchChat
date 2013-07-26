@@ -214,12 +214,10 @@ describe(@"NSData+Encryption", ^{
 
 describe(@"WHPGP", ^{
     __block WHKeyPair *sender, *recipient;
-    __block WHPGP *pgp;
 
     beforeAll(^{
         sender = [WHKeyPair createKeyPairForJid:@"a@localhost"];
         recipient = [WHKeyPair createKeyPairForJid:@"b@localhost"];
-        pgp = [WHPGP new];
     });
 
     afterAll(^{
@@ -229,17 +227,17 @@ describe(@"WHPGP", ^{
     describe(@"encrypt:senderKey:receiverKey:", ^{
         it(@"should return a blob of data", ^{
             NSString *message = @"hello";
-            NSData *encrypted = [pgp encrypt:message
-                                   senderKey:sender
-                                 receiverKey:recipient];
+            NSData *encrypted = [WHPGP encrypt:message
+                                     senderKey:sender
+                                   receiverKey:recipient];
             expect(encrypted).toNot.beNil();
             expect([encrypted length]).to.beGreaterThan(message.length);
         });
 
         it(@"should return different data each time it is called", ^{
             NSString *message = @"hello";
-            NSData *e1 = [pgp encrypt:message senderKey:sender receiverKey:recipient];
-            NSData *e2 = [pgp encrypt:message senderKey:sender receiverKey:recipient];
+            NSData *e1 = [WHPGP encrypt:message senderKey:sender receiverKey:recipient];
+            NSData *e2 = [WHPGP encrypt:message senderKey:sender receiverKey:recipient];
             expect(e1).notTo.equal(e2);
         });
     });
@@ -247,31 +245,31 @@ describe(@"WHPGP", ^{
     describe(@"decrypt:senderKey:receiverKey:", ^{
         it(@"should return nil when given invalid data", ^{
             NSData *message = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *decrypted = [pgp decrypt:message
-                                     senderKey:sender
-                                   receiverKey:recipient];
+            NSString *decrypted = [WHPGP decrypt:message
+                                       senderKey:sender
+                                     receiverKey:recipient];
             expect(decrypted).to.beNil();
         });
 
         it(@"should return nil when given the wrong key", ^{
             NSString *message = @"hello";
-            NSData *encrypted = [pgp encrypt:message
-                                   senderKey:sender
-                                 receiverKey:recipient];
-            NSString *decrypted = [pgp decrypt:encrypted
-                                     senderKey:recipient
-                                   receiverKey:sender];
+            NSData *encrypted = [WHPGP encrypt:message
+                                     senderKey:sender
+                                   receiverKey:recipient];
+            NSString *decrypted = [WHPGP decrypt:encrypted
+                                       senderKey:recipient
+                                     receiverKey:sender];
             expect(decrypted).to.beNil();
         });
 
         it(@"should be able to decrypt stuff it encrypted", ^{
             NSString *message = @"hello";
-            NSData *encrypted = [pgp encrypt:message
-                                   senderKey:sender
-                                 receiverKey:recipient];
-            NSString *decrypted = [pgp decrypt:encrypted
+            NSData *encrypted = [WHPGP encrypt:message
                                      senderKey:sender
                                    receiverKey:recipient];
+            NSString *decrypted = [WHPGP decrypt:encrypted
+                                       senderKey:sender
+                                     receiverKey:recipient];
             expect(decrypted).to.equal(message);
         });
     });

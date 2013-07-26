@@ -11,6 +11,9 @@
 #import "Message.h"
 #import "WHCoreData.h"
 #import "WHKeyPair.h"
+#import "WHPGP.h"
+
+#import "NSData+XMPP.h"
 
 static NSManagedObjectContext *moc() {
     return [WHCoreData managedObjectContext];
@@ -92,6 +95,18 @@ static NSManagedObjectContext *moc() {
     if (!_contactKey)
         _contactKey = [WHKeyPair getKeyFromJid:self.jid];
     return _contactKey;
+}
+
+- (NSString *)encrypt:(NSString *)message {
+    return [[WHPGP encrypt:message
+                 senderKey:self.ownKey
+               receiverKey:self.contactKey] xmpp_base64Encoded];
+}
+
+- (NSString *)decrypt:(NSString *)message {
+    return [WHPGP decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
+                senderKey:self.contactKey
+              receiverKey:self.ownKey];
 }
 
 @end

@@ -17,6 +17,9 @@
 - (void)addSentMessage:(NSString *)text date:(NSDate *)date;
 - (void)addReceivedMessage:(NSString *)text date:(NSDate *)date;
 
+- (NSString *)encrypt:(NSString *)message;
+- (NSString *)decrypt:(NSString *)message;
+
 @property (nonatomic, readonly) WHKeyPair *ownKey;
 @property (nonatomic, readonly) WHKeyPair *contactKey;
 @end

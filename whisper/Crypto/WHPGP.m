@@ -20,7 +20,7 @@
 #define kKeySize    kCCKeySizeAES256
 
 @implementation WHPGP
-- (NSData *)packData:(NSArray *)arr {
++ (NSData *)packData:(NSArray *)arr {
     NSUInteger outputLength = [[arr valueForKeyPath:@"@sum.length"] unsignedIntegerValue]
                                + [arr count] * 4;
     NSMutableData *ret = [NSMutableData dataWithLength:outputLength];
@@ -37,7 +37,7 @@
     return ret;
 }
 
-- (NSArray *)unpackData:(NSData *)data {
++ (NSArray *)unpackData:(NSData *)data {
     NSMutableArray *ret = [NSMutableArray array];
     const uint8_t *src = [data bytes];
     const uint8_t *end = src + [data length];
@@ -54,14 +54,14 @@
     return ret;
 }
 
-- (NSData *)sign:(NSString *)string withKey:(SecKeyRef)key {
++ (NSData *)sign:(NSString *)string withKey:(SecKeyRef)key {
     NSData *messageData = [string dataUsingEncoding:NSUTF8StringEncoding];
     NSData *hash = [messageData sha256];
     NSData *signedHash = [hash wh_sign:key];
     return [self packData:@[messageData, signedHash]];
 }
 
-- (NSData *)encrypt:(NSString *)string
++ (NSData *)encrypt:(NSString *)string
           senderKey:(WHKeyPair *)senderKey
         receiverKey:(WHKeyPair *)receiverKey
 {
@@ -87,7 +87,7 @@
     return [self packData:@[encryptedKey, encryptedMessage]];
 }
 
-- (NSString *)decrypt:(NSData *)data
++ (NSString *)decrypt:(NSData *)data
             senderKey:(WHKeyPair *)senderKey
           receiverKey:(WHKeyPair *)receiverKey
 {

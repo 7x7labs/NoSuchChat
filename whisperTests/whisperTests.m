@@ -11,6 +11,7 @@
 #import "WHAccount.h"
 #import "WHChatClient.h"
 #import "WHCoreData.h"
+#import "WHKeyPair.h"
 #import "WHXMPPWrapper.h"
 
 #import "Specta.h"
@@ -135,18 +136,23 @@ describe(@"WHChatClient", ^{
         __block Contact *contact;
         beforeEach(^{
             contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:contact.jid];
+            [WHKeyPair addKey:kp.publicKeyBits fromJid:contact.jid];
+        });
+        afterEach(^{
+            SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
         });
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincompatible-pointer-types"
         it(@"should send the message to the stream", ^{
-            [[xmppStream expect] sendMessage:@"body" to:@"jid@localhost"];
+            [[xmppStream expect] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
             [client sendMessage:@"body" to:contact];
             [xmppStream verify];
         });
 
         it(@"should add an outgoing message to the contact", ^{
-            [[xmppStream expect] sendMessage:@"body" to:@"jid@localhost"];
+            [[xmppStream expect] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
             [client sendMessage:@"body" to:contact];
             expect(contact.messages).to.haveCountOf(1);
             expect([[contact.messages anyObject] incoming]).to.beFalsy();
@@ -158,6 +164,11 @@ describe(@"WHChatClient", ^{
         __block Contact *contact;
         beforeEach(^{
             contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:contact.jid];
+            [WHKeyPair addKey:kp.publicKeyBits fromJid:contact.jid];
+        });
+        afterEach(^{
+            SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
         });
 
         it(@"should not trigger an error on an unknown contact", ^{

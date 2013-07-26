@@ -69,12 +69,12 @@
     @weakify(self)
     [self.xmpp.messages subscribeNext:^(id message) {
         @strongify(self)
-        for (Contact *contact in self.contacts) {
-            if ([contact.jid isEqualToString:[message senderJid]]) {
-                [contact addReceivedMessage:[message body] date:[NSDate date]];
-                return;
-            }
-        }
+        Contact *contact = [self.contacts.rac_sequence objectPassingTest:^(Contact *c) {
+            return [c.jid isEqualToString:[message senderJid]];
+        }];
+
+        [contact addReceivedMessage:[contact decrypt:[message body]]
+                               date:[NSDate date]];
     }];
 
     return self;
@@ -82,7 +82,7 @@
 
 - (void)sendMessage:(NSString *)body to:(Contact *)contact {
     [contact addSentMessage:body date:[NSDate date]];
-    [self.xmpp sendMessage:body to:contact.jid];
+    [self.xmpp sendMessage:[contact encrypt:body] to:contact.jid];
 }
 
 - (void)dealloc {

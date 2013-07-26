@@ -11,11 +11,11 @@
 @class WHKeyPair;
 
 @interface WHPGP : NSObject
-- (NSData *)encrypt:(NSString *)string
++ (NSData *)encrypt:(NSString *)string
           senderKey:(WHKeyPair *)senderKey
         receiverKey:(WHKeyPair *)receiverKey;
 
-- (NSString *)decrypt:(NSData *)data
++ (NSString *)decrypt:(NSData *)data
             senderKey:(WHKeyPair *)senderKey
           receiverKey:(WHKeyPair *)receiverKey;
 @end
