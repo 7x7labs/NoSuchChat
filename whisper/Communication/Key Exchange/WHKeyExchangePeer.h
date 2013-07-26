@@ -14,9 +14,9 @@
 // Maybe a picture too or something?
 
 @property (nonatomic, readonly) BOOL wantsToConnect;
+@property (nonatomic, readonly) RACSignal *connected;
 
 - (void)connect;
-- (RACSignal *)connected;
 
 - (instancetype)initWithName:(NSString *)name
                          jid:(NSString *)jid

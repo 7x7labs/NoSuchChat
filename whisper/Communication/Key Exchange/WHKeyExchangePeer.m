@@ -8,10 +8,12 @@
 
 #import "WHKeyExchangePeer.h"
 
+#import "Contact.h"
 #import "WHKeyExchangeClient.h"
 #import "WHKeyExchangeServer.h"
 #import "WHKeyPair.h"
 
+#import <EXTScope.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHKeyExchangePeer ()
@@ -20,7 +22,7 @@
 @property (nonatomic, strong) WHKeyExchangeClient *client;
 @property (nonatomic) BOOL wantsToConnect;
 @property (nonatomic) BOOL keySent;
-@property (nonatomic, strong) RACSubject *connectComplete;
+@property (nonatomic, strong) RACSignal *connected;
 @end
 
 @implementation WHKeyExchangePeer
@@ -34,29 +36,29 @@
     self.name = name;
     self.jid = jid;
     self.client = client;
-    self.connectComplete = [RACSubject subject];
 
     [client.publicKey subscribeNext:^(NSData *key) {
         [WHKeyPair addKey:key fromJid:self.jid];
         self.wantsToConnect = YES;
-        if (self.keySent)
-            [self.connectComplete sendCompleted];
     } error:^(NSError *error) {
         NSLog(@"error: %@", error);
     }];
 
+    @weakify(self);
+    self.connected = [[[[RACSignal
+                      combineLatest:@[RACAble(self, wantsToConnect), RACAble(self, keySent)]
+                      reduce:^(BOOL received, BOOL sent) { return @(received && sent); }]
+                      filter:^BOOL(NSNumber *value) { return [value boolValue]; }]
+                      take:1]
+                      map:^(id _) {
+                          @strongify(self);
+                          return [Contact createWithName:self.name jid:self.jid];
+                      }];
     return self;
 }
 
 - (void)connect {
-    WHKeyPair *kp = [WHKeyPair createKeyPairForJid:self.jid];
-    [self.client sendKey:kp.publicKeyBits];
-    if (self.wantsToConnect)
-        [self.connectComplete sendCompleted];
+    [self.client sendKey:[WHKeyPair createKeyPairForJid:self.jid].publicKeyBits];
     self.keySent = YES;
-}
-
-- (RACSignal *)connected {
-    return self.connectComplete;
 }
 @end

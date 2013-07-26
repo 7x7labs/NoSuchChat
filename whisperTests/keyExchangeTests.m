@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
+#import "Contact.h"
 #import "WHBonjourServer.h"
 #import "WHBonjourServerBrowser.h"
+#import "WHCoreData.h"
 #import "WHKeyExchangeClient.h"
 #import "WHKeyExchangePeer.h"
 #import "WHKeyExchangeServer.h"
@@ -38,6 +40,10 @@ describe(@"Bonjour", ^{
 });
 
 describe(@"Key Exchange", ^{
+    beforeEach(^{
+        [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+    });
+
     NSDictionary *contactInfo1 = @{@"info": @{@"name": @"contact name",
                                               @"jid": @"foo@localhost"}};
     NSDictionary *contactInfo2 = @{@"info": @{@"name": @"second contact name",
@@ -173,6 +179,33 @@ describe(@"Key Exchange", ^{
             }];
 
             [peer1 connect];
+        });
+
+        describe(@"completed", ^{
+            it(@"should complete on the outgoing connection once the connection is complete", ^AsyncBlock{
+                [peer1.connected subscribeCompleted:^{ done(); }];
+
+                [peer1 connect];
+                [peer2 connect];
+            });
+
+            it(@"should complete on the incoming connection once the connection is complete", ^AsyncBlock{
+                [peer2.connected subscribeCompleted:^{ done(); }];
+
+                [peer1 connect];
+                [peer2 connect];
+            });
+        });
+
+        it(@"should create a new Contact after both ends have connected", ^AsyncBlock{
+            [[peer1.connected zipWith:peer2.connected]
+             subscribeCompleted:^{
+                 expect([Contact all]).to.haveCountOf(2);
+                 done();
+             }];
+
+            [peer1 connect];
+            [peer2 connect];
         });
     });
 });

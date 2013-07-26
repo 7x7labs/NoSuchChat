@@ -8,7 +8,6 @@
 
 #import "WHAddContactViewController.h"
 
-#import "Contact.h"
 #import "WHChatClient.h"
 #import "WHKeyExchangePeer.h"
 #import "WHPeerList.h"
