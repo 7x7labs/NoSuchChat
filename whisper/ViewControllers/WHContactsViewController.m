@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.client = [WHChatClient clientForServer:@"localhost" port:5222];
+    self.client = [WHChatClient clientForServer:kXmppServerHost port:5222];
 
     @weakify(self)
     RAC(self.contacts) = RACAbleWithStart(self.client, contacts);
