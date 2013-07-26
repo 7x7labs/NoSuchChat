@@ -85,17 +85,18 @@ describe(@"Contact", ^{
 });
 
 describe(@"WHAccount", ^{
+    beforeEach(^{
+        for (NSDictionary *account in [SSKeychain allAccounts])
+            [SSKeychain deletePasswordForService:account[kSSKeychainWhereKey]
+                                         account:account[kSSKeychainAccountKey]];
+
+    });
+
     it(@"should return the same account from multiple calls to +get", ^{
         WHAccount *a1 = [WHAccount get];
         WHAccount *a2 = [WHAccount get];
         expect(a1.jid).to.equal(a2.jid);
         expect(a1.password).to.equal(a2.password);
-    });
-
-    afterEach(^{
-        for (NSDictionary *account in [SSKeychain allAccounts])
-            [SSKeychain deletePasswordForService:nil account:account[kSSKeychainAccountKey]];
-
     });
 });
 
