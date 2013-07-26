@@ -9,7 +9,9 @@
 #import "WHXMPPWrapper.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
+
 #import "XMPP.h"
+#import "XMPPReconnect.h"
 
 @implementation WHChatMessage
 - (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body {
@@ -27,6 +29,7 @@
 @property (nonatomic, strong) RACSubject *connectSignal;
 
 @property (nonatomic, strong) XMPPStream *stream;
+@property (nonatomic, strong) XMPPReconnect *reconnect;
 @property (nonatomic, strong) NSString *password;
 @end
 
@@ -52,6 +55,8 @@
 		NSLog(@"Error connecting: %@", error);
         [self.connectSignal sendError:error];
 	}
+
+    [(self.reconnect = [XMPPReconnect new]) activate:self.stream];
 
     return self.connectSignal;
 }
