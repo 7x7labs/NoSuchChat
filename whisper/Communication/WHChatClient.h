@@ -21,4 +21,5 @@
 
 @property (nonatomic, readonly) NSArray *contacts;
 @property (nonatomic, readonly) NSString *jid;
+@property (nonatomic, strong) NSString *displayName;
 @end

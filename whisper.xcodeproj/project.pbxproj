@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F26B4AA17A023460075E1DB /* keyExchangeTests.m */; };
+		3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */; };
 		3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */; };
 		3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
 		3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
@@ -94,6 +95,8 @@
 
 /* Begin PBXFileReference section */
 		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
+		3F50C5EA17A42CAF00DC76C1 /* WHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHSettingsViewController.h; path = ViewControllers/WHSettingsViewController.h; sourceTree = "<group>"; };
+		3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHSettingsViewController.m; path = ViewControllers/WHSettingsViewController.m; sourceTree = "<group>"; };
 		3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Compression.h"; path = "Crypto/NSData+Compression.h"; sourceTree = "<group>"; };
 		3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Compression.m"; path = "Crypto/NSData+Compression.m"; sourceTree = "<group>"; };
 		3F5FCDA51799A1F40075D3F0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -467,6 +470,8 @@
 				3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */,
 				3F8D1B911794DD200089B129 /* WHContactsViewController.h */,
 				3F8D1B921794DD200089B129 /* WHContactsViewController.m */,
+				3F50C5EA17A42CAF00DC76C1 /* WHSettingsViewController.h */,
+				3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -774,6 +779,7 @@
 				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,
 				3F5FEAE4179DB60D00C6BF62 /* WHPeerList.m in Sources */,
 				3F8EB1981798424C009F938D /* WHPGP.m in Sources */,
+				3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */,
 				3F8D1BA81795F70D0089B129 /* WHXMPPWrapper.m in Sources */,
 				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
 				3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */,

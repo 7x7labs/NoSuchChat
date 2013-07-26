@@ -43,6 +43,7 @@
 
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
+    self.displayName = @"Placeholder";
     self.xmpp = xmpp;
 
     RACSignal *connectSignal = [self.xmpp connectToServer:host

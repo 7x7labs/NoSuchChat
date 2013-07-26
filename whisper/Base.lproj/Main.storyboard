@@ -24,6 +24,11 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Contacts" id="4UT-ug-wl9">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="bmz-Mo-Jse">
+                            <connections>
+                                <segue destination="Dcp-CM-oay" kind="push" id="6e4-nW-SOP"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="de5-Mu-SNB">
                             <connections>
                                 <segue destination="js2-y8-xGG" kind="push" id="3zx-3y-z4V"/>
@@ -99,6 +104,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6hT-ul-d92" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1457" y="155"/>
+        </scene>
+        <!--Settings View Controller - Settings-->
+        <scene sceneID="ICa-5f-C30">
+            <objects>
+                <viewController id="Dcp-CM-oay" customClass="WHSettingsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="juK-T2-9Ja"/>
+                        <viewControllerLayoutGuide type="bottom" id="tSK-nA-WBx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DQ7-di-8G1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Display Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yyq-k1-JAY">
+                                <rect key="frame" x="20" y="84" width="108" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="t0Z-rt-3We">
+                                <rect key="frame" x="136" y="80" width="164" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Settings" id="qf6-mh-KxV">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="MME-5j-EnX"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="displayName" destination="t0Z-rt-3We" id="E1i-B3-rH6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t63-Z0-nyQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="751" y="896"/>
         </scene>
         <!--Add Contact View Controller - Add New Contact-->
         <scene sceneID="5yf-l2-Jeb">

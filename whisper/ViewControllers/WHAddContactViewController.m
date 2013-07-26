@@ -29,7 +29,7 @@
     self.possibleContacts.dataSource = self;
     self.possibleContacts.delegate = self;
 
-    self.peerList = [[WHPeerList alloc] initWithInfo:@{@"name": @"Display name",
+    self.peerList = [[WHPeerList alloc] initWithInfo:@{@"name": self.client.displayName,
                                                        @"jid": self.client.jid}];
 
     @weakify(self)
