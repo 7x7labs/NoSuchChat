@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class RACSignal;
+@class WHXMPPRoster;
 
 @interface WHChatMessage : NSObject
 @property (nonatomic, strong) NSString *senderJid;
@@ -28,6 +29,7 @@
 
 /// A push sequence of WHChatMessages
 @property (nonatomic, readonly) RACSignal *messages;
+@property (nonatomic, readonly) WHXMPPRoster *roster;
 @end
 
 @interface WHXMPPWrapper : NSObject <WHXMPPStream>

@@ -12,11 +12,13 @@
 #import "WHChatClient.h"
 #import "WHCoreData.h"
 #import "WHKeyPair.h"
+#import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
 
 #import "Specta.h"
 #define EXP_SHORTHAND
 #import "Expecta.h"
+#import "XMPP.h"
 
 #import <OCMock/OCMock.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
@@ -119,6 +121,7 @@ describe(@"WHChatClient", ^{
         messages = [RACSubject subject];
         xmppStream = [OCMockObject mockForProtocol:@protocol(WHXMPPStream)];
         [[[xmppStream expect] andReturn:messages] messages];
+        [[[xmppStream stub] andReturn:nil] roster];
         [[[xmppStream expect] andReturn:[RACSignal new]] connectToServer:@"localhost"
                                                                     port:5222
                                                                 username:[OCMArg any]
@@ -217,6 +220,44 @@ describe(@"WHChatClient", ^{
         });
 
     });
+});
+
+describe(@"WHXMPPRoster", ^{
+    __block id xmppStream;
+    beforeEach(^{
+        [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+        xmppStream = [OCMockObject mockForClass:[XMPPStream class]];
+    });
+
+    it(@"should add and remove itself from the stream's delegates", ^{
+        WHXMPPRoster *roster = [WHXMPPRoster alloc];
+        [[xmppStream expect] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
+        (void)[roster initWithXmppStream:xmppStream];
+        [xmppStream verify];
+
+        [[xmppStream expect] removeDelegate:OCMOCK_ANY];
+        roster = nil;
+        [xmppStream verify];
+    });
+
+    describe(@"addContact:", ^{
+        __block WHXMPPRoster *roster;
+        __block Contact *contact;
+        beforeEach(^{
+            [[xmppStream stub] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
+            roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
+            roster.contactJids = [NSMutableSet set];
+            contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+        });
+
+        it(@"should add the contact's JID to contactJids", ^{
+            [[xmppStream stub] sendElement:OCMOCK_ANY];
+
+            [roster addContact:contact];
+            expect(roster.contactJids).to.haveCountOf(1);
+        });
+    });
+
 });
 
 SpecEnd

@@ -10,6 +10,7 @@
 
 #import "Contact.h"
 #import "WHAccount.h"
+#import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
 
 #import <EXTScope.h>
@@ -53,18 +54,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:@"displayName"];
     }];
 
-    RACSignal *connectSignal = [self.xmpp connectToServer:host
-                                                     port:port
-                                                 username:account.jid
-                                                 password:account.password];
-    [connectSignal subscribeError:^(NSError *error) {
-        [[[UIAlertView alloc] initWithTitle:nil
-                                    message:[error localizedDescription]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
-    }];
-
     self.cancelSignal = [RACSubject subject];
     RAC(self, contacts) =
         [[[[NSNotificationCenter.defaultCenter
@@ -85,6 +74,23 @@
             return [RACSignal return:nil];
         return [contact addReceivedMessage:[contact decrypt:[message body]]
                                       date:[NSDate date]];
+    }];
+
+    self.xmpp.roster.contactJids =
+        [NSMutableSet setWithArray:[[self.contacts.rac_sequence
+                                     map:^(Contact *c) { return c.jid; }]
+                                     array]];
+
+    RACSignal *connectSignal = [self.xmpp connectToServer:host
+                                                     port:port
+                                                 username:account.jid
+                                                 password:account.password];
+    [connectSignal subscribeError:^(NSError *error) {
+        [[[UIAlertView alloc] initWithTitle:nil
+                                    message:[error localizedDescription]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
     }];
 
     return self;

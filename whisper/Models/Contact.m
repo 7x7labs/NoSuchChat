@@ -38,25 +38,31 @@ static NSManagedObjectContext *moc() {
 }
 
 + (Contact *)createWithName:(NSString *)name jid:(NSString *)jid {
-    Contact *contact = nil;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Contact"];
-    request.predicate = [NSPredicate predicateWithFormat:@"jid = %@", jid];
-    NSError *error = nil;
-    contact = [[moc() executeFetchRequest:request error:&error] lastObject];
-
+    Contact *contact = [self contactForJid:jid managedObjectContext:moc()];
     if (contact)
         return contact;
-    if (error)
-        NSLog(@"Error fetching contact with jid %@: %@", jid, error);
 
     contact = [NSEntityDescription insertNewObjectForEntityForName:@"Contact"
                                             inManagedObjectContext:moc()];
     contact.name = name;
     contact.jid = jid;
 
+    NSError *error;
     if (![moc() save:&error])
         NSLog(@"Error saving contact: %@", error);
 
+    return contact;
+}
+
++ (Contact *)contactForJid:(NSString *)jid
+      managedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Contact"];
+    request.predicate = [NSPredicate predicateWithFormat:@"jid = %@", jid];
+    NSError *error = nil;
+    Contact *contact = [[context executeFetchRequest:request error:&error] lastObject];
+    if (error)
+        NSLog(@"Error fetching contact with jid %@: %@", jid, error);
     return contact;
 }
 

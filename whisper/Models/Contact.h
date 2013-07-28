@@ -14,6 +14,8 @@
 @interface Contact : _Contact
 + (NSArray *)all;
 + (Contact *)createWithName:(NSString *)name jid:(NSString *)jid;
++ (Contact *)contactForJid:(NSString *)jid
+      managedObjectContext:(NSManagedObjectContext *)context;
 
 - (RACSignal *)addSentMessage:(NSString *)text date:(NSDate *)date;
 - (RACSignal *)addReceivedMessage:(NSString *)text date:(NSDate *)date;

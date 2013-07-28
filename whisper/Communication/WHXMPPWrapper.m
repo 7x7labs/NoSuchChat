@@ -8,6 +8,8 @@
 
 #import "WHXMPPWrapper.h"
 
+#import "WHXMPPRoster.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "XMPP.h"
@@ -29,20 +31,28 @@
 @property (nonatomic, strong) RACSubject *connectSignal;
 
 @property (nonatomic, strong) XMPPStream *stream;
-@property (nonatomic, strong) XMPPReconnect *reconnect;
 @property (nonatomic, strong) NSString *password;
+
+@property (nonatomic, strong) XMPPReconnect *reconnect;
+@property (nonatomic, strong) WHXMPPRoster *roster;
 @end
 
 @implementation WHXMPPWrapper
+- (instancetype)init {
+    if (self = [super init]) {
+        self.messages = [RACReplaySubject subject];
+        self.connectSignal = [RACReplaySubject subject];
+        self.stream = [XMPPStream new];
+        self.roster = [[WHXMPPRoster alloc] initWithXmppStream:self.stream];
+    }
+    return self;
+}
+
 - (RACSignal *)connectToServer:(NSString *)server
                           port:(uint16_t)port
                       username:(NSString *)username
                       password:(NSString *)password
 {
-    self.messages = [RACReplaySubject replaySubjectWithCapacity:RACReplaySubjectUnlimitedCapacity];
-    self.connectSignal = [RACReplaySubject replaySubjectWithCapacity:RACReplaySubjectUnlimitedCapacity];
-
-    self.stream = [XMPPStream new];
     [self.stream addDelegate:self delegateQueue:dispatch_get_main_queue()];
     self.stream.hostName = server;
     self.stream.hostPort = port;
@@ -115,4 +125,5 @@
 - (void)xmppStream:(XMPPStream *)sender didNotRegister:(NSXMLElement *)error {
     [self.connectSignal sendError:[NSError errorWithDomain:@"WHXMPPWrapper" code:0 userInfo:@{}]];
 }
+
 @end
