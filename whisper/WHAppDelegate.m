@@ -13,6 +13,12 @@
 @implementation WHAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+#if DEBUG
+    if (getenv("runningTests")) {
+        self.window.rootViewController = nil;
+        return YES;
+    }
+#endif
     [WHCoreData initSqliteContext];
     return YES;
 }
