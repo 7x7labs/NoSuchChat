@@ -17,9 +17,11 @@
 + (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port;
 + (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port stream:(id<WHXMPPStream>)xmpp;
 
-- (void)sendMessage:(NSString *)body to:(Contact *)contact;
+- (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact;
 
 @property (nonatomic, readonly) NSArray *contacts;
 @property (nonatomic, readonly) NSString *jid;
 @property (nonatomic, strong) NSString *displayName;
+
+@property (nonatomic, readonly) RACSignal *incomingMessages;
 @end

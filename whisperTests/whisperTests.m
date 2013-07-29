@@ -56,24 +56,33 @@ describe(@"Contact", ^{
             expect(contact.messages).to.haveCountOf(0);
         });
 
-        it(@"should return newly sent messages", ^{
-            [contact addSentMessage:@"test message" date:[NSDate date]];
-            expect(contact.messages).to.haveCountOf(1);
-            expect([[contact.messages anyObject] text]).to.equal(@"test message");
+        it(@"should return newly sent messages", ^AsyncBlock{
+            [[contact addSentMessage:@"test message" date:[NSDate date]]
+             subscribeCompleted:^{
+                 expect(contact.messages).to.haveCountOf(1);
+                 expect([[contact.messages anyObject] text]).to.equal(@"test message");
+                 done();
+             }];
         });
 
-        it(@"should return newly received messages", ^{
-            [contact addReceivedMessage:@"test message" date:[NSDate date]];
-            expect(contact.messages).to.haveCountOf(1);
-            expect([[contact.messages anyObject] text]).to.equal(@"test message");
+        it(@"should return newly received messages", ^AsyncBlock{
+            [[contact addReceivedMessage:@"test message" date:[NSDate date]]
+             subscribeCompleted:^{
+                 expect(contact.messages).to.haveCountOf(1);
+                 expect([[contact.messages anyObject] text]).to.equal(@"test message");
+                 done();
+             }];
         });
 
-        it(@"should only return messages involving the current contact", ^{
+        it(@"should only return messages involving the current contact", ^AsyncBlock{
             Contact *contact2 = [Contact createWithName:@"second contact" jid:@"b@b.com"];
-            [contact2 addSentMessage:@"message" date:[NSDate date]];
-            expect(contact.messages).to.haveCountOf(0);
-            expect(contact2.messages).to.haveCountOf(1);
-        });
+            [[contact2 addSentMessage:@"message" date:[NSDate date]]
+             subscribeCompleted:^{
+                 expect(contact.messages).to.haveCountOf(0);
+                 expect(contact2.messages).to.haveCountOf(1);
+                 done();
+             }];
+         });
     });
 
     describe(@"createWithName:jid:", ^{
@@ -151,11 +160,14 @@ describe(@"WHChatClient", ^{
             [xmppStream verify];
         });
 
-        it(@"should add an outgoing message to the contact", ^{
+        it(@"should add an outgoing message to the contact", ^AsyncBlock{
             [[xmppStream expect] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
-            [client sendMessage:@"body" to:contact];
-            expect(contact.messages).to.haveCountOf(1);
-            expect([[contact.messages anyObject] incoming]).to.beFalsy();
+            [[client sendMessage:@"body" to:contact]
+             subscribeCompleted:^{
+                 expect(contact.messages).to.haveCountOf(1);
+                 expect([[contact.messages anyObject] incoming]).to.beFalsy();
+                 done();
+             }];
         });
 #pragma clang diagnostic pop
     });
@@ -171,22 +183,37 @@ describe(@"WHChatClient", ^{
             SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
         });
 
-        it(@"should not trigger an error on an unknown contact", ^{
+        it(@"should not trigger an error on an unknown contact", ^AsyncBlock{
+            [client.incomingMessages
+             subscribeNext:^(id _){
+                expect(contact.messages).to.haveCountOf(0);
+                done();
+            }
+             error:^(NSError *error) {
+                 expect(error).to.beNil();
+                 done();
+             }];
             [messages sendNext:[[WHChatMessage alloc] initWithSenderJid:@"unknown@localhost"
                                                                    body:@"body"]];
         });
 
-        it(@"should not add messages to the wrong contact", ^{
+        it(@"should not add messages to the wrong contact", ^AsyncBlock{
+            [client.incomingMessages subscribeNext:^(id _){
+                expect(contact.messages).to.haveCountOf(0);
+                done();
+            }];
             [messages sendNext:[[WHChatMessage alloc] initWithSenderJid:@"unknown@localhost"
                                                                    body:@"body"]];
-            expect(contact.messages).to.haveCountOf(0);
         });
 
-        it(@"should add messages to known contacts to that contact", ^{
+        it(@"should add messages to known contacts to that contact", ^AsyncBlock{
+            [client.incomingMessages subscribeNext:^(id _){
+                expect(contact.messages).to.haveCountOf(1);
+                expect([[contact.messages anyObject] incoming]).to.beTruthy();
+                done();
+            }];
             [messages sendNext:[[WHChatMessage alloc] initWithSenderJid:@"jid@localhost"
                                                                    body:@"body"]];
-            expect(contact.messages).to.haveCountOf(1);
-            expect([[contact.messages anyObject] incoming]).to.beTruthy();
         });
 
     });

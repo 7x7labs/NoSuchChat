@@ -8,14 +8,22 @@
 
 #import "WHCoreData.h"
 
-static NSManagedObjectContext *managedObjectContext;
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
-@implementation WHCoreData
-+ (NSManagedObjectContext *)managedObjectContext {
-    return managedObjectContext;
+@interface WHCoreData ()
+@property (nonatomic, strong) NSManagedObjectContext *mainThreadContext;
+@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
+@end
+
+static WHCoreData *instance() {
+    static WHCoreData *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{ instance = [WHCoreData new]; });
+    return instance;
 }
 
-+ (void)initWithType:(NSString *)storeType URL:(NSURL *)storeUrl {
+@implementation WHCoreData
+- (void)initWithType:(NSString *)storeType URL:(NSURL *)storeUrl {
     NSManagedObjectModel *objectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
 
     NSPersistentStoreCoordinator *coordinator =
@@ -29,20 +37,73 @@ static NSManagedObjectContext *managedObjectContext;
                                            error:&error])
         NSLog(@"Error opening persisted core data: %@", error);
 
-    for (NSManagedObject *ct in [managedObjectContext registeredObjects])
-        [managedObjectContext deleteObject:ct];
+    for (NSManagedObject *ct in [self.mainThreadContext registeredObjects])
+        [self.mainThreadContext deleteObject:ct];
 
-    managedObjectContext = [NSManagedObjectContext new];
-    [managedObjectContext setPersistentStoreCoordinator:coordinator];
+    self.mainThreadContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    self.mainThreadContext.persistentStoreCoordinator = coordinator;
+    self.mainThreadContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
+
+    self.backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    self.backgroundContext.parentContext = self.mainThreadContext;
+    self.backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+}
+
++ (NSManagedObjectContext *)managedObjectContext {
+    return instance().mainThreadContext;
+}
+
++ (NSManagedObjectContext *)backgroundManagedObjectContext {
+    return instance().backgroundContext;
 }
 
 + (void)initSqliteContext {
-    [self initWithType:NSSQLiteStoreType
-                   URL:[NSURL fileURLWithPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingString:@"/data.sqlite"]]];
+    [instance() initWithType:NSSQLiteStoreType
+                         URL:[NSURL fileURLWithPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingString:@"/data.sqlite"]]];
 }
 
 + (void)initTestContext {
-    [self initWithType:NSInMemoryStoreType
-                   URL:nil];
+    [instance() initWithType:NSInMemoryStoreType URL:nil];
+}
+
++ (RACSignal *)modifyObject:(NSManagedObject *)object
+                  withBlock:(void (^)(NSManagedObject *))block
+{
+    block(object);
+
+    NSManagedObjectID *objectId = object.objectID;
+    return [instance() runWithContext:^(NSManagedObjectContext *context) {
+        NSManagedObject *localObject = [context objectWithID:objectId];
+        block(localObject);
+        return localObject;
+    }];
+}
+
++ (RACSignal *)insertObjectOfType:(NSString *)type
+                        withBlock:(void (^)(NSManagedObject *))block
+{
+    return [instance() runWithContext:^(NSManagedObjectContext *context) {
+        NSManagedObject *obj = [NSEntityDescription insertNewObjectForEntityForName:type
+                                                             inManagedObjectContext:context];
+        block(obj);
+        return obj;
+    }];
+}
+
+- (RACSignal *)runWithContext:(id (^)(NSManagedObjectContext *))block {
+    RACSubject *subject = [RACReplaySubject subject];
+    [self.backgroundContext performBlock:^{
+        id obj = block(self.backgroundContext);
+
+        NSError *error;
+        if ([self.backgroundContext hasChanges] && ![self.backgroundContext save:&error])
+            [subject sendError:error];
+        else {
+            [subject sendNext:obj];
+            [subject sendCompleted];
+        }
+    }];
+    return subject;
+
 }
 @end

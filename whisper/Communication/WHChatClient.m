@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSArray *contacts;
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) RACSubject *cancelSignal;
+@property (nonatomic, strong) RACSignal *incomingMessages;
 @end
 
 @implementation WHChatClient
@@ -74,22 +75,25 @@
           startWith:[Contact all]];
 
     @weakify(self)
-    [self.xmpp.messages subscribeNext:^(id message) {
+    self.incomingMessages = [self.xmpp.messages flattenMap:^(id message) {
         @strongify(self)
         Contact *contact = [self.contacts.rac_sequence objectPassingTest:^(Contact *c) {
             return [c.jid isEqualToString:[message senderJid]];
         }];
 
-        [contact addReceivedMessage:[contact decrypt:[message body]]
-                               date:[NSDate date]];
+        if (!contact)
+            return [RACSignal return:nil];
+        return [contact addReceivedMessage:[contact decrypt:[message body]]
+                                      date:[NSDate date]];
     }];
 
     return self;
 }
 
-- (void)sendMessage:(NSString *)body to:(Contact *)contact {
-    [contact addSentMessage:body date:[NSDate date]];
+- (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact {
+    RACSignal *saveSignal = [contact addSentMessage:body date:[NSDate date]];
     [self.xmpp sendMessage:[contact encrypt:body] to:contact.jid];
+    return saveSignal;
 }
 
 - (void)dealloc {

@@ -8,14 +8,15 @@
 
 #import "_Contact.h"
 
+@class RACSignal;
 @class WHKeyPair;
 
 @interface Contact : _Contact
 + (NSArray *)all;
 + (Contact *)createWithName:(NSString *)name jid:(NSString *)jid;
 
-- (void)addSentMessage:(NSString *)text date:(NSDate *)date;
-- (void)addReceivedMessage:(NSString *)text date:(NSDate *)date;
+- (RACSignal *)addSentMessage:(NSString *)text date:(NSDate *)date;
+- (RACSignal *)addReceivedMessage:(NSString *)text date:(NSDate *)date;
 
 - (NSString *)encrypt:(NSString *)message;
 - (NSString *)decrypt:(NSString *)message;

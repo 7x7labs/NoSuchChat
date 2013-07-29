@@ -14,6 +14,7 @@
 #import "WHPGP.h"
 
 #import "NSData+XMPP.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 static NSManagedObjectContext *moc() {
     return [WHCoreData managedObjectContext];
@@ -59,30 +60,32 @@ static NSManagedObjectContext *moc() {
     return contact;
 }
 
-- (void)addSentMessage:(NSString *)text date:(NSDate *)date {
-    Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
-                                                     inManagedObjectContext:moc()];
-    message.text = text;
-    message.sent = date;
-    message.incoming = @NO;
-    message.contact = self;
-
-    NSError *error;
-    if (![moc() save:&error])
-        NSLog(@"Error saving message: %@", error);
+- (Contact *)bgSelf {
+    return (Contact *)[[WHCoreData backgroundManagedObjectContext]
+                       existingObjectWithID:self.objectID
+                       error:nil];
 }
 
-- (void)addReceivedMessage:(NSString *)text date:(NSDate *)date {
-    Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
-                                                     inManagedObjectContext:moc()];
-    message.text = text;
-    message.sent = date;
-    message.incoming = @YES;
-    message.contact = self;
-
-    NSError *error;
-    if (![moc() save:&error])
+- (RACSignal *)addMessage:(NSString *)text date:(NSDate *)date incoming:(NSNumber *)incoming {
+    RACSignal *signal = [WHCoreData insertObjectOfType:@"Message" withBlock:^(NSManagedObject *obj) {
+        Message *message = (Message *)obj;
+        message.text = text;
+        message.sent = date;
+        message.incoming = incoming;
+        message.contact = [self bgSelf];
+    }];
+    [signal subscribeError:^(NSError *error) {
         NSLog(@"Error saving message: %@", error);
+     }];
+    return signal;
+}
+
+- (RACSignal *)addSentMessage:(NSString *)text date:(NSDate *)date {
+    return [self addMessage:text date:date incoming:@NO];
+}
+
+- (RACSignal *)addReceivedMessage:(NSString *)text date:(NSDate *)date {
+    return [self addMessage:text date:date incoming:@YES];
 }
 
 - (WHKeyPair *)ownKey {

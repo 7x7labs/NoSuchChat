@@ -61,13 +61,14 @@
     return self.connectSignal;
 }
 
-- (void)sendMessage:(NSString *)body to:(NSString *)recipient {
+- (RACSignal *)sendMessage:(NSString *)body to:(NSString *)recipient {
     NSXMLElement *message = [NSXMLElement elementWithName:@"message"];
     [message addAttributeWithName:@"type" stringValue:@"chat"];
     [message addAttributeWithName:@"to" stringValue:recipient];
     [message addChild:[NSXMLElement elementWithName:@"body" stringValue:body]];
 
     [self.stream sendElement:message];
+    return nil;
 }
 
 #pragma mark - xmppStream

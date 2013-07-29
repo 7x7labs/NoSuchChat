@@ -24,7 +24,7 @@
                       password:(NSString *)password;
 
 /// Send a message to the given Jabber ID
-- (void)sendMessage:(NSString *)body to:(NSString *)recipient;
+- (RACSignal *)sendMessage:(NSString *)body to:(NSString *)recipient;
 
 /// A push sequence of WHChatMessages
 @property (nonatomic, readonly) RACSignal *messages;
