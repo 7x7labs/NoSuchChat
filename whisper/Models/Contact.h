@@ -11,6 +11,8 @@
 @class RACSignal;
 @class WHKeyPair;
 
+extern NSString * const WHContactAddedNotification;
+
 @interface Contact : _Contact
 + (NSArray *)all;
 + (Contact *)createWithName:(NSString *)name jid:(NSString *)jid;

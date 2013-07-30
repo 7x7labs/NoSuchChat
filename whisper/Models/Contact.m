@@ -16,6 +16,8 @@
 #import "NSData+XMPP.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+NSString * const WHContactAddedNotification = @"WHContactAddedNotification";
+
 static NSManagedObjectContext *moc() {
     return [WHCoreData managedObjectContext];
 }
@@ -50,6 +52,10 @@ static NSManagedObjectContext *moc() {
     NSError *error;
     if (![moc() save:&error])
         NSLog(@"Error saving contact: %@", error);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:WHContactAddedNotification
+                                                        object:nil
+                                                      userInfo:@{@"contact": contact}];
 
     return contact;
 }

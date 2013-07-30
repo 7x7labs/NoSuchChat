@@ -57,8 +57,7 @@
     self.cancelSignal = [RACSubject subject];
     RAC(self, contacts) =
         [[[[NSNotificationCenter.defaultCenter
-           rac_addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
-           object:nil]
+           rac_addObserverForName:WHContactAddedNotification object:nil]
           takeUntil:self.cancelSignal]
           map:^(NSNotification *_) { return [Contact all]; }]
           startWith:[Contact all]];
