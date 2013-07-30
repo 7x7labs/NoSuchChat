@@ -108,4 +108,16 @@
 - (void)dealloc {
     [self.cancelSignal sendCompleted];
 }
+
+- (void)setStatus:(NSString *)status message:(NSString *)message {
+    [self.xmpp.roster setShow:status status:message];
+}
+
+- (NSString *)availability {
+    return self.xmpp.roster.show;
+}
+
+- (NSString *)statusMessage {
+    return self.xmpp.roster.status;
+}
 @end

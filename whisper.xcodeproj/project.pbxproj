@@ -83,6 +83,7 @@
 		3FA0C622178CFDA1007E6ECC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C620178CFDA1007E6ECC /* InfoPlist.strings */; };
 		3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C623178CFDA1007E6ECC /* whisperTests.m */; };
 		3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA8D01179CD6D20059E61B /* cryptoTests.m */; };
+		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -228,6 +229,8 @@
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3FA0C623178CFDA1007E6ECC /* whisperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = whisperTests.m; sourceTree = "<group>"; };
 		3FBA8D01179CD6D20059E61B /* cryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cryptoTests.m; sourceTree = "<group>"; };
+		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
+		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFED660267384000B03310C3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -596,6 +599,7 @@
 				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
 				3F8D1B901794DC810089B129 /* ViewControllers */,
 				3F50C5ED17A4331D00DC76C1 /* ViewModels */,
+				3FE4839117A8288500E7938E /* Views */,
 				3FA0C610178CFDA1007E6ECC /* Images.xcassets */,
 				3FA0C60A178CFDA1007E6ECC /* Main.storyboard */,
 				3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */,
@@ -636,6 +640,15 @@
 				3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3FE4839117A8288500E7938E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3FE4839217A828D600E7938E /* WHCheckList.h */,
+				3FE4839317A828D600E7938E /* WHCheckList.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -811,6 +824,7 @@
 				3F5FEAE7179DBA2800C6BF62 /* WHBonjourServerBrowser.m in Sources */,
 				3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */,
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
+				3FE4839417A828D600E7938E /* WHCheckList.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3F5FEAF8179ED5CB00C6BF62 /* WHKeyExchangeClient.m in Sources */,

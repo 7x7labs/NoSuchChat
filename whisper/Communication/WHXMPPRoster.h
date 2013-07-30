@@ -12,9 +12,13 @@
 
 @interface WHXMPPRoster : NSObject
 @property (nonatomic, strong) NSMutableSet *contactJids;
+@property (nonatomic, readonly) NSString *show;
+@property (nonatomic, readonly) NSString *status;
 
 - (instancetype)initWithXmppStream:(XMPPStream *)stream;
 
 - (void)addContact:(Contact *)contact;
 - (void)removeContact:(Contact *)contact;
+
+- (void)setShow:(NSString *)show status:(NSString *)status;
 @end

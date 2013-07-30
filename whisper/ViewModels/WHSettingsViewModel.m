@@ -12,6 +12,15 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+static NSSet *validAvaibilityStates() {
+    static NSSet *values;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        values = [NSSet setWithObjects:@"", @"away", @"chat", @"dnd", @"xa", nil];
+    });
+    return values;
+}
+
 @interface WHSettingsViewModel ()
 @property (nonatomic, strong) WHChatClient *client;
 @end
@@ -23,9 +32,15 @@
 
     self.client = client;
     self.displayName = client.displayName;
-    RAC(self.valid) = [RACAbleWithStart(self.displayName) map:^(NSString *value) {
-        return @([value length] > 0);
-    }];
+    self.availability = client.availability;
+    self.statusMessage = client.statusMessage;
+    RAC(self.valid) = [RACSignal
+                       combineLatest:@[RACAbleWithStart(self, displayName),
+                                       RACAbleWithStart(self, availability)]
+                       reduce:^(NSString *displayName, NSString *availability) {
+                           return @([displayName length] > 0 &&
+                                    [validAvaibilityStates() containsObject:availability]);
+                       }];
 
     return self;
 }
@@ -33,5 +48,6 @@
 - (void)save {
     NSAssert(self.valid, @"Cannot save invalid viewmodel");
     self.client.displayName = self.displayName;
+    [self.client setStatus:self.availability message:self.statusMessage];
 }
 @end

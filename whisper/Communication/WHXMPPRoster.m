@@ -17,6 +17,8 @@
 @property (nonatomic, strong) XMPPStream *stream;
 @property (nonatomic, strong) dispatch_queue_t queue;
 @property (nonatomic, strong) NSManagedObjectContext *objectContext;
+@property (nonatomic, strong) NSString *show;
+@property (nonatomic, strong) NSString *status;
 @end
 
 @implementation WHXMPPRoster
@@ -59,6 +61,13 @@
     [self sendRosterIQ:@"set" body:@{@"jid": contact.jid,
                                      @"subscription": @"remove"}];
 }
+
+- (void)setShow:(NSString *)show status:(NSString *)status {
+    self.show = show;
+    self.status = status;
+    [self sendStatus];
+}
+
 - (void)sendRosterIQ:(NSString *)type body:(NSDictionary *)body {
     NSXMLElement *query = [NSXMLElement elementWithName:@"query" xmlns:@"jabber:iq:roster"];
     if (body) {
@@ -72,6 +81,13 @@
 
 - (void)sendPresenceType:(NSString *)type to:(XMPPJID *)jid {
     [self.stream sendElement:[XMPPPresence presenceWithType:type to:[jid bareJID]]];
+}
+
+- (void)sendStatus {
+    XMPPPresence *presence = [XMPPPresence presence];
+    [presence addChild:[NSXMLElement elementWithName:@"show" stringValue:self.show]];
+    [presence addChild:[NSXMLElement elementWithName:@"status" stringValue:self.status]];
+    [self.stream sendElement:presence];
 }
 
 #pragma mark - XMPPStreamDelegate
@@ -139,6 +155,7 @@
 
     if ([[presence type] isEqualToString:@"probe"]) {
         // Server wants our status
+        [self sendStatus];
         return;
     }
 
