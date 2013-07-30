@@ -55,7 +55,7 @@ static NSManagedObjectContext *moc() {
 
     [[NSNotificationCenter defaultCenter] postNotificationName:WHContactAddedNotification
                                                         object:nil
-                                                      userInfo:@{@"contact": contact}];
+                                                      userInfo:@{@"created": contact}];
 
     return contact;
 }

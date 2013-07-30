@@ -54,15 +54,19 @@
         [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:@"displayName"];
     }];
 
+    @weakify(self)
     self.cancelSignal = [RACSubject subject];
     RAC(self, contacts) =
         [[[[NSNotificationCenter.defaultCenter
            rac_addObserverForName:WHContactAddedNotification object:nil]
           takeUntil:self.cancelSignal]
-          map:^(NSNotification *_) { return [Contact all]; }]
+          map:^(NSNotification *notification) {
+              @strongify(self)
+              [self.xmpp.roster addContact:notification.userInfo[@"created"]];
+              return [Contact all];
+          }]
           startWith:[Contact all]];
 
-    @weakify(self)
     self.incomingMessages = [self.xmpp.messages flattenMap:^(id message) {
         @strongify(self)
         Contact *contact = [self.contacts.rac_sequence objectPassingTest:^(Contact *c) {
