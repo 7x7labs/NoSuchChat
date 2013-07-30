@@ -43,13 +43,14 @@
     self = [super init];
     if (!self) return self;
 
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"Display Name",
+                                                              @"statusMessage": @""}];
+
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
     self.xmpp = xmpp;
 
     self.displayName = [[NSUserDefaults standardUserDefaults] stringForKey:@"displayName"];
-    if (!self.displayName)
-        self.displayName = @"Display Name";
     [RACAble(self, displayName) subscribeNext:^(NSString *displayName) {
         [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:@"displayName"];
     }];
@@ -96,6 +97,9 @@
                           otherButtonTitles:nil] show];
     }];
 
+    [self.xmpp.roster
+     setShow:@""
+     status:[[NSUserDefaults standardUserDefaults] stringForKey:@"statusMessage"]];
     return self;
 }
 
@@ -110,6 +114,7 @@
 }
 
 - (void)setStatus:(NSString *)status message:(NSString *)message {
+    [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"statusMessage"];
     [self.xmpp.roster setShow:status status:message];
 }
 
