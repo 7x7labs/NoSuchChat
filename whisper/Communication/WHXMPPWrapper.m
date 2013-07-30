@@ -50,11 +50,11 @@
     self.stream.enableBackgroundingOnSocket = YES;
 
     // Should dump this off on a queue rather than running synchronously
-	NSError *error = nil;
-	if (![self.stream connectWithTimeout:XMPPStreamTimeoutNone error:&error]) {
-		NSLog(@"Error connecting: %@", error);
+    NSError *error = nil;
+    if (![self.stream connectWithTimeout:XMPPStreamTimeoutNone error:&error]) {
+        NSLog(@"Error connecting: %@", error);
         [self.connectSignal sendError:error];
-	}
+    }
 
     [(self.reconnect = [XMPPReconnect new]) activate:self.stream];
 
@@ -78,37 +78,37 @@
 }
 
 - (void)xmppStreamDidConnect:(XMPPStream *)sender {
-	NSError *error = nil;
-	if (![self.stream authenticateWithPassword:self.password error:&error]) {
-		NSLog(@"Error authenticating: %@", error);
+    NSError *error = nil;
+    if (![self.stream authenticateWithPassword:self.password error:&error]) {
+        NSLog(@"Error authenticating: %@", error);
         [self.connectSignal sendError:error];
-	}
+    }
 }
 
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
-	[self.stream sendElement:[XMPPPresence presence]];
+    [self.stream sendElement:[XMPPPresence presence]];
     [self.connectSignal sendCompleted];
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)_ {
     // Either something has gone bizzarely wrong or we haven't registered yet
-	NSError *error = nil;
+    NSError *error = nil;
     if (![self.stream registerWithPassword:self.password error:&error]) {
-		NSLog(@"Error registering: %@", error);
+        NSLog(@"Error registering: %@", error);
         [self.connectSignal sendError:error];
     }
 }
 
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
-	if ([message isChatMessageWithBody]) {
+    if ([message isChatMessageWithBody]) {
         [self.messages sendNext:[[WHChatMessage alloc]
                                  initWithSenderJid:[message fromStr]
                                  body:[[message elementForName:@"body"] stringValue]]];
-	}
+    }
 }
 
 - (void)xmppStreamDidRegister:(XMPPStream *)sender {
-	[self.stream sendElement:[XMPPPresence presence]];
+    [self.stream sendElement:[XMPPPresence presence]];
     [self.connectSignal sendCompleted];
 }
 

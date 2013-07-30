@@ -22,9 +22,9 @@
                                                       name:name
                                                       port:port];
 
-	[self.netService scheduleInRunLoop:[NSRunLoop currentRunLoop]
+    [self.netService scheduleInRunLoop:[NSRunLoop currentRunLoop]
                                forMode:NSRunLoopCommonModes];
-	[self.netService publish];
+    [self.netService publish];
 
     return self;
 }

@@ -13,7 +13,7 @@
 @implementation NSData (Encryption)
 + (NSData *)wh_createSessionKey {
     NSMutableData *data = [NSMutableData dataWithLength:kCCKeySizeAES256];
-	OSStatus err = SecRandomCopyBytes(kSecRandomDefault, kCCKeySizeAES256, [data mutableBytes]);
+    OSStatus err = SecRandomCopyBytes(kSecRandomDefault, kCCKeySizeAES256, [data mutableBytes]);
     NSAssert(err == noErr, @"Error getting random bytes for session key: %d", (int)err);
     return data;
 }
@@ -52,7 +52,7 @@
     NSMutableData *data = [NSMutableData dataWithLength:SecKeyGetBlockSize(key)];
     size_t size = [data length];
 
-	OSStatus err = SecKeyEncrypt(key,
+    OSStatus err = SecKeyEncrypt(key,
                                  kSecPaddingNone,
                                  [self bytes], [self length],
                                  [data mutableBytes], &size
@@ -66,7 +66,7 @@
     NSMutableData *data = [NSMutableData dataWithLength:SecKeyGetBlockSize(key)];
     size_t size = [data length];
 
-	OSStatus err = SecKeyDecrypt(key,
+    OSStatus err = SecKeyDecrypt(key,
                                  kSecPaddingNone,
                                  [self bytes], [self length],
                                  [data mutableBytes], &size

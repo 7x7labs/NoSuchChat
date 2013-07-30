@@ -108,7 +108,7 @@ static NSData *tag(NSString *jid, NSString *type) {
 
 
     WHKeyPair *keyPair = [WHKeyPair new];
-	OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyPair->_publicKey);
+    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyPair->_publicKey);
     NSAssert(err == errSecSuccess, @"Failed to add key to keychain: %d", (int)err);
     keyPair.publicKeyBits = key;
     return keyPair;

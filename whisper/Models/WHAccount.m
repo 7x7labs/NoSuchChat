@@ -21,7 +21,7 @@ static NSString *kServiceName = @"com.7x7labs.Whisper";
 static NSString *generateRandomString() {
     uint8_t buff[20];
     SecRandomCopyBytes(NULL, 20, buff);
-	NSMutableString *string = [NSMutableString stringWithCapacity:(40)];
+    NSMutableString *string = [NSMutableString stringWithCapacity:(40)];
     for (size_t i = 0; i < 20; ++i)
         [string appendFormat:@"%02x", buff[i]];
     return string;

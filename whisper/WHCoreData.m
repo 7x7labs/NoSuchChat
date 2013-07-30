@@ -29,7 +29,7 @@ static WHCoreData *instance() {
     NSPersistentStoreCoordinator *coordinator =
         [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:objectModel];
 
-	NSError *error;
+    NSError *error;
     if (![coordinator addPersistentStoreWithType:storeType
                                    configuration:nil
                                              URL:storeUrl
