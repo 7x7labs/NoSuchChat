@@ -36,7 +36,9 @@
 }
 
 - (void)addContact:(Contact *)contact {
-    [self.contactJids addObject:contact.jid];
+    @synchronized(self.contactJids) {
+        [self.contactJids addObject:contact.jid];
+    }
 
     // Add the contact to the roster
     [self sendRosterIQ:@"set" body:@{@"jid": contact.jid}];
@@ -48,7 +50,9 @@
 }
 
 - (void)removeContact:(Contact *)contact {
-    [self.contactJids removeObject:contact.jid];
+    @synchronized(self.contactJids) {
+        [self.contactJids removeObject:contact.jid];
+    }
 
     // Remove the contact from the roster, which also removes subscriptions in
     // both directions
@@ -97,9 +101,11 @@
     [self.stream sendElement:[XMPPIQ iqWithType:@"result" elementID:[iq elementID]]];
 
     // Subscribe to any contacts we aren't already subscribed to
-    for (NSString *contactJid in self.contactJids) {
-        if ([jids containsObject:contactJid]) continue;
-        [self sendPresenceType:@"subscribe" to:[XMPPJID jidWithString:contactJid]];
+    @synchronized(self.contactJids) {
+        for (NSString *contactJid in self.contactJids) {
+            if ([jids containsObject:contactJid]) continue;
+            [self sendPresenceType:@"subscribe" to:[XMPPJID jidWithString:contactJid]];
+        }
     }
 
     return YES;
