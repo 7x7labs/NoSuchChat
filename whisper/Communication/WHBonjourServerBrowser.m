@@ -50,7 +50,7 @@
     [self.resolving addObject:netService];
 
     netService.delegate = self;
-    [netService resolveWithTimeout:1.0];
+    [netService resolveWithTimeout:5.0];
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser
