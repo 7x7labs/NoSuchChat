@@ -32,6 +32,7 @@ describe(@"Bonjour", ^{
             WHBonjourServerBrowser *browser = [WHBonjourServerBrowser new];
             [browser.netServices subscribeNext:^(NSNetService *service) {
                 expect(service.name).to.equal(@"name");
+                expect(service.port).to.equal(12345);
                 (void)server;
                 (void)browser;
                 done();

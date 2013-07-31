@@ -10,9 +10,10 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-@interface WHBonjourServerBrowser () <NSNetServiceBrowserDelegate>
+@interface WHBonjourServerBrowser () <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 @property (nonatomic, strong) RACSubject *services;
 @property (nonatomic, strong) NSNetServiceBrowser *serviceBrowser;
+@property (nonatomic, strong) NSMutableSet *resolving;
 @end
 
 @implementation WHBonjourServerBrowser
@@ -21,6 +22,7 @@
     if (!self) return self;
 
     self.services = [RACSubject subject];
+    self.resolving = [NSMutableSet set];
 
     self.serviceBrowser = [NSNetServiceBrowser new];
     self.serviceBrowser.delegate = self;
@@ -35,17 +37,20 @@
 }
 
 - (RACSignal *)netServices {
-    [self.serviceBrowser searchForServicesOfType:@"_whisper._tcp." inDomain:@"local."];
+    [self.serviceBrowser searchForServicesOfType:@"_whisper._tcp" inDomain:@"local."];
     return self.services;
 }
 
-#pragma mark -
-#pragma mark NSNetServiceBrowserDelegate
+#pragma mark - NSNetServiceBrowserDelegate
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser
            didFindService:(NSNetService *)netService
                moreComing:(BOOL)moreServicesComing
 {
-    [self.services sendNext:netService];
+    NSLog(@"Resolving service \"%@\"", netService.name);
+    [self.resolving addObject:netService];
+
+    netService.delegate = self;
+    [netService resolveWithTimeout:1.0];
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser
@@ -60,6 +65,18 @@
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser {
     NSLog(@"stopped search");
+}
+
+#pragma mark - NSNetServiceDelegate
+- (void)netServiceDidResolveAddress:(NSNetService *)netService {
+    NSLog(@"Resolved %@", netService.name);
+    [self.services sendNext:netService];
+    [self.resolving removeObject:netService];
+}
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+    NSLog(@"Error resolving bonjour net service: %@", errorDict);
+    [self.resolving removeObject:sender];
 }
 
 @end
