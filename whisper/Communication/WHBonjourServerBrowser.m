@@ -79,4 +79,8 @@
     [self.resolving removeObject:sender];
 }
 
+- (void)netServiceDidStop:(NSNetService *)sender {
+    NSLog(@"Net service stopped: %@", sender.name);
+}
+
 @end
