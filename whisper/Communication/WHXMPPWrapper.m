@@ -127,7 +127,9 @@
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotRegister:(NSXMLElement *)error {
-    [self.connectSignal sendError:[NSError errorWithDomain:@"WHXMPPWrapper" code:0 userInfo:@{}]];
+    [self.connectSignal sendError:[NSError errorWithDomain:@"WHXMPPWrapper"
+                                                      code:0
+                                                  userInfo:@{NSLocalizedDescriptionKey: [error description]}]];
 }
 
 @end
