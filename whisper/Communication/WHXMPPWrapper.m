@@ -53,6 +53,8 @@
                       username:(NSString *)username
                       password:(NSString *)password
 {
+    self.password = password;
+
     [self.stream addDelegate:self delegateQueue:dispatch_get_main_queue()];
     self.stream.hostName = server;
     self.stream.hostPort = port;
