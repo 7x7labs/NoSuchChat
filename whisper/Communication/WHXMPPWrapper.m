@@ -95,6 +95,10 @@
     }
 }
 
+- (void)xmppStreamDidDisconnect:(XMPPStream *)sender withError:error {
+    [self.connectSignal sendError:error];
+}
+
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
     [self.stream sendElement:[XMPPPresence presence]];
     [self.connectSignal sendCompleted];
