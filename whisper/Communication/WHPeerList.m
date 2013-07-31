@@ -38,14 +38,15 @@
     self.bonjourServer = [[WHBonjourServer alloc] initWithName:info[@"name"]
                                                           port:self.keyExchangeServer.port];
 
+    @weakify(self);
     RACSignal *outgoingClients = [self.bonjourServerBrowser.netServices
         flattenMap:^(NSNetService *service) {
+            @strongify(self);
             return [[WHKeyExchangeClient alloc] initWithDomain:[service domain]
                                                           port:[service port]
                                                      introData:self.introData].peer;
         }];
 
-    @weakify(self);
     [[RACSignal
       merge:@[outgoingClients, self.keyExchangeServer.clients]]
       subscribeNext:^(WHKeyExchangePeer *peer) {
