@@ -27,12 +27,13 @@
 SpecBegin(KeyExchangeTests)
 describe(@"Bonjour", ^{
     describe(@"WHBonjourServer", ^{
-        xit(@"should find the local service", ^AsyncBlock{
+        it(@"should find the local service", ^AsyncBlock{
             WHBonjourServer *server = [[WHBonjourServer alloc] initWithName:@"name" port:12345];
             WHBonjourServerBrowser *browser = [WHBonjourServerBrowser new];
             [browser.netServices subscribeNext:^(NSNetService *service) {
                 expect(service.name).to.equal(@"name");
                 (void)server;
+                (void)browser;
                 done();
             }];
         });

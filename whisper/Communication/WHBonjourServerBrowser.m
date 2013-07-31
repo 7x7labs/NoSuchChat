@@ -26,7 +26,6 @@
     self.serviceBrowser.delegate = self;
     [self.serviceBrowser scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 
-
     return self;
 }
 
