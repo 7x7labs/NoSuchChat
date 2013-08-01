@@ -7,18 +7,19 @@
 //
 
 @class RACSignal;
-@class WHKeyExchangeClient;
+@class WHMultipeerBrowser;
+
+typedef void (^invitationHandler)(BOOL accept, MCSession *session);
 
 @interface WHKeyExchangePeer : NSObject
 @property (nonatomic, readonly) NSString *name;
-// Maybe a picture too or something?
 
-@property (nonatomic, readonly) BOOL wantsToConnect;
-@property (nonatomic, readonly) RACSignal *connected;
+- (RACSignal *)connectWithJid:(NSString *)jid;
+- (void)reject;
 
-- (void)connect;
+- (instancetype)initWithPeerID:(MCPeerID *)peerID
+                       browser:(WHMultipeerBrowser *)browser;
 
-- (instancetype)initWithName:(NSString *)name
-                         jid:(NSString *)jid
-                      client:(WHKeyExchangeClient *)client;
+- (instancetype)initWithPeerID:(MCPeerID *)peerID
+                    invitation:(invitationHandler)invitation;
 @end

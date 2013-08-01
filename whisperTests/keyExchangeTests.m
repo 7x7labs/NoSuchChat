@@ -7,13 +7,12 @@
 //
 
 #import "Contact.h"
-#import "WHBonjourServer.h"
-#import "WHBonjourServerBrowser.h"
 #import "WHCoreData.h"
-#import "WHKeyExchangeClient.h"
 #import "WHKeyExchangePeer.h"
-#import "WHKeyExchangeServer.h"
 #import "WHKeyPair.h"
+#import "WHMultipeerAdvertiser.h"
+#import "WHMultipeerBrowser.h"
+#import "WHMultipeerSession.h"
 #import "WHPeerList.h"
 
 #import "Specta.h"
@@ -23,191 +22,263 @@
 #import <CocoaAsyncSocket/GCDAsyncSocket.h>
 #import <OCMock/OCMock.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+@import MultipeerConnectivity;
+
+@interface WHPeerList (Test)
+- (WHMultipeerBrowser *)browser;
+@end
 
 SpecBegin(KeyExchangeTests)
-describe(@"Bonjour", ^{
-    describe(@"WHBonjourServer", ^{
-        it(@"should find the local service", ^AsyncBlock{
-            WHBonjourServer *server = [[WHBonjourServer alloc] initWithName:@"name" port:12345];
-            WHBonjourServerBrowser *browser = [WHBonjourServerBrowser new];
-            [browser.netServices subscribeNext:^(NSNetService *service) {
-                expect(service.name).to.equal(@"name");
-                expect(service.port).to.equal(12345);
-                (void)server;
-                (void)browser;
-                done();
-            }];
-        });
+describe(@"WHMultipeerAdvertiser", ^{
+    __block WHMultipeerAdvertiser *advertiser;
+    __block id<MCNearbyServiceAdvertiserDelegate> delegate;
+    beforeEach(^{
+        advertiser = [WHMultipeerAdvertiser new];
+        delegate = (id)advertiser;
+    });
+
+    it(@"should initially have no peerID", ^{
+        expect(advertiser.peerID).to.beNil();
+    });
+
+    it(@"should set the peerID when the display name is set", ^{
+        advertiser.displayName = @"display name";
+        expect(advertiser.peerID).notTo.beNil();
+    });
+
+    it(@"should create a new peerID when the display name changes", ^{
+        advertiser.displayName = @"display name";
+        MCPeerID *oldPeerID = advertiser.peerID;
+        advertiser.displayName = @"second display name";
+        expect(advertiser.peerID).notTo.equal(oldPeerID);
+    });
+
+    it(@"should forward errors to the signal", ^AsyncBlock{
+        NSError *error = [NSError errorWithDomain:@"domain" code:0 userInfo:@{}];
+        [advertiser.invitations subscribeError:^(NSError *sentError) {
+            expect(error).to.equal(sentError);
+            done();
+        }];
+        [delegate advertiser:nil didNotStartAdvertisingPeer:error];
+    });
+
+    it(@"should create key exchange peers when invited",  ^AsyncBlock{
+        MCPeerID *peerID = [[MCPeerID alloc] initWithDisplayName:@"display name"];
+        [advertiser.invitations subscribeNext:^(WHKeyExchangePeer *peer) {
+            expect(peer).notTo.beNil();
+            done();
+        }];
+
+        [delegate advertiser:nil didReceiveInvitationFromPeer:peerID withContext:nil invitationHandler:nil];
     });
 });
 
-describe(@"Key Exchange", ^{
+describe(@"WHMultipeerBrowser", ^{
+    __block WHMultipeerAdvertiser *advertiser;
+    __block WHMultipeerBrowser *browser;
+    __block id<MCNearbyServiceBrowserDelegate> delegate;
     beforeEach(^{
+        advertiser = [WHMultipeerAdvertiser new];
+        advertiser.displayName = @"display name";
+
+        browser = [[WHMultipeerBrowser alloc] initWithPeer:advertiser.peerID];
+        delegate = (id)browser;
+    });
+
+    it(@"should forward found peers to the signal", ^AsyncBlock{
+        [[browser.peers take:1] subscribeNext:^(MCPeerID *peer) {
+            expect(peer).to.equal(advertiser.peerID);
+            done();
+        }];
+        [delegate browser:nil foundPeer:advertiser.peerID withDiscoveryInfo:@{}];
+    });
+
+    it(@"should forward removed peers to the signal", ^AsyncBlock{
+        [[browser.removedPeers take:1] subscribeNext:^(MCPeerID *peer) {
+            expect(peer).to.equal(advertiser.peerID);
+            done();
+        }];
+        [delegate browser:nil lostPeer:advertiser.peerID];
+    });
+
+    it(@"should forward errors to the signal", ^AsyncBlock{
+        NSError *error = [NSError errorWithDomain:@"domain" code:0 userInfo:@{}];
+        [browser.peers subscribeError:^(NSError *sentError) {
+            expect(error).to.equal(sentError);
+            done();
+        }];
+        [delegate browser:nil didNotStartBrowsingForPeers:error];
+    });
+});
+
+describe(@"WHPeerList", ^{
+    __block WHPeerList *peerList;
+    __block MCPeerID *ownPeerID;
+    __block MCPeerID *otherPeerID;
+    __block id<MCNearbyServiceBrowserDelegate> delegate;
+    beforeEach(^{
+        ownPeerID = [[MCPeerID alloc] initWithDisplayName:@"own peer ID"];
+        otherPeerID = [[MCPeerID alloc] initWithDisplayName:@"other peer ID"];
+        peerList = [[WHPeerList alloc] initWithOwnPeerID:ownPeerID];
+        delegate = (id)[peerList browser];
+    });
+
+    it(@"should initially be empty", ^{
+        expect(peerList.peers).to.haveCountOf(0);
+    });
+
+    it(@"should not add own peer id", ^{
+        [delegate browser:nil foundPeer:ownPeerID withDiscoveryInfo:@{}];
+        expect(peerList.peers).to.haveCountOf(0);
+    });
+
+    it(@"should add a different peer id", ^{
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        expect(peerList.peers).to.haveCountOf(1);
+    });
+
+    it(@"should not add duplicates", ^{
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        expect(peerList.peers).to.haveCountOf(1);
+    });
+
+    it(@"should removed lost peer ids", ^{
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil lostPeer:otherPeerID];
+        expect(peerList.peers).to.haveCountOf(0);
+    });
+
+    it(@"should not error on losing an unknown peer", ^{
+        [delegate browser:nil lostPeer:otherPeerID];
+        expect(peerList.peers).to.haveCountOf(0);
+    });
+
+    it(@"should be KVO compliant", ^AsyncBlock{
+        [RACAble(peerList, peers) subscribeNext:^(id _) {
+            done();
+        }];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+    });
+});
+
+describe(@"WHKeyExchangePeer", ^{
+    NSString *contactJid = @"contact@locahost";
+    NSString *ownJid = @"ownjid@locahost";
+    __block MCPeerID *peerID;
+    beforeEach(^{
+        peerID = [[MCPeerID alloc] initWithDisplayName:@"display name"];
         [(id)[[UIApplication sharedApplication] delegate] initTestContext];
     });
-
-    NSDictionary *contactInfo1 = @{@"info": @{@"name": @"contact name",
-                                              @"jid": @"foo@localhost"}};
-    NSDictionary *contactInfo2 = @{@"info": @{@"name": @"second contact name",
-                                              @"jid": @"bar@localhost"}};
-    NSData *contactData1 = [NSJSONSerialization dataWithJSONObject:contactInfo1
-                                                           options:0 error:nil];
-    NSData *contactData2 = [NSJSONSerialization dataWithJSONObject:contactInfo2
-                                                           options:0 error:nil];
-
-    describe(@"WHKeyExchangeServer", ^{
-        it(@"should automatically pick a port", ^{
-            WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:[NSData data]];
-            expect(server.port).to.beGreaterThan(0);
-        });
-
-        it(@"should send complete signal when disposed", ^{
-            WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:[NSData data]];
-            RACSignal *clients = server.clients;
-            server = nil;
-            expect([clients first]).to.beNil(); // blocks forever if no complete signal is sent
-        });
-
-        void (^connect)(uint16_t port) = ^(uint16_t port){
-            dispatch_queue_t queue = dispatch_queue_create(NULL, NULL);
-            GCDAsyncSocket *socket = [[GCDAsyncSocket alloc] initWithDelegate:self
-                                                                delegateQueue:queue];
-            [socket connectToHost:@"localhost" onPort:port error:nil];
-        };
-
-        it(@"should create a new client when receiving a connection", ^{
-            WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:[NSData data]];
-            connect(server.port);
-            expect([server.clients first]).notTo.beNil();
-        });
-
-        it(@"should pass the given data to the newly created client", ^{
-            NSData *data = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
-            WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:data];
-            connect(server.port);
-            expect([[server.clients first] introData]).to.equal(data);
-        });
+    afterEach(^{
+        SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
     });
 
-    describe(@"WHKeyExchangeClient", ^{
-        id (^mock)(NSData *) = ^(NSData *expectedData) {
-            id mockSocket = [OCMockObject mockForClass:[GCDAsyncSocket class]];
-            [[mockSocket expect] writeData:expectedData withTimeout:-1 tag:0];
-            [[mockSocket expect] writeData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
-            [[mockSocket stub] readDataToData:[GCDAsyncSocket ZeroData] withTimeout:-1 tag:0];
-            [[mockSocket stub] setDelegate:OCMOCK_ANY];
-            return mockSocket;
-        };
-
-        it(@"should write introData on creation", ^{
-            id mockSocket = mock(contactData1);
-            (void)[[WHKeyExchangeClient alloc] initWithSocket:mockSocket introData:contactData1];
-            [mockSocket verify];
+    describe(@"outgoing connection", ^{
+        it(@"should set its name to the peer's display name", ^{
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:nil];
+            expect(peer.name).to.equal(@"display name");
         });
 
-        it(@"should create a peer when fed introData", ^AsyncBlock{
-            id mockSocket = mock(contactData1);
-            WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
-                                           initWithSocket:mockSocket
-                                           introData:contactData1];
-            [(id)client socket:nil didReadData:contactData2 withTag:0];
-            [client.peer subscribeNext:^(WHKeyExchangePeer *peer) {
-                expect(peer.name).to.equal(@"second contact name");
+        it(@"should ask the browser to connect to the peer", ^{
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:nil] connectToPeer:peerID];
+
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            [peer connectWithJid:@"ownjid@localhost"];
+
+            [browser verify];
+        });
+
+        it(@"should send the user's jid when told to connect", ^AsyncBlock{
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:nil]] connected];
+            [[[session expect] andReturn:[RACSignal empty]] incomingData];
+            [[session expect] sendData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+                expect(data).to.beKindOf([NSData class]);
+                expect(data).to.equal([ownJid dataUsingEncoding:NSUTF8StringEncoding]);
+                return YES;
+            }]];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:peerID];
+
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            [[peer connectWithJid:ownJid] subscribeCompleted:^{
+                [session verify];
+                done();
+            }];
+
+        });
+
+        it(@"should send a public key after receiving the contact's JID", ^AsyncBlock{
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:nil]] connected];
+            [[session expect] sendData:[OCMArg isNotNil]];
+            [[[session expect] andReturn:[RACSignal return:[contactJid dataUsingEncoding:NSUTF8StringEncoding]]] incomingData];
+            [[session expect] sendData:[OCMArg isNotNil]];
+            [[[session expect] andReturn:[RACSignal empty]] incomingData];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:peerID];
+
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            [[peer connectWithJid:ownJid] subscribeCompleted:^{
+                [session verify];
                 done();
             }];
         });
 
-        it(@"should create a peer upon connecting", ^AsyncBlock{
-            WHKeyExchangeServer *server = [[WHKeyExchangeServer alloc] initWithIntroData:contactData1];
-            WHKeyExchangeClient *client = [[WHKeyExchangeClient alloc]
-                                           initWithDomain:@"localhost"
-                                           port:server.port
-                                           introData:contactData2];
-            [client.peer
-             subscribeNext:^(WHKeyExchangePeer *peer) {
-                 expect(peer.name).to.equal(@"contact name");
-                 (void)server; // Capture in the block so it stays alive long enough
-                 (void)client;
-                 done();
-             }
-             error:^(NSError *error) {
-                 expect(error).to.beNil();
-                 done();
-             }];
-        });
-    });
-
-    describe(@"WHKeyExchangePeer", ^{
-        __block WHKeyExchangeServer *server;
-        __block WHKeyExchangeClient *client1, *client2;
-        __block WHKeyExchangePeer *peer1, *peer2;
-
-        beforeEach(^{
-            server = [[WHKeyExchangeServer alloc] initWithIntroData:contactData1];
-            client1 = [[WHKeyExchangeClient alloc] initWithDomain:@"localhost"
-                                                             port:server.port
-                                                        introData:contactData2];
-            client2 = [server.clients first];
-            peer1 = [client1.peer first];
-            peer2 = [client2.peer first];
-        });
-
-        afterEach(^{
+        it(@"should create a new contact once the key exchange is complete", ^AsyncBlock{
+            NSData *jid = [contactJid dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *keyBits = [WHKeyPair createKeyPairForJid:ownJid].publicKeyBits;
             SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
-        });
 
-        describe(@"wantsToConnect", ^{
-            it(@"should initially be false", ^{
-                expect(peer1.wantsToConnect).to.beFalsy();
-            });
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:nil]] connected];
+            [[session expect] sendData:[OCMArg isNotNil]];
+            [[[session expect] andReturn:[RACSignal return:jid]] incomingData];
+            [[session expect] sendData:[OCMArg isNotNil]];
+            [[[session expect] andReturn:[RACSignal return:keyBits]] incomingData];
 
-            it(@"should get set to true when a public key is received", ^{
-                [client1.publicKey sendNext:[NSData data]];
-                expect(peer1.wantsToConnect).to.beTruthy();
-            });
-        });
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:peerID];
 
-        it(@"should create a keypair when receiving a key", ^{
-            WHKeyPair *key = [WHKeyPair createKeyPairForJid:@"foo@localhost"];
-            [client1.publicKey sendNext:key.publicKeyBits];
-
-            expect([WHKeyPair getKeyFromJid:@"foo@localhost"]).notTo.beNil();
-        });
-
-        it(@"should send a new key over the socket when connect is called", ^AsyncBlock{
-            [RACAble(peer2, wantsToConnect) subscribeNext:^(id _) {
-                expect([WHKeyPair getKeyFromJid:@"foo@localhost"]).notTo.beNil();
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            [[peer connectWithJid:@"ownjid@localhost"] subscribeNext:^(Contact *contact) {
+                expect(contact.name).to.equal(peerID.displayName);
+                expect(contact.ownKey).notTo.beNil();
+                expect(contact.ownKey.publicKey).notTo.beNil();
+                expect(contact.ownKey.privateKey).notTo.beNil();
+                expect(contact.contactKey).notTo.beNil();
+                expect(contact.contactKey.publicKey).notTo.beNil();
+                expect(contact.contactKey.privateKey).to.beNil();
                 done();
             }];
+        });
+    });
 
-            [peer1 connect];
+    describe(@"incoming connection", ^{
+        it(@"should pass a session to the invitation handler", ^AsyncBlock{
+            invitationHandler handler = ^(BOOL accept, MCSession *session){
+                expect(accept).to.beTruthy();
+                expect(session).to.beKindOf([MCSession class]);
+                done();
+            };
+
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID invitation:handler];
+            [peer connectWithJid:@"ownjid@localhost"];
         });
 
-        describe(@"completed", ^{
-            it(@"should complete on the outgoing connection once the connection is complete", ^AsyncBlock{
-                [peer1.connected subscribeCompleted:^{ done(); }];
+        it(@"should be able to reject connections", ^AsyncBlock{
+            invitationHandler handler = ^(BOOL accept, MCSession *session){
+                expect(accept).to.beFalsy();
+                expect(session).to.beNil();
+                done();
+            };
 
-                [peer1 connect];
-                [peer2 connect];
-            });
-
-            it(@"should complete on the incoming connection once the connection is complete", ^AsyncBlock{
-                [peer2.connected subscribeCompleted:^{ done(); }];
-
-                [peer1 connect];
-                [peer2 connect];
-            });
-        });
-
-        it(@"should create a new Contact after both ends have connected", ^AsyncBlock{
-            [[peer1.connected zipWith:peer2.connected]
-             subscribeCompleted:^{
-                 expect([Contact all]).to.haveCountOf(2);
-                 done();
-             }];
-
-            [peer1 connect];
-            [peer2 connect];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID invitation:handler];
+            [peer reject];
         });
     });
 });

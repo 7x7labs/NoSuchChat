@@ -6,10 +6,8 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface WHPeerList : NSObject
-@property (nonatomic, readonly) NSMutableArray *peers;
+@property (nonatomic, readonly) NSArray *peers;
 
-- (instancetype)initWithInfo:(NSDictionary *)info;
+- (instancetype)initWithOwnPeerID:(MCPeerID *)peerID;
 @end

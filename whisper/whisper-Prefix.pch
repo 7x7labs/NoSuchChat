@@ -10,6 +10,7 @@
 @import UIKit;
 @import Foundation;
 @import CoreData;
+@import MultipeerConnectivity;
 #endif
 
 #define kXmppServerHost @"localhost"

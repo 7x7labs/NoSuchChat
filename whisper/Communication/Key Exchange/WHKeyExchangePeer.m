@@ -9,56 +9,76 @@
 #import "WHKeyExchangePeer.h"
 
 #import "Contact.h"
-#import "WHKeyExchangeClient.h"
-#import "WHKeyExchangeServer.h"
 #import "WHKeyPair.h"
+#import "WHMultipeerBrowser.h"
+#import "WHMultipeerSession.h"
 
-#import <EXTScope.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHKeyExchangePeer ()
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *jid;
-@property (nonatomic, strong) WHKeyExchangeClient *client;
-@property (nonatomic) BOOL wantsToConnect;
-@property (nonatomic) BOOL keySent;
-@property (nonatomic, strong) RACSignal *connected;
+
+@property (nonatomic, strong) MCPeerID *peerID;
+@property (nonatomic, strong) WHMultipeerBrowser *browser;
+@property (nonatomic, strong) invitationHandler invitation;
 @end
 
 @implementation WHKeyExchangePeer
-- (instancetype)initWithName:(NSString *)name
-                         jid:(NSString *)jid
-                      client:(WHKeyExchangeClient *)client
-{
-    self = [super init];
-    if (!self) return self;
+- (instancetype)initWithPeerID:(MCPeerID *)peerID {
+    if (!(self = [super init])) return self;
 
-    self.name = name;
-    self.jid = jid;
-    self.client = client;
+    self.name = peerID.displayName;
+    self.peerID = peerID;
 
-    [client.publicKey subscribeNext:^(NSData *key) {
-        [WHKeyPair addKey:key fromJid:self.jid];
-        self.wantsToConnect = YES;
-    } error:^(NSError *error) {
-        NSLog(@"error: %@", error);
-    }];
-
-    @weakify(self);
-    self.connected = [[[[RACSignal
-                      combineLatest:@[RACAble(self, wantsToConnect), RACAble(self, keySent)]
-                      reduce:^(BOOL received, BOOL sent) { return @(received && sent); }]
-                      filter:^BOOL(NSNumber *value) { return [value boolValue]; }]
-                      take:1]
-                      map:^(id _) {
-                          @strongify(self);
-                          return [Contact createWithName:self.name jid:self.jid];
-                      }];
     return self;
 }
 
-- (void)connect {
-    [self.client sendKey:[WHKeyPair createKeyPairForJid:self.jid].publicKeyBits];
-    self.keySent = YES;
+- (instancetype)initWithPeerID:(MCPeerID *)peerID
+                       browser:(WHMultipeerBrowser *)browser
+{
+    if (!(self = [self initWithPeerID:peerID])) return self;
+    self.browser = browser;
+    return self;
+}
+
+- (instancetype)initWithPeerID:(MCPeerID *)peerID
+                    invitation:(invitationHandler)invitation
+{
+    if (!(self = [self initWithPeerID:peerID])) return self;
+    self.invitation = invitation;
+    return self;
+}
+
+- (RACSignal *)connectWithJid:(NSString *)jid {
+    NSAssert(!!self.browser != !!self.invitation,
+             @"WHKeyExchangePeer needs a service browser or invitation handler to connect");
+
+    WHMultipeerSession *session;
+    if (self.browser)
+        session = [self.browser connectToPeer:self.peerID];
+    else
+        session = [[WHMultipeerSession alloc] initWithPeer:self.peerID invitation:self.invitation];
+
+    __block NSString *contactJid = nil;
+    return [[[session.connected
+              flattenMap:^RACStream *(NSNumber *didConnect) {
+                  NSError *error = [session sendData:[jid dataUsingEncoding:NSUTF8StringEncoding]];
+                  return error ? [RACSignal error:error] : [session.incomingData take:1];
+              }]
+              flattenMap:^RACStream *(NSData *jidData) {
+                  contactJid = [[NSString alloc] initWithData:jidData encoding:NSUTF8StringEncoding];
+                  NSError *error = [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
+                  return error ? [RACSignal error:error] : [session.incomingData take:1];
+              }]
+              map:^(NSData *publicKey) {
+                  [WHKeyPair addKey:publicKey fromJid:contactJid];
+                  return [Contact createWithName:self.name jid:contactJid];
+              }];
+}
+
+- (void)reject {
+    NSAssert(self.invitation, @"Can only reject incoming connections");
+    self.invitation(NO, nil);
+    self.invitation = nil;
 }
 @end

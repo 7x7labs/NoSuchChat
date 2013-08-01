@@ -8,51 +8,40 @@
 
 #import "WHPeerList.h"
 
-#import "WHBonjourServer.h"
-#import "WHBonjourServerBrowser.h"
-#import "WHKeyExchangeClient.h"
 #import "WHKeyExchangePeer.h"
-#import "WHKeyExchangeServer.h"
+#import "WHMultipeerBrowser.h"
 
 #import <EXTScope.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHPeerList ()
-@property (nonatomic, strong) NSMutableArray *peers;
-
-@property (nonatomic, strong) NSData *introData;
-@property (nonatomic, strong) WHBonjourServer *bonjourServer;
-@property (nonatomic, strong) WHBonjourServerBrowser *bonjourServerBrowser;
-@property (nonatomic, strong) WHKeyExchangeServer *keyExchangeServer;
+@property (nonatomic, strong) NSArray *peers;
+@property (nonatomic, strong) NSMutableDictionary *peerSet;
+@property (nonatomic, strong) WHMultipeerBrowser *browser;
 @end
 
 @implementation WHPeerList
-- (instancetype)initWithInfo:(NSDictionary *)info {
-    self = [super init];
-    if (!self) return self;
+- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID {
+    if (!(self = [super init])) return self;
 
-    self.peers = [NSMutableArray array];
-    self.introData = [NSJSONSerialization dataWithJSONObject:info options:0 error:nil];
-    self.bonjourServerBrowser = [WHBonjourServerBrowser new];
-    self.keyExchangeServer = [[WHKeyExchangeServer alloc] initWithIntroData:self.introData];
-    self.bonjourServer = [[WHBonjourServer alloc] initWithName:info[@"name"]
-                                                          port:self.keyExchangeServer.port];
+    self.peers = @[];
+    self.peerSet = [NSMutableDictionary new];
+    self.browser = [[WHMultipeerBrowser alloc] initWithPeer:ownPeerID];
 
-    @weakify(self);
-    RACSignal *outgoingClients = [self.bonjourServerBrowser.netServices
-        flattenMap:^(NSNetService *service) {
-            @strongify(self);
-            return [[WHKeyExchangeClient alloc] initWithDomain:[service domain]
-                                                          port:[service port]
-                                                     introData:self.introData].peer;
-        }];
+    @weakify(self)
+    [self.browser.peers subscribeNext:^(MCPeerID *peer) {
+        if ([peer isEqual:ownPeerID]) return;
+        @strongify(self)
+        self.peerSet[peer] = [[WHKeyExchangePeer alloc] initWithPeerID:peer browser:self.browser];
+        self.peers = [self.peerSet allValues];
+    }];
+    [self.browser.removedPeers subscribeNext:^(MCPeerID *peer) {
+        @strongify(self)
+        [self.peerSet removeObjectForKey:peer];
+        self.peers = [self.peerSet allValues];
+    }];
 
-    [[RACSignal
-      merge:@[outgoingClients, self.keyExchangeServer.clients]]
-      subscribeNext:^(WHKeyExchangePeer *peer) {
-          @strongify(self);
-          [self.peers addObject:peer];
-      }];
+    [self.browser startBrowsing];
 
     return self;
 }

@@ -8,6 +8,7 @@
 
 #import "WHAddContactViewController.h"
 
+#import "WHAlert.h"
 #import "WHChatClient.h"
 #import "WHKeyExchangePeer.h"
 #import "WHPeerList.h"
@@ -29,8 +30,7 @@
     self.possibleContacts.dataSource = self;
     self.possibleContacts.delegate = self;
 
-    self.peerList = [[WHPeerList alloc] initWithInfo:@{@"name": self.client.displayName,
-                                                       @"jid": self.client.jid}];
+    self.peerList = [[WHPeerList alloc] initWithOwnPeerID:self.client.peerID];
 
     @weakify(self)
     [RACAble(self.peerList, peers) subscribeNext:^(id _) {
@@ -60,10 +60,11 @@
     [self.activityIndicator startAnimating];
     self.activityIndicator.hidden = NO;
 
-    WHKeyExchangePeer *peer = self.peerList.peers[indexPath.row];
-    [peer.connected subscribeCompleted:^{
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-    [peer connect];
+    [[self.peerList.peers[indexPath.row] connectWithJid:self.client.jid]
+     subscribeError:^(NSError *error) {
+         [WHAlert alertWithMessage:[error localizedDescription]];
+     } completed:^{
+         [self.navigationController popViewControllerAnimated:YES];
+     }];
 }
 @end

@@ -26,5 +26,6 @@
 @property (nonatomic, readonly) NSString *availability;
 @property (nonatomic, readonly) NSString *statusMessage;
 
+@property (nonatomic, readonly) MCPeerID *peerID;
 @property (nonatomic, readonly) RACSignal *incomingMessages;
 @end

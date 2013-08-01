@@ -10,6 +10,9 @@
 
 #import "Contact.h"
 #import "WHAccount.h"
+#import "WHAlert.h"
+#import "WHKeyExchangePeer.h"
+#import "WHMultipeerAdvertiser.h"
 #import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
 
@@ -22,6 +25,7 @@
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) RACSubject *cancelSignal;
 @property (nonatomic, strong) RACSignal *incomingMessages;
+@property (nonatomic, strong) WHMultipeerAdvertiser *advertiser;
 @end
 
 @implementation WHChatClient
@@ -49,13 +53,36 @@
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
     self.xmpp = xmpp;
+    self.advertiser = [WHMultipeerAdvertiser new];
 
     self.displayName = [[NSUserDefaults standardUserDefaults] stringForKey:@"displayName"];
     [RACAble(self, displayName) subscribeNext:^(NSString *displayName) {
         [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:@"displayName"];
     }];
+    RACBind(self.advertiser.displayName) = RACBind(self.displayName);
 
     @weakify(self)
+    [[[self.advertiser.invitations flattenMap:^(WHKeyExchangePeer *peer) {
+        NSString *message = [NSString stringWithFormat:@"Connect to user \"%@\"?", peer.name];
+        return [RACSignal zip:@[[RACSignal return:peer],
+                                [WHAlert alertWithMessage:message
+                                                  buttons:@[@"Yes", @"No"]]]];
+    }]
+      flattenMap:^(RACTuple *result) {
+          RACTupleUnpack(WHKeyExchangePeer *peer, NSNumber *button) = result;
+          if ([button integerValue]) {
+              [peer reject];
+              return [RACSignal empty];
+          }
+          else {
+              @strongify(self)
+              return [peer connectWithJid:self.jid];
+          }
+      }]
+     subscribeError:^(NSError *error) {
+         [WHAlert alertWithMessage:[error localizedDescription]];
+     }];
+
     self.cancelSignal = [RACSubject subject];
     RAC(self, contacts) =
         [[[[NSNotificationCenter.defaultCenter
@@ -90,11 +117,7 @@
                                                  username:account.jid
                                                  password:account.password];
     [connectSignal subscribeError:^(NSError *error) {
-        [[[UIAlertView alloc] initWithTitle:nil
-                                    message:[error localizedDescription]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
+         [WHAlert alertWithMessage:[error localizedDescription]];
     }];
 
     [self.xmpp.roster
@@ -124,5 +147,9 @@
 
 - (NSString *)statusMessage {
     return self.xmpp.roster.status;
+}
+
+- (MCPeerID *)peerID {
+    return self.advertiser.peerID;
 }
 @end

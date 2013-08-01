@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F26B4AA17A023460075E1DB /* keyExchangeTests.m */; };
+		3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4709DF17AC150A007A1DF7 /* WHAlert.m */; };
 		3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */; };
 		3F50C5F317A4336500DC76C1 /* WHSettingsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5F217A4336500DC76C1 /* WHSettingsViewModel.m */; };
 		3F50C5F817A5618000DC76C1 /* XMPPReconnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5F717A5617400DC76C1 /* XMPPReconnect.m */; };
@@ -16,10 +17,6 @@
 		3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
 		3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
 		3F5FEAE4179DB60D00C6BF62 /* WHPeerList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */; };
-		3F5FEAE7179DBA2800C6BF62 /* WHBonjourServerBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAE6179DBA2800C6BF62 /* WHBonjourServerBrowser.m */; };
-		3F5FEAF1179DEA9400C6BF62 /* WHBonjourServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAF0179DEA9400C6BF62 /* WHBonjourServer.m */; };
-		3F5FEAF5179ED59500C6BF62 /* WHKeyExchangeServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAF4179ED59500C6BF62 /* WHKeyExchangeServer.m */; };
-		3F5FEAF8179ED5CB00C6BF62 /* WHKeyExchangeClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAF7179ED5CB00C6BF62 /* WHKeyExchangeClient.m */; };
 		3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */; };
 		3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277C178F089200835DD2 /* XMPPAnonymousAuthentication.m */; };
 		3F7127B6178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277F178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m */; };
@@ -46,6 +43,9 @@
 		3F7127CB178F089200835DD2 /* XMPPStringPrep.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127B4178F089200835DD2 /* XMPPStringPrep.m */; };
 		3F7127D2178F0C6100835DD2 /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127CF178F0C6100835DD2 /* libidn.a */; };
 		3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127D3178F0D6F00835DD2 /* libresolv.dylib */; };
+		3F81033517A9C5EE006FBFBE /* WHMultipeerAdvertiser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */; };
+		3F81033817A9C768006FBFBE /* WHMultipeerBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033717A9C768006FBFBE /* WHMultipeerBrowser.m */; };
+		3F81033E17A9E51C006FBFBE /* WHMultipeerSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033D17A9E51C006FBFBE /* WHMultipeerSession.m */; };
 		3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */; };
 		3F8D1B84179495430089B129 /* _Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B83179495430089B129 /* _Contact.m */; };
 		3F8D1B871794957B0089B129 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B861794957B0089B129 /* Contact.m */; };
@@ -82,6 +82,7 @@
 		3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
 		3FA0C622178CFDA1007E6ECC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C620178CFDA1007E6ECC /* InfoPlist.strings */; };
 		3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C623178CFDA1007E6ECC /* whisperTests.m */; };
+		3FB02DAC17AA19A900FD059A /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB02DAB17AA19A900FD059A /* MultipeerConnectivity.framework */; };
 		3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA8D01179CD6D20059E61B /* cryptoTests.m */; };
 		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
@@ -99,6 +100,8 @@
 
 /* Begin PBXFileReference section */
 		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
+		3F4709DE17AC150A007A1DF7 /* WHAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAlert.h; path = Views/WHAlert.h; sourceTree = "<group>"; };
+		3F4709DF17AC150A007A1DF7 /* WHAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAlert.m; path = Views/WHAlert.m; sourceTree = "<group>"; };
 		3F50C5EA17A42CAF00DC76C1 /* WHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHSettingsViewController.h; path = ViewControllers/WHSettingsViewController.h; sourceTree = "<group>"; };
 		3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHSettingsViewController.m; path = ViewControllers/WHSettingsViewController.m; sourceTree = "<group>"; };
 		3F50C5F117A4336500DC76C1 /* WHSettingsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHSettingsViewModel.h; path = ViewModels/WHSettingsViewModel.h; sourceTree = "<group>"; };
@@ -114,14 +117,6 @@
 		3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Encryption.m"; path = "Crypto/NSData+Encryption.m"; sourceTree = "<group>"; };
 		3F5FEAE2179DB60D00C6BF62 /* WHPeerList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHPeerList.h; path = Communication/WHPeerList.h; sourceTree = "<group>"; };
 		3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHPeerList.m; path = Communication/WHPeerList.m; sourceTree = "<group>"; };
-		3F5FEAE5179DBA2800C6BF62 /* WHBonjourServerBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHBonjourServerBrowser.h; path = Communication/WHBonjourServerBrowser.h; sourceTree = "<group>"; };
-		3F5FEAE6179DBA2800C6BF62 /* WHBonjourServerBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHBonjourServerBrowser.m; path = Communication/WHBonjourServerBrowser.m; sourceTree = "<group>"; };
-		3F5FEAEF179DEA9400C6BF62 /* WHBonjourServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHBonjourServer.h; path = Communication/Bonjour/WHBonjourServer.h; sourceTree = "<group>"; };
-		3F5FEAF0179DEA9400C6BF62 /* WHBonjourServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHBonjourServer.m; path = Communication/Bonjour/WHBonjourServer.m; sourceTree = "<group>"; };
-		3F5FEAF3179ED59500C6BF62 /* WHKeyExchangeServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyExchangeServer.h; path = "Communication/Key Exchange/WHKeyExchangeServer.h"; sourceTree = "<group>"; };
-		3F5FEAF4179ED59500C6BF62 /* WHKeyExchangeServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyExchangeServer.m; path = "Communication/Key Exchange/WHKeyExchangeServer.m"; sourceTree = "<group>"; };
-		3F5FEAF6179ED5CB00C6BF62 /* WHKeyExchangeClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyExchangeClient.h; path = "Communication/Key Exchange/WHKeyExchangeClient.h"; sourceTree = "<group>"; };
-		3F5FEAF7179ED5CB00C6BF62 /* WHKeyExchangeClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyExchangeClient.m; path = "Communication/Key Exchange/WHKeyExchangeClient.m"; sourceTree = "<group>"; };
 		3F5FEAF9179F4D3000C6BF62 /* WHKeyExchangePeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyExchangePeer.h; path = "Communication/Key Exchange/WHKeyExchangePeer.h"; sourceTree = "<group>"; };
 		3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyExchangePeer.m; path = "Communication/Key Exchange/WHKeyExchangePeer.m"; sourceTree = "<group>"; };
 		3F71277B178F089200835DD2 /* XMPPAnonymousAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPAnonymousAuthentication.h; sourceTree = "<group>"; };
@@ -178,6 +173,12 @@
 		3F7127CF178F0C6100835DD2 /* libidn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libidn.a; sourceTree = "<group>"; };
 		3F7127D0178F0C6100835DD2 /* stringprep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringprep.h; sourceTree = "<group>"; };
 		3F7127D3178F0D6F00835DD2 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		3F81033317A9C5EE006FBFBE /* WHMultipeerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerAdvertiser.h; path = Communication/Multipeer/WHMultipeerAdvertiser.h; sourceTree = "<group>"; };
+		3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHMultipeerAdvertiser.m; path = Communication/Multipeer/WHMultipeerAdvertiser.m; sourceTree = "<group>"; };
+		3F81033617A9C768006FBFBE /* WHMultipeerBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerBrowser.h; path = Communication/Multipeer/WHMultipeerBrowser.h; sourceTree = "<group>"; };
+		3F81033717A9C768006FBFBE /* WHMultipeerBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHMultipeerBrowser.m; path = Communication/Multipeer/WHMultipeerBrowser.m; sourceTree = "<group>"; };
+		3F81033C17A9E51C006FBFBE /* WHMultipeerSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerSession.h; path = Communication/Multipeer/WHMultipeerSession.h; sourceTree = "<group>"; };
+		3F81033D17A9E51C006FBFBE /* WHMultipeerSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHMultipeerSession.m; path = Communication/Multipeer/WHMultipeerSession.m; sourceTree = "<group>"; };
 		3F8D1B80179494B10089B129 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3F8D1B82179495430089B129 /* _Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _Contact.h; path = CoreData/_Contact.h; sourceTree = "<group>"; };
 		3F8D1B83179495430089B129 /* _Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _Contact.m; path = CoreData/_Contact.m; sourceTree = "<group>"; };
@@ -228,6 +229,7 @@
 		3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "whisperTests-Info.plist"; sourceTree = "<group>"; };
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3FA0C623178CFDA1007E6ECC /* whisperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = whisperTests.m; sourceTree = "<group>"; };
+		3FB02DAB17AA19A900FD059A /* MultipeerConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultipeerConnectivity.framework; path = System/Library/Frameworks/MultipeerConnectivity.framework; sourceTree = SDKROOT; };
 		3FBA8D01179CD6D20059E61B /* cryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cryptoTests.m; sourceTree = "<group>"; };
 		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
 		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */,
 				3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */,
 				3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */,
+				3FB02DAC17AA19A900FD059A /* MultipeerConnectivity.framework in Frameworks */,
 				3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,30 +292,6 @@
 			);
 			name = Reconnect;
 			path = Vendor/XMPPFramework/Extensions/Reconnect;
-			sourceTree = "<group>";
-		};
-		3F5FEAEB179DE69500C6BF62 /* Bonjour */ = {
-			isa = PBXGroup;
-			children = (
-				3F5FEAEF179DEA9400C6BF62 /* WHBonjourServer.h */,
-				3F5FEAF0179DEA9400C6BF62 /* WHBonjourServer.m */,
-				3F5FEAE5179DBA2800C6BF62 /* WHBonjourServerBrowser.h */,
-				3F5FEAE6179DBA2800C6BF62 /* WHBonjourServerBrowser.m */,
-			);
-			name = Bonjour;
-			sourceTree = "<group>";
-		};
-		3F5FEAF2179ED56F00C6BF62 /* Key Exchange */ = {
-			isa = PBXGroup;
-			children = (
-				3F5FEAF6179ED5CB00C6BF62 /* WHKeyExchangeClient.h */,
-				3F5FEAF7179ED5CB00C6BF62 /* WHKeyExchangeClient.m */,
-				3F5FEAF9179F4D3000C6BF62 /* WHKeyExchangePeer.h */,
-				3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */,
-				3F5FEAF3179ED59500C6BF62 /* WHKeyExchangeServer.h */,
-				3F5FEAF4179ED59500C6BF62 /* WHKeyExchangeServer.m */,
-			);
-			name = "Key Exchange";
 			sourceTree = "<group>";
 		};
 		3F712777178F068700835DD2 /* Vendor */ = {
@@ -477,6 +456,19 @@
 			path = Vendor/XMPPFramework/Vendor/libidn;
 			sourceTree = "<group>";
 		};
+		3F81032F17A9C00E006FBFBE /* Multipeer */ = {
+			isa = PBXGroup;
+			children = (
+				3F81033317A9C5EE006FBFBE /* WHMultipeerAdvertiser.h */,
+				3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */,
+				3F81033617A9C768006FBFBE /* WHMultipeerBrowser.h */,
+				3F81033717A9C768006FBFBE /* WHMultipeerBrowser.m */,
+				3F81033C17A9E51C006FBFBE /* WHMultipeerSession.h */,
+				3F81033D17A9E51C006FBFBE /* WHMultipeerSession.m */,
+			);
+			name = Multipeer;
+			sourceTree = "<group>";
+		};
 		3F8D1B7D1794949F0089B129 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -519,10 +511,11 @@
 		3F8D1BA51795F5D00089B129 /* Communication */ = {
 			isa = PBXGroup;
 			children = (
-				3F5FEAEB179DE69500C6BF62 /* Bonjour */,
-				3F5FEAF2179ED56F00C6BF62 /* Key Exchange */,
+				3F81032F17A9C00E006FBFBE /* Multipeer */,
 				3F8EB18E1796FB7E009F938D /* WHChatClient.h */,
 				3F8EB18F1796FB7E009F938D /* WHChatClient.m */,
+				3F5FEAF9179F4D3000C6BF62 /* WHKeyExchangePeer.h */,
+				3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */,
 				3F5FEAE2179DB60D00C6BF62 /* WHPeerList.h */,
 				3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */,
 				3F50C62017A56B8100DC76C1 /* WHXMPPRoster.h */,
@@ -582,6 +575,7 @@
 				D4B7E38D9F734B8398B629FC /* libPods.a */,
 				3F7127D3178F0D6F00835DD2 /* libresolv.dylib */,
 				3F5FCDA51799A1F40075D3F0 /* libz.dylib */,
+				3FB02DAB17AA19A900FD059A /* MultipeerConnectivity.framework */,
 				3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */,
 				3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */,
 				3FA0C617178CFDA1007E6ECC /* XCTest.framework */,
@@ -645,6 +639,8 @@
 		3FE4839117A8288500E7938E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3F4709DE17AC150A007A1DF7 /* WHAlert.h */,
+				3F4709DF17AC150A007A1DF7 /* WHAlert.m */,
 				3FE4839217A828D600E7938E /* WHCheckList.h */,
 				3FE4839317A828D600E7938E /* WHCheckList.m */,
 			);
@@ -819,18 +815,18 @@
 				3F7127C8178F089200835DD2 /* RFImageToDataTransformer.m in Sources */,
 				3F8EB18C1796E639009F938D /* WHAccount.m in Sources */,
 				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
+				3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */,
 				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
-				3F5FEAF1179DEA9400C6BF62 /* WHBonjourServer.m in Sources */,
-				3F5FEAE7179DBA2800C6BF62 /* WHBonjourServerBrowser.m in Sources */,
 				3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */,
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3FE4839417A828D600E7938E /* WHCheckList.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
-				3F5FEAF8179ED5CB00C6BF62 /* WHKeyExchangeClient.m in Sources */,
 				3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */,
-				3F5FEAF5179ED59500C6BF62 /* WHKeyExchangeServer.m in Sources */,
 				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,
+				3F81033517A9C5EE006FBFBE /* WHMultipeerAdvertiser.m in Sources */,
+				3F81033817A9C768006FBFBE /* WHMultipeerBrowser.m in Sources */,
+				3F81033E17A9E51C006FBFBE /* WHMultipeerSession.m in Sources */,
 				3F5FEAE4179DB60D00C6BF62 /* WHPeerList.m in Sources */,
 				3F8EB1981798424C009F938D /* WHPGP.m in Sources */,
 				3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */,
