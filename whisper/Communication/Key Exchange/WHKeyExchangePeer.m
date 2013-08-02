@@ -9,6 +9,7 @@
 #import "WHKeyExchangePeer.h"
 
 #import "Contact.h"
+#import "WHError.h"
 #import "WHKeyPair.h"
 #import "WHMultipeerBrowser.h"
 #import "WHMultipeerSession.h"
@@ -62,6 +63,8 @@
     __block NSString *contactJid = nil;
     return [[[session.connected
               flattenMap:^RACStream *(NSNumber *didConnect) {
+                  if (![didConnect boolValue])
+                      return [WHError errorSignalWithDescription:@"Peer refused connection"];
                   NSError *error = [session sendData:[jid dataUsingEncoding:NSUTF8StringEncoding]];
                   return error ? [RACSignal error:error] : [session.incomingData take:1];
               }]

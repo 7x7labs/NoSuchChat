@@ -9,6 +9,7 @@
 #import "WHXMPPWrapper.h"
 
 #import "WHXMPPRoster.h"
+#import "WHError.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -129,9 +130,7 @@
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotRegister:(NSXMLElement *)error {
-    [self.connectSignal sendError:[NSError errorWithDomain:@"WHXMPPWrapper"
-                                                      code:0
-                                                  userInfo:@{NSLocalizedDescriptionKey: [error description]}]];
+    [self.connectSignal sendError:[WHError errorWithDescription:[error description]]];
 }
 
 @end

@@ -83,6 +83,7 @@
 		3FA0C622178CFDA1007E6ECC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C620178CFDA1007E6ECC /* InfoPlist.strings */; };
 		3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C623178CFDA1007E6ECC /* whisperTests.m */; };
 		3FB02DAC17AA19A900FD059A /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB02DAB17AA19A900FD059A /* MultipeerConnectivity.framework */; };
+		3FB2968817AC34D600D24E0D /* WHError.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FB2968717AC34D600D24E0D /* WHError.m */; };
 		3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA8D01179CD6D20059E61B /* cryptoTests.m */; };
 		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
@@ -230,6 +231,8 @@
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3FA0C623178CFDA1007E6ECC /* whisperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = whisperTests.m; sourceTree = "<group>"; };
 		3FB02DAB17AA19A900FD059A /* MultipeerConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultipeerConnectivity.framework; path = System/Library/Frameworks/MultipeerConnectivity.framework; sourceTree = SDKROOT; };
+		3FB2968617AC34D600D24E0D /* WHError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHError.h; sourceTree = "<group>"; };
+		3FB2968717AC34D600D24E0D /* WHError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHError.m; sourceTree = "<group>"; };
 		3FBA8D01179CD6D20059E61B /* cryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cryptoTests.m; sourceTree = "<group>"; };
 		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
 		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
@@ -601,6 +604,8 @@
 				3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */,
 				3F8D1B881794A12E0089B129 /* WHCoreData.h */,
 				3F8D1B891794A12E0089B129 /* WHCoreData.m */,
+				3FB2968617AC34D600D24E0D /* WHError.h */,
+				3FB2968717AC34D600D24E0D /* WHError.m */,
 			);
 			path = whisper;
 			sourceTree = "<group>";
@@ -822,6 +827,7 @@
 				3FE4839417A828D600E7938E /* WHCheckList.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
+				3FB2968817AC34D600D24E0D /* WHError.m in Sources */,
 				3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */,
 				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,
 				3F81033517A9C5EE006FBFBE /* WHMultipeerAdvertiser.m in Sources */,

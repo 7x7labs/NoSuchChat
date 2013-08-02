@@ -55,6 +55,7 @@
         case MCSessionStateConnecting:
             break;
         case MCSessionStateNotConnected:
+            [(RACSubject *)self.connected sendNext:@NO];
             [(RACSubject *)self.connected sendCompleted];
             break;
     }

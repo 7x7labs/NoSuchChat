@@ -190,9 +190,23 @@ describe(@"WHKeyExchangePeer", ^{
             [browser verify];
         });
 
+        it(@"should report an error when the connection is refused", ^AsyncBlock {
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:@NO]] connected];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:peerID];
+
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            [[peer connectWithJid:ownJid] subscribeError:^(NSError *error) {
+                [session verify];
+                done();
+            }];
+        });
+
         it(@"should send the user's jid when told to connect", ^AsyncBlock{
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
-            [[[session expect] andReturn:[RACSignal return:nil]] connected];
+            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
             [[[session expect] andReturn:[RACSignal empty]] incomingData];
             [[session expect] sendData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
                 expect(data).to.beKindOf([NSData class]);
@@ -213,7 +227,7 @@ describe(@"WHKeyExchangePeer", ^{
 
         it(@"should send a public key after receiving the contact's JID", ^AsyncBlock{
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
-            [[[session expect] andReturn:[RACSignal return:nil]] connected];
+            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
             [[session expect] sendData:[OCMArg isNotNil]];
             [[[session expect] andReturn:[RACSignal return:[contactJid dataUsingEncoding:NSUTF8StringEncoding]]] incomingData];
             [[session expect] sendData:[OCMArg isNotNil]];
@@ -235,7 +249,7 @@ describe(@"WHKeyExchangePeer", ^{
             SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
 
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
-            [[[session expect] andReturn:[RACSignal return:nil]] connected];
+            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
             [[session expect] sendData:[OCMArg isNotNil]];
             [[[session expect] andReturn:[RACSignal return:jid]] incomingData];
             [[session expect] sendData:[OCMArg isNotNil]];
