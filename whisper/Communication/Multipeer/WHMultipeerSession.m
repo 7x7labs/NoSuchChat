@@ -23,6 +23,8 @@
     self.peerID = peer;
     self.session = [[MCSession alloc] initWithPeer:self.peerID];
     self.session.delegate = self;
+    self.connected = [RACReplaySubject subject];
+    self.incomingData = [RACReplaySubject replaySubjectWithCapacity:1];
     [browser invitePeer:self.peerID toSession:self.session withContext:nil timeout:0];
     return self;
 }
@@ -32,6 +34,8 @@
     self.peerID = peer;
     self.session = [[MCSession alloc] initWithPeer:self.peerID];
     self.session.delegate = self;
+    self.connected = [RACReplaySubject subject];
+    self.incomingData = [RACReplaySubject replaySubjectWithCapacity:1];
     invitation(YES, self.session);
     return self;
 }
