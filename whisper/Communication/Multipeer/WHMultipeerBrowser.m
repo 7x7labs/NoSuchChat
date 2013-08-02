@@ -36,7 +36,8 @@
 }
 
 - (WHMultipeerSession *)connectToPeer:(MCPeerID *)peerID {
-    return [[WHMultipeerSession alloc] initWithPeer:peerID serviceBrowser:self.browser];
+    return [[WHMultipeerSession alloc] initWithRemotePeerID:peerID
+                                             serviceBrowser:self.browser];
 }
 
 #pragma mark - MCNearbyServiceBrowserDelegate

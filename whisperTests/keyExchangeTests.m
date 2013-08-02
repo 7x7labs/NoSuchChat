@@ -165,9 +165,10 @@ describe(@"WHPeerList", ^{
 describe(@"WHKeyExchangePeer", ^{
     NSString *contactJid = @"contact@locahost";
     NSString *ownJid = @"ownjid@locahost";
-    __block MCPeerID *peerID;
+    __block MCPeerID *ownPeerID, *otherPeerID;
     beforeEach(^{
-        peerID = [[MCPeerID alloc] initWithDisplayName:@"display name"];
+        ownPeerID = [[MCPeerID alloc] initWithDisplayName:@"own display name"];
+        otherPeerID = [[MCPeerID alloc] initWithDisplayName:@"other display name"];
         [(id)[[UIApplication sharedApplication] delegate] initTestContext];
     });
     afterEach(^{
@@ -175,16 +176,16 @@ describe(@"WHKeyExchangePeer", ^{
     });
 
     describe(@"outgoing connection", ^{
-        it(@"should set its name to the peer's display name", ^{
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:nil];
-            expect(peer.name).to.equal(@"display name");
+        it(@"should set its name to the remote peer's display name", ^{
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:nil];
+            expect(peer.name).to.equal(otherPeerID.displayName);
         });
 
         it(@"should ask the browser to connect to the peer", ^{
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:nil] connectToPeer:peerID];
+            [[[browser expect] andReturn:nil] connectToPeer:otherPeerID];
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:browser];
             [peer connectWithJid:@"ownjid@localhost"];
 
             [browser verify];
@@ -195,9 +196,9 @@ describe(@"WHKeyExchangePeer", ^{
             [[[session expect] andReturn:[RACSignal return:@NO]] connected];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:session] connectToPeer:peerID];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID];
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:browser];
             [[peer connectWithJid:ownJid] subscribeError:^(NSError *error) {
                 [session verify];
                 done();
@@ -215,9 +216,9 @@ describe(@"WHKeyExchangePeer", ^{
             }]];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:session] connectToPeer:peerID];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID];
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:browser];
             [[peer connectWithJid:ownJid] subscribeCompleted:^{
                 [session verify];
                 done();
@@ -234,9 +235,9 @@ describe(@"WHKeyExchangePeer", ^{
             [[[session expect] andReturn:[RACSignal empty]] incomingData];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:session] connectToPeer:peerID];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID];
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:browser];
             [[peer connectWithJid:ownJid] subscribeCompleted:^{
                 [session verify];
                 done();
@@ -256,11 +257,11 @@ describe(@"WHKeyExchangePeer", ^{
             [[[session expect] andReturn:[RACSignal return:keyBits]] incomingData];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:session] connectToPeer:peerID];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID];
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID browser:browser];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:browser];
             [[peer connectWithJid:@"ownjid@localhost"] subscribeNext:^(Contact *contact) {
-                expect(contact.name).to.equal(peerID.displayName);
+                expect(contact.name).to.equal(otherPeerID.displayName);
                 expect(contact.ownKey).notTo.beNil();
                 expect(contact.ownKey.publicKey).notTo.beNil();
                 expect(contact.ownKey.privateKey).notTo.beNil();
@@ -280,7 +281,7 @@ describe(@"WHKeyExchangePeer", ^{
                 done();
             };
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID invitation:handler];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID invitation:handler];
             [peer connectWithJid:@"ownjid@localhost"];
         });
 
@@ -291,7 +292,7 @@ describe(@"WHKeyExchangePeer", ^{
                 done();
             };
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithPeerID:peerID invitation:handler];
+            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID invitation:handler];
             [peer reject];
         });
     });

@@ -32,7 +32,9 @@
     [self.browser.peers subscribeNext:^(MCPeerID *peer) {
         if ([peer isEqual:ownPeerID]) return;
         @strongify(self)
-        self.peerSet[peer] = [[WHKeyExchangePeer alloc] initWithPeerID:peer browser:self.browser];
+        self.peerSet[peer] = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
+                                                             remotePeerID:peer
+                                                                  browser:self.browser];
         self.peers = [self.peerSet allValues];
     }];
     [self.browser.removedPeers subscribeNext:^(MCPeerID *peer) {

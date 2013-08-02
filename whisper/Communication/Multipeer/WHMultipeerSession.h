@@ -11,8 +11,11 @@
 typedef void (^invitationHandler)(BOOL accept, MCSession *session);
 
 @interface WHMultipeerSession : NSObject
-- (instancetype)initWithPeer:(MCPeerID *)peer serviceBrowser:(MCNearbyServiceBrowser *)browser;
-- (instancetype)initWithPeer:(MCPeerID *)peer invitation:(invitationHandler)invitation;
+- (instancetype)initWithRemotePeerID:(MCPeerID *)remotePeer
+                      serviceBrowser:(MCNearbyServiceBrowser *)browser;
+- (instancetype)initWithSelf:(MCPeerID *)ownPeer
+                      remote:(MCPeerID *)remotePeer
+                  invitation:(invitationHandler)invitation;
 
 - (NSError *)sendData:(NSData *)data;
 

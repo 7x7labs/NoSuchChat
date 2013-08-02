@@ -19,33 +19,37 @@
 @interface WHKeyExchangePeer ()
 @property (nonatomic, strong) NSString *name;
 
-@property (nonatomic, strong) MCPeerID *peerID;
+@property (nonatomic, strong) MCPeerID *ownPeerID;
+@property (nonatomic, strong) MCPeerID *remotePeerID;
 @property (nonatomic, strong) WHMultipeerBrowser *browser;
 @property (nonatomic, strong) invitationHandler invitation;
 @end
 
 @implementation WHKeyExchangePeer
-- (instancetype)initWithPeerID:(MCPeerID *)peerID {
+- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
+                     remotePeerID:(MCPeerID *)remotePeerID
+{
     if (!(self = [super init])) return self;
-
-    self.name = peerID.displayName;
-    self.peerID = peerID;
-
+    self.name = remotePeerID.displayName;
+    self.ownPeerID = ownPeerID;
+    self.remotePeerID = remotePeerID;
     return self;
 }
 
-- (instancetype)initWithPeerID:(MCPeerID *)peerID
-                       browser:(WHMultipeerBrowser *)browser
+- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
+                     remotePeerID:(MCPeerID *)remotePeerID
+                          browser:(WHMultipeerBrowser *)browser
 {
-    if (!(self = [self initWithPeerID:peerID])) return self;
+    if (!(self = [self initWithOwnPeerID:ownPeerID remotePeerID:remotePeerID])) return nil;
     self.browser = browser;
     return self;
 }
 
-- (instancetype)initWithPeerID:(MCPeerID *)peerID
+- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
+                     remotePeerID:(MCPeerID *)remotePeerID
                     invitation:(invitationHandler)invitation
 {
-    if (!(self = [self initWithPeerID:peerID])) return self;
+    if (!(self = [self initWithOwnPeerID:ownPeerID remotePeerID:remotePeerID])) return nil;
     self.invitation = invitation;
     return self;
 }
@@ -56,9 +60,11 @@
 
     WHMultipeerSession *session;
     if (self.browser)
-        session = [self.browser connectToPeer:self.peerID];
+        session = [self.browser connectToPeer:self.remotePeerID];
     else
-        session = [[WHMultipeerSession alloc] initWithPeer:self.peerID invitation:self.invitation];
+        session = [[WHMultipeerSession alloc] initWithSelf:self.ownPeerID
+                                                    remote:self.remotePeerID
+                                                invitation:self.invitation];
 
     __block NSString *contactJid = nil;
     return [[[session.connected

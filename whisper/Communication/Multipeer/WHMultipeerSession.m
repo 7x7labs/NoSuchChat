@@ -18,24 +18,29 @@
 @end
 
 @implementation WHMultipeerSession
-- (instancetype)initWithPeer:(MCPeerID *)peer {
+- (instancetype)initWithSelf:(MCPeerID *)ownPeer remote:(MCPeerID *)remotePeer {
     if (!(self = [super init])) return self;
-    self.peerID = peer;
-    self.session = [[MCSession alloc] initWithPeer:self.peerID];
+    self.peerID = remotePeer;
+    self.session = [[MCSession alloc] initWithPeer:ownPeer securityIdentity:nil encryptionPreference:MCEncryptionNone];
     self.session.delegate = self;
     self.connected = [RACReplaySubject subject];
     self.incomingData = [RACReplaySubject replaySubjectWithCapacity:1];
     return self;
 }
 
-- (instancetype)initWithPeer:(MCPeerID *)peer serviceBrowser:(MCNearbyServiceBrowser *)browser {
-    if (!(self = [self initWithPeer:peer])) return self;
+- (instancetype)initWithRemotePeerID:(MCPeerID *)remotePeer
+              serviceBrowser:(MCNearbyServiceBrowser *)browser
+{
+    if (!(self = [self initWithSelf:browser.myPeerID remote:remotePeer])) return self;
     [browser invitePeer:self.peerID toSession:self.session withContext:nil timeout:0];
     return self;
 }
 
-- (instancetype)initWithPeer:(MCPeerID *)peer invitation:(invitationHandler)invitation {
-    if (!(self = [self initWithPeer:peer])) return self;
+- (instancetype)initWithSelf:(MCPeerID *)ownPeer
+                      remote:(MCPeerID *)remotePeer
+                  invitation:(invitationHandler)invitation
+{
+    if (!(self = [self initWithSelf:ownPeer remote:remotePeer])) return self;
     invitation(YES, self.session);
     return self;
 }
