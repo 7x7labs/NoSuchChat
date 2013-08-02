@@ -10,8 +10,6 @@
 
 #import "WHMultipeerSession.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHMultipeerBrowser () <MCNearbyServiceBrowserDelegate>
 @property (nonatomic, strong) RACSubject *peers;
 @property (nonatomic, strong) RACSubject *removedPeers;

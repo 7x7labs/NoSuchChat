@@ -14,7 +14,6 @@
 #import "WHPGP.h"
 
 #import "NSData+XMPP.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
 
 NSString * const WHContactAddedNotification = @"WHContactAddedNotification";
 

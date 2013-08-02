@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-@class RACSignal;
-
 @interface WHMultipeerAdvertiser : NSObject
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, readonly) MCPeerID *peerID;

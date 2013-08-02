@@ -12,7 +12,6 @@
 #import "WHMultipeerBrowser.h"
 
 #import <EXTScope.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHPeerList ()
 @property (nonatomic, strong) NSArray *peers;

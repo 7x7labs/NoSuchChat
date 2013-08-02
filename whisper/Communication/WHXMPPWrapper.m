@@ -11,8 +11,6 @@
 #import "WHXMPPRoster.h"
 #import "WHError.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 #import "XMPP.h"
 #import "XMPPReconnect.h"
 

@@ -8,8 +8,6 @@
 
 #import "WHError.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @implementation WHError
 + (WHError *)errorWithDescription:(NSString *)description {
     return [self errorWithDomain:@"com.7x7-labs.whisper"

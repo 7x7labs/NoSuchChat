@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class RACSignal;
 @class WHMultipeerSession;
 
 @interface WHMultipeerBrowser : NSObject

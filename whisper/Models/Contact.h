@@ -8,7 +8,6 @@
 
 #import "_Contact.h"
 
-@class RACSignal;
 @class WHKeyPair;
 
 extern NSString * const WHContactAddedNotification;

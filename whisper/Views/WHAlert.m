@@ -8,8 +8,6 @@
 
 #import "WHAlert.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHAlert ()<UIAlertViewDelegate>
 @property (nonatomic, strong) RACSubject *result;
 @end

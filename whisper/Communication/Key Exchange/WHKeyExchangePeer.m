@@ -14,8 +14,6 @@
 #import "WHMultipeerBrowser.h"
 #import "WHMultipeerSession.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHKeyExchangePeer ()
 @property (nonatomic, strong) NSString *name;
 

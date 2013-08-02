@@ -10,8 +10,6 @@
 
 #import "WHChatClient.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 static NSSet *validAvaibilityStates() {
     static NSSet *values;
     static dispatch_once_t onceToken;

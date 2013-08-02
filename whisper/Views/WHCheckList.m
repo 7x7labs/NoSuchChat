@@ -8,8 +8,6 @@
 
 #import "WHCheckList.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHCheckList () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSString *value;

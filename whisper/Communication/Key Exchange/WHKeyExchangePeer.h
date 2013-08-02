@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-@class RACSignal;
 @class WHMultipeerBrowser;
 
 typedef void (^invitationHandler)(BOOL accept, MCSession *session);

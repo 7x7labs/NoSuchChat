@@ -8,8 +8,6 @@
 
 #import "WHCoreData.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHCoreData ()
 @property (nonatomic, strong) NSManagedObjectContext *mainThreadContext;
 @property (nonatomic, strong) NSManagedObjectContext *backgroundContext;

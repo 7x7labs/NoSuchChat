@@ -14,7 +14,6 @@
 #import "WHPeerList.h"
 
 #import <EXTScope.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface WHAddContactViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *possibleContacts;

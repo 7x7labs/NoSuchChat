@@ -10,8 +10,6 @@
 
 #import "WHKeyExchangePeer.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHMultipeerAdvertiser () <MCNearbyServiceAdvertiserDelegate>
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCNearbyServiceAdvertiser *advertiser;

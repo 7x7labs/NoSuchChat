@@ -11,8 +11,6 @@
 #import "WHCheckList.h"
 #import "WHSettingsViewModel.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHSettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *displayName;
 @property (weak, nonatomic) IBOutlet UITableView *availabilityTable;

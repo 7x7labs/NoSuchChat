@@ -8,8 +8,6 @@
 
 #import "WHMultipeerSession.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface WHMultipeerSession () <MCSessionDelegate>
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCSession *session;
