@@ -107,7 +107,7 @@
         NSString *status = [item attributeStringValueForName:@"subscription"];
         if ([status isEqualToString:@"both"] ||
             [status isEqualToString:@"to"] ||
-            [[item attributeStringValueForName:@"subscribe"] isEqualToString:@"ask"])
+            [[item attributeStringValueForName:@"ask"] isEqualToString:@"subscribe"])
         {
             XMPPJID *jid = [XMPPJID jidWithString:[item attributeStringValueForName:@"jid"]];
             [jids addObject:[jid bare]];
