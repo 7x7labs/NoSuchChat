@@ -131,7 +131,7 @@
     // Subscription request (sender trying to subscribe to us)
     if ([[presence type] isEqualToString:@"subscribe"]) {
         if ([self.contactJids containsObject:[[presence from] bare]])
-            [self sendPresenceType:@"subscribe" to:[presence from]];
+            [self sendPresenceType:@"subscribed" to:[presence from]];
         return;
     }
 
