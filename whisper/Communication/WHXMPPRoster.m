@@ -159,6 +159,9 @@
         return;
     }
 
+    if ([[presence type] isEqualToString:@"unavailable"])
+        return;
+
     XMPPJID *jid = [presence from];
     Contact *c = [Contact contactForJid:[jid bare] managedObjectContext:self.objectContext];
     if (!c) return;

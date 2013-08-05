@@ -65,7 +65,7 @@
                                                 invitation:self.invitation];
 
     __block NSString *contactJid = nil;
-    return [[[session.connected
+    return [[[[session.connected
               flattenMap:^RACStream *(NSNumber *didConnect) {
                   if (![didConnect boolValue])
                       return [WHError errorSignalWithDescription:@"Peer refused connection"];
@@ -77,6 +77,7 @@
                   NSError *error = [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
                   return error ? [RACSignal error:error] : [session.incomingData take:1];
               }]
+              deliverOn:[RACScheduler mainThreadScheduler]]
               map:^(NSData *publicKey) {
                   [WHKeyPair addKey:publicKey fromJid:contactJid];
                   return [Contact createWithName:self.name jid:contactJid];
