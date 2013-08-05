@@ -95,17 +95,22 @@
           }]
           startWith:[Contact all]];
 
-    self.incomingMessages = [self.xmpp.messages flattenMap:^(id message) {
-        @strongify(self)
-        Contact *contact = [self.contacts.rac_sequence objectPassingTest:^(Contact *c) {
-            return [c.jid isEqualToString:[message senderJid]];
-        }];
+    RACMulticastConnection *incomingMessages =
+        [[self.xmpp.messages
+          flattenMap:^(id message) {
+              @strongify(self)
+              Contact *contact = [self.contacts.rac_sequence objectPassingTest:^(Contact *c) {
+                  return [c.jid isEqualToString:[message senderJid]];
+              }];
 
-        if (!contact)
-            return [RACSignal return:nil];
-        return [contact addReceivedMessage:[contact decrypt:[message body]]
-                                      date:[NSDate date]];
-    }];
+              if (!contact)
+                  return [RACSignal return:nil];
+              return [contact addReceivedMessage:[contact decrypt:[message body]]
+                                            date:[NSDate date]];
+          }]
+         multicast:[RACSubject subject]];
+    [incomingMessages connect];
+    self.incomingMessages = incomingMessages.signal;
 
     self.xmpp.roster.contactJids =
         [NSMutableSet setWithArray:[[self.contacts.rac_sequence
