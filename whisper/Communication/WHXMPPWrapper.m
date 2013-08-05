@@ -18,7 +18,7 @@
 - (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body {
     self = [super init];
     if (self) {
-        self.senderJid = senderJid;
+        self.senderJid = [[XMPPJID jidWithString:senderJid] bare];
         self.body = body;
     }
     return self;
