@@ -9,4 +9,6 @@
 !default.perspectivev3
 xcuserdata
 Pods
+prosody.*
 whisper/CoreData
+whisper.xcworkspace/xcshareddata/whisper.xccheckout
