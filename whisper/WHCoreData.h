@@ -16,6 +16,8 @@
 + (RACSignal *)insertObjectOfType:(NSString *)type
                         withBlock:(void (^)(NSManagedObject *))block;
 
++ (RACSignal *)save;
+
 + (void)initTestContext;
 + (void)initSqliteContext;
 @end

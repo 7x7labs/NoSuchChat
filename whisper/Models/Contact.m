@@ -48,9 +48,9 @@ static NSManagedObjectContext *moc() {
     contact.name = name;
     contact.jid = jid;
 
-    NSError *error;
-    if (![moc() save:&error])
+    [[WHCoreData save] subscribeError:^(NSError *error) {
         NSLog(@"Error saving contact: %@", error);
+    }];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:WHContactAddedNotification
                                                         object:nil
@@ -73,8 +73,7 @@ static NSManagedObjectContext *moc() {
 
 - (Contact *)bgSelf {
     return (Contact *)[[WHCoreData backgroundManagedObjectContext]
-                       existingObjectWithID:self.objectID
-                       error:nil];
+                       objectWithID:self.objectID];
 }
 
 - (RACSignal *)addMessage:(NSString *)text date:(NSDate *)date incoming:(NSNumber *)incoming {
