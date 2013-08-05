@@ -22,7 +22,7 @@
     self.session = [[MCSession alloc] initWithPeer:ownPeer securityIdentity:nil encryptionPreference:MCEncryptionNone];
     self.session.delegate = self;
     self.connected = [RACReplaySubject subject];
-    self.incomingData = [RACReplaySubject replaySubjectWithCapacity:1];
+    self.incomingData = [RACReplaySubject subject];
     return self;
 }
 

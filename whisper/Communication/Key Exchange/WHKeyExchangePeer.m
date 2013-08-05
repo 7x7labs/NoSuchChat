@@ -75,7 +75,7 @@
               flattenMap:^RACStream *(NSData *jidData) {
                   contactJid = [[NSString alloc] initWithData:jidData encoding:NSUTF8StringEncoding];
                   NSError *error = [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
-                  return error ? [RACSignal error:error] : [session.incomingData take:1];
+                  return error ? [RACSignal error:error] : [[session.incomingData skip:1] take:1];
               }]
               deliverOn:[RACScheduler mainThreadScheduler]]
               map:^(NSData *publicKey) {

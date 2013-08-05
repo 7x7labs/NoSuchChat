@@ -254,7 +254,7 @@ describe(@"WHKeyExchangePeer", ^{
             [[session expect] sendData:[OCMArg isNotNil]];
             [[[session expect] andReturn:[RACSignal return:jid]] incomingData];
             [[session expect] sendData:[OCMArg isNotNil]];
-            [[[session expect] andReturn:[RACSignal return:keyBits]] incomingData];
+            [[[session expect] andReturn:[[RACSignal return:jid] concat:[RACSignal return:keyBits]]] incomingData];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID];
