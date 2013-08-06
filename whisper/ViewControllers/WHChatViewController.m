@@ -14,7 +14,7 @@
 #import <EXTScope.h>
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
-@interface WHChatViewController () <UITableViewDataSource>
+@interface WHChatViewController () <UITableViewDataSource, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *message;
 @property (weak, nonatomic) IBOutlet UIButton *send;
 @property (weak, nonatomic) IBOutlet UITableView *chatLog;
@@ -48,6 +48,13 @@
 - (IBAction)sendMessage {
     [self.client sendMessage:self.message.text to:self.contact];
     self.message.text = @"";
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
 }
 
 #pragma mark UITableViewDataSource
