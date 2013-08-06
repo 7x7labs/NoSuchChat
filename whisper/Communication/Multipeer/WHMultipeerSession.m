@@ -16,10 +16,16 @@
 @end
 
 @implementation WHMultipeerSession
+- (void)dealloc {
+    [self.session disconnect];
+}
+
 - (instancetype)initWithSelf:(MCPeerID *)ownPeer remote:(MCPeerID *)remotePeer {
     if (!(self = [super init])) return self;
     self.peerID = remotePeer;
-    self.session = [[MCSession alloc] initWithPeer:ownPeer securityIdentity:nil encryptionPreference:MCEncryptionNone];
+    self.session = [[MCSession alloc] initWithPeer:ownPeer
+                                  securityIdentity:nil
+                              encryptionPreference:MCEncryptionNone];
     self.session.delegate = self;
     self.connected = [RACReplaySubject subject];
     self.incomingData = [RACReplaySubject subject];
