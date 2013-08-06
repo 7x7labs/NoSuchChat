@@ -28,14 +28,24 @@ static WHCoreData *instance() {
     NSPersistentStoreCoordinator *coordinator =
         [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:objectModel];
 
-    NSError *error;
-    if (![coordinator addPersistentStoreWithType:storeType
-                                   configuration:nil
-                                             URL:storeUrl
-                                         options:@{NSMigratePersistentStoresAutomaticallyOption: @YES,
-                                                   NSInferMappingModelAutomaticallyOption: @YES}
-                                           error:&error])
-        NSLog(@"Error opening persisted core data: %@", error);
+    __block NSError *error = nil;
+    BOOL (^open)() = ^BOOL{
+        return ![coordinator addPersistentStoreWithType:storeType
+                                          configuration:nil
+                                                    URL:storeUrl
+                                                options:@{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                                          NSInferMappingModelAutomaticallyOption: @YES}
+                                                  error:&error];
+    };
+    if (open()) {
+        NSLog(@"Deleting old persistent store due to error when opening: %@", error);
+        error = nil;
+        [[NSFileManager defaultManager] removeItemAtPath:storeUrl.path error:&error];
+        if (error)
+            NSLog(@"Could not delete old persistent store: %@", error);
+        else if (open())
+            NSLog(@"Error opening persistent store after deleting old store: %@", error);
+    }
 
     self.saveContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     self.saveContext.persistentStoreCoordinator = coordinator;
