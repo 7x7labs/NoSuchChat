@@ -46,7 +46,7 @@
 {
     if (!(self = [super init])) return self;
 
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"Display Name",
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"User Name",
                                                               @"statusMessage": @""}];
 
     WHAccount *account = [WHAccount get];
