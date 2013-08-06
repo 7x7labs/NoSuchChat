@@ -17,6 +17,10 @@
 @end
 
 @implementation WHMultipeerBrowser
+- (void)dealloc {
+    [self.browser stopBrowsingForPeers];
+}
+
 - (instancetype)initWithPeer:(MCPeerID *)peerID {
     if (!(self = [super init])) return self;
 
