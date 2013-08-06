@@ -37,6 +37,10 @@
 @end
 
 @implementation WHXMPPWrapper
+- (void)dealloc {
+    [self.stream sendElement:[XMPPPresence presenceWithType:@"unavailable"]];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         self.messages = [RACReplaySubject subject];
