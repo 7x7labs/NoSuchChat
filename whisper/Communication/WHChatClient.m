@@ -44,8 +44,7 @@
                            port:(uint16_t)port
                          stream:(id<WHXMPPStream>)xmpp
 {
-    self = [super init];
-    if (!self) return self;
+    if (!(self = [super init])) return self;
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"Display Name",
                                                               @"statusMessage": @""}];
@@ -56,32 +55,33 @@
     self.advertiser = [WHMultipeerAdvertiser new];
 
     self.displayName = [[NSUserDefaults standardUserDefaults] stringForKey:@"displayName"];
-    [RACAble(self, displayName) subscribeNext:^(NSString *displayName) {
-        [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:@"displayName"];
-    }];
+    [NSUserDefaults.standardUserDefaults.rac_lift setObject:RACAble(self, displayName)
+                                                     forKey:@"displayName"];
     RACBind(self.advertiser.displayName) = RACBind(self.displayName);
 
+
     @weakify(self)
-    [[[self.advertiser.invitations flattenMap:^(WHKeyExchangePeer *peer) {
-        NSString *message = [NSString stringWithFormat:@"Connect to user \"%@\"?", peer.name];
-        return [RACSignal zip:@[[RACSignal return:peer],
-                                [WHAlert alertWithMessage:message
-                                                  buttons:@[@"Yes", @"No"]]]];
-    }]
-      flattenMap:^(RACTuple *result) {
-          RACTupleUnpack(WHKeyExchangePeer *peer, NSNumber *button) = result;
-          if ([button integerValue]) {
-              [peer reject];
-              return [RACSignal empty];
-          }
-          else {
-              @strongify(self)
-              return [peer connectWithJid:self.jid];
-          }
-      }]
-     subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error localizedDescription]];
-     }];
+    [[[self.advertiser.invitations
+       flattenMap:^(WHKeyExchangePeer *peer) {
+           NSString *message = [NSString stringWithFormat:@"Connect to user \"%@\"?", peer.name];
+           return [RACSignal zip:@[[RACSignal return:peer],
+                                   [WHAlert alertWithMessage:message
+                                                     buttons:@[@"Yes", @"No"]]]];
+       }]
+       flattenMap:^(RACTuple *result) {
+           RACTupleUnpack(WHKeyExchangePeer *peer, NSNumber *button) = result;
+           if ([button integerValue]) {
+               [peer reject];
+               return [RACSignal empty];
+           }
+           else {
+               @strongify(self)
+               return [peer connectWithJid:self.jid];
+           }
+       }]
+       subscribeError:^(NSError *error) {
+           [WHAlert alertWithMessage:[error localizedDescription]];
+       }];
 
     self.cancelSignal = [RACSubject subject];
     RAC(self, contacts) =
