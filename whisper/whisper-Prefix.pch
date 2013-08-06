@@ -14,4 +14,4 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #endif
 
-#define kXmppServerHost @"localhost"
+extern NSString * const kXmppServerHost;

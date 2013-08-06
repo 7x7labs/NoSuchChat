@@ -70,6 +70,7 @@
 		3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB19D1798BF96009F938D /* NSData+Signature.m */; };
 		3F8EB1A11798C040009F938D /* NSData+SHA.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A01798C040009F938D /* NSData+SHA.m */; };
 		3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A31798DC8C009F938D /* WHKeyPair.m */; };
+		3F94B76617B07BA600B1B3B9 /* hostname.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F94B76517B07BA600B1B3B9 /* hostname.m */; };
 		3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
 		3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
 		3FA0C5FD178CFDA1007E6ECC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
@@ -213,6 +214,7 @@
 		3F8EB1A01798C040009F938D /* NSData+SHA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+SHA.m"; path = "Crypto/NSData+SHA.m"; sourceTree = "<group>"; };
 		3F8EB1A21798DC8C009F938D /* WHKeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyPair.h; path = Crypto/WHKeyPair.h; sourceTree = "<group>"; };
 		3F8EB1A31798DC8C009F938D /* WHKeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyPair.m; path = Crypto/WHKeyPair.m; sourceTree = "<group>"; };
+		3F94B76517B07BA600B1B3B9 /* hostname.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hostname.m; sourceTree = "<group>"; };
 		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -613,6 +615,7 @@
 		3FA0C5FF178CFDA1007E6ECC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3F94B76517B07BA600B1B3B9 /* hostname.m */,
 				3FA0C601178CFDA1007E6ECC /* InfoPlist.strings */,
 				3FA0C604178CFDA1007E6ECC /* main.m */,
 				3FA0C600178CFDA1007E6ECC /* whisper-Info.plist */,
@@ -661,6 +664,7 @@
 			buildPhases = (
 				45BFFCACFBE0460A8383688C /* Check Pods Manifest.lock */,
 				3F8D1B7C179493F60089B129 /* ShellScript */,
+				3F94B76717B07C3A00B1B3B9 /* ShellScript */,
 				3FA0C5F1178CFDA1007E6ECC /* Sources */,
 				3FA0C5F2178CFDA1007E6ECC /* Frameworks */,
 				3FA0C5F3178CFDA1007E6ECC /* Resources */,
@@ -765,6 +769,19 @@
 			shellPath = /bin/sh;
 			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\n/usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models";
 		};
+		3F94B76717B07C3A00B1B3B9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HOST_NAME=\"NSString * const kXmppServerHost = @\\\"$(hostname)\\\";\"\nHOST_NAME_FILE=\"${SOURCE_ROOT}/whisper/hostname.m\"\n\nif [ -f ${HOST_NAME_FILE} ]; then\n  OLD_HOST_NAME=$(cat ${HOST_NAME_FILE})\nfi\n\nif [ \"${HOST_NAME}\" != \"${OLD_HOST_NAME}\" ]; then\n  echo \"${HOST_NAME}\" > ${HOST_NAME_FILE}\nfi\n";
+		};
 		45BFFCACFBE0460A8383688C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -807,6 +824,7 @@
 				3F8D1B871794957B0089B129 /* Contact.m in Sources */,
 				3F7127C6178F089200835DD2 /* DDList.m in Sources */,
 				3F7127C7178F089200835DD2 /* GCDMulticastDelegate.m in Sources */,
+				3F94B76617B07BA600B1B3B9 /* hostname.m in Sources */,
 				3FA0C605178CFDA1007E6ECC /* main.m in Sources */,
 				3F8D1B9C179597FC0089B129 /* Message.m in Sources */,
 				3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */,
