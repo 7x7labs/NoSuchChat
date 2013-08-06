@@ -127,8 +127,7 @@
 }
 
 - (void)xmppStreamDidRegister:(XMPPStream *)sender {
-    [self.stream sendElement:[XMPPPresence presence]];
-    [self.connectSignal sendCompleted];
+    [self xmppStreamDidConnect:sender];
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotRegister:(NSXMLElement *)error {
