@@ -20,7 +20,7 @@
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
 @interface WHChatClient ()
-@property (nonatomic, strong) NSObject<WHXMPPStream> *xmpp;
+@property (nonatomic, strong) WHXMPPWrapper *xmpp;
 @property (nonatomic, strong) NSArray *contacts;
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) RACSubject *cancelSignal;
@@ -35,14 +35,14 @@
 
 + (WHChatClient *)clientForServer:(NSString *)host
                              port:(uint16_t)port
-                           stream:(id<WHXMPPStream>)xmpp
+                           stream:(WHXMPPWrapper *)xmpp
 {
     return [[self alloc] initForServer:host port:port stream:xmpp];
 }
 
 - (WHChatClient *)initForServer:(NSString *)host
                            port:(uint16_t)port
-                         stream:(id<WHXMPPStream>)xmpp
+                         stream:(WHXMPPWrapper *)xmpp
 {
     if (!(self = [super init])) return self;
 
@@ -58,7 +58,7 @@
     [NSUserDefaults.standardUserDefaults.rac_lift setObject:RACAble(self, displayName)
                                                      forKey:@"displayName"];
     RACBind(self.advertiser.displayName) = RACBind(self.displayName);
-
+    RACBind(self.xmpp.displayName) = RACBind(self.displayName);
 
     @weakify(self)
     [[[self.advertiser.invitations

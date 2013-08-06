@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@class RACSignal;
 @class WHXMPPRoster;
 
 @interface WHChatMessage : NSObject
@@ -18,7 +15,7 @@
 - (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body;
 @end
 
-@protocol WHXMPPStream <NSObject>
+@interface WHXMPPWrapper : NSObject
 - (RACSignal *)connectToServer:(NSString *)server
                           port:(uint16_t)port
                       username:(NSString *)username
@@ -30,8 +27,5 @@
 /// A push sequence of WHChatMessages
 @property (nonatomic, readonly) RACSignal *messages;
 @property (nonatomic, readonly) WHXMPPRoster *roster;
-@end
-
-@interface WHXMPPWrapper : NSObject <WHXMPPStream>
-
+@property (nonatomic, strong) NSString *displayName;
 @end

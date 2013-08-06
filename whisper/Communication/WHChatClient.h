@@ -6,16 +6,13 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @class Contact;
-@class RACSignal;
-@protocol WHXMPPStream;
+@class WHXMPPWrapper;
 
 /// A class which binds together the CoreData entities and the XMPP stream
 @interface WHChatClient : NSObject
 + (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port;
-+ (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port stream:(id<WHXMPPStream>)xmpp;
++ (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port stream:(WHXMPPWrapper *)xmpp;
 
 - (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact;
 - (void)setStatus:(NSString *)status message:(NSString *)message;

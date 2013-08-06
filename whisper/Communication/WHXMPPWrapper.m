@@ -81,9 +81,28 @@
     [message addAttributeWithName:@"type" stringValue:@"chat"];
     [message addAttributeWithName:@"to" stringValue:recipient];
     [message addChild:[NSXMLElement elementWithName:@"body" stringValue:body]];
-
     [self.stream sendElement:message];
     return nil;
+}
+
+- (void)setDisplayName:(NSString *)displayName {
+    _displayName = displayName;
+
+    NSString *tmpl =
+    @"<iq type='set'>"
+    @"   <pubsub xmlns='http://jabber.org/protocol/pubsub'>"
+    @"       <publish node='http://jabber.org/protocol/nick'>"
+    @"           <item><nick xmlns='http://jabber.org/protocol/nick'>%@</nick></item>"
+    @"       </publish>"
+    @"   </pubsub>"
+    @"</iq>";
+
+    NSString *encoded = [[NSXMLNode textWithStringValue:displayName] XMLString];
+    NSError *error;
+    NSXMLElement *iq = [[NSXMLElement alloc] initWithXMLString:[NSString stringWithFormat:tmpl, encoded]
+                                                         error:&error];
+    NSAssert(iq && !error, @"Error encoding nickname iq: %@", error);
+    [self.stream sendElement:iq];
 }
 
 #pragma mark - xmppStream
@@ -120,9 +139,9 @@
 
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
     if ([message isChatMessageWithBody]) {
-        [self.messages sendNext:[[WHChatMessage alloc]
-                                 initWithSenderJid:[message fromStr]
-                                 body:[[message elementForName:@"body"] stringValue]]];
+        [(RACSubject *)self.messages sendNext:[[WHChatMessage alloc]
+                                               initWithSenderJid:[message fromStr]
+                                               body:[[message elementForName:@"body"] stringValue]]];
     }
 }
 

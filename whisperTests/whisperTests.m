@@ -24,6 +24,10 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <SSKeychain/SSKeychain.h>
 
+@interface WHXMPPWrapper (Test)
+- (void)setStream:(XMPPStream *)stream;
+@end
+
 SpecBegin(WhisperTests)
 
 describe(@"Contact", ^{
@@ -119,9 +123,8 @@ describe(@"WHChatClient", ^{
     beforeEach(^{
         [(id)[[UIApplication sharedApplication] delegate] initTestContext];
         messages = [RACSubject subject];
-        xmppStream = [OCMockObject mockForProtocol:@protocol(WHXMPPStream)];
+        xmppStream = [OCMockObject niceMockForClass:[WHXMPPWrapper class]];
         [[[xmppStream expect] andReturn:messages] messages];
-        [[[xmppStream stub] andReturn:nil] roster];
         [[[xmppStream expect] andReturn:[RACSignal new]] connectToServer:@"localhost"
                                                                     port:5222
                                                                 username:[OCMArg any]
@@ -258,6 +261,75 @@ describe(@"WHXMPPRoster", ^{
         });
     });
 
+    describe(@"xmppStream:didReceiveMessage:", ^{
+        __block WHXMPPRoster *roster;
+        __block Contact *contact;
+        beforeEach(^{
+            [[xmppStream stub] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
+            roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
+            roster.contactJids = [NSMutableSet set];
+            contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+        });
+
+        it(@"should set the nickname of known users", ^AsyncBlock{
+            NSString *xml =
+                @"<message from='jid@localhost/location'>"
+                @"  <event xmlns='http://jabber.org/protocol/pubsub#event'>"
+                @"    <items node='841f3c8955c4c41a0cf99620d78a33b996659ded'>"
+                @"      <item>"
+                @"        <nick xmlns='http://jabber.org/protocol/nick'>New Nick</nick>"
+                @"      </item>"
+                @"    </items>"
+                @"  </event>"
+                @"</message>";
+
+            [RACAble(contact, name) subscribeNext:^(id x) {
+                expect(x).to.equal(@"New Nick");
+                done();
+            }];
+
+            [(id)roster xmppStream:nil
+                 didReceiveMessage:[XMPPMessage messageFromElement:[[NSXMLElement alloc]
+                                                                    initWithXMLString:xml
+                                                                    error:nil]]];
+            [[xmppStream stub] removeDelegate:OCMOCK_ANY];
+        });
+    });
+});
+
+describe(@"WHXMPPWrapper", ^{
+    __block WHXMPPWrapper *xmpp;
+    beforeEach(^{
+        xmpp = [WHXMPPWrapper new];
+    });
+
+    describe(@"setDisplayName", ^{
+        it(@"should send an element to the stream", ^{
+            id mockStream = [OCMockObject mockForClass:[XMPPStream class]];
+            [xmpp setStream:mockStream];
+            [[mockStream expect] sendElement:OCMOCK_ANY];
+
+            xmpp.displayName = @"name";
+
+            [mockStream verify];
+            [[mockStream stub] sendElement:OCMOCK_ANY];
+        });
+
+        it(@"should escape XML in the name", ^{
+            id mockStream = [OCMockObject mockForClass:[XMPPStream class]];
+            [xmpp setStream:mockStream];
+            [[mockStream expect] sendElement:[OCMArg checkWithBlock:^BOOL(id obj) {
+                NSString *str = [obj XMLString];
+                expect(str).to.contain(@"&lt;");
+                expect(str).to.contain(@"&gt;");
+                return YES;
+            }]];
+
+            xmpp.displayName = @"<name>";
+
+            [[mockStream stub] sendElement:OCMOCK_ANY];
+        });
+    });
 });
 
 SpecEnd
