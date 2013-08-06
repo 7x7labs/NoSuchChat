@@ -71,18 +71,15 @@ static NSManagedObjectContext *moc() {
     return contact;
 }
 
-- (Contact *)bgSelf {
-    return (Contact *)[[WHCoreData backgroundManagedObjectContext]
-                       objectWithID:self.objectID];
-}
-
 - (RACSignal *)addMessage:(NSString *)text date:(NSDate *)date incoming:(NSNumber *)incoming {
+    NSManagedObjectID *ownID = self.objectID;
     RACSignal *signal = [WHCoreData insertObjectOfType:@"Message" withBlock:^(NSManagedObject *obj) {
         Message *message = (Message *)obj;
         message.text = text;
         message.sent = date;
         message.incoming = incoming;
-        message.contact = [self bgSelf];
+        message.contact = (Contact *)[[WHCoreData backgroundManagedObjectContext]
+                                      objectWithID:ownID];
     }];
     [signal subscribeError:^(NSError *error) {
         NSLog(@"Error saving message: %@", error);
