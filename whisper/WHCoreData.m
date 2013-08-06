@@ -32,7 +32,8 @@ static WHCoreData *instance() {
     if (![coordinator addPersistentStoreWithType:storeType
                                    configuration:nil
                                              URL:storeUrl
-                                         options:nil
+                                         options:@{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                                   NSInferMappingModelAutomaticallyOption: @YES}
                                            error:&error])
         NSLog(@"Error opening persisted core data: %@", error);
 
