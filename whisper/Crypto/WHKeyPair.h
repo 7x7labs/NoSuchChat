@@ -16,6 +16,12 @@
 + (WHKeyPair *)createKeyPairForJid:(NSString *)jid;
 + (WHKeyPair *)getOwnKeyPairForJid:(NSString *)jid;
 
++ (WHKeyPair *)createOwnGlobalKeyPair;
++ (WHKeyPair *)getOwnGlobalKeyPair;
+
 + (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid;
 + (WHKeyPair *)getKeyFromJid:(NSString *)jid;
+
++ (WHKeyPair *)addGlobalKey:(NSData *)key fromJid:(NSString *)jid;
++ (WHKeyPair *)getGlobalKeyFromJid:(NSString *)jid;
 @end

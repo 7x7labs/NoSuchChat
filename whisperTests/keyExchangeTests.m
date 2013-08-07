@@ -28,6 +28,12 @@
 - (WHMultipeerBrowser *)browser;
 @end
 
+static id isKindOfClass(Class class) {
+    return [OCMArg checkWithBlock:^(id obj) {
+        return [obj isKindOfClass:class];
+    }];
+}
+
 SpecBegin(KeyExchangeTests)
 describe(@"WHMultipeerAdvertiser", ^{
     __block WHMultipeerAdvertiser *advertiser;
@@ -226,35 +232,26 @@ describe(@"WHKeyExchangePeer", ^{
 
         });
 
-        it(@"should send a public key after receiving the contact's JID", ^AsyncBlock{
-            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
-            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
-            [[session expect] sendData:[OCMArg isNotNil]];
-            [[[session expect] andReturn:[RACSignal return:[contactJid dataUsingEncoding:NSUTF8StringEncoding]]] incomingData];
-            [[session expect] sendData:[OCMArg isNotNil]];
-            [[[session expect] andReturn:[RACSignal empty]] incomingData];
-
-            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:session] connectToPeer:otherPeerID];
-
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID remotePeerID:otherPeerID browser:browser];
-            [[peer connectWithJid:ownJid] subscribeCompleted:^{
-                [session verify];
-                done();
-            }];
-        });
-
         it(@"should create a new contact once the key exchange is complete", ^AsyncBlock{
             NSData *jid = [contactJid dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *ownjid = [@"ownjid@localhost" dataUsingEncoding:NSUTF8StringEncoding];
             NSData *keyBits = [WHKeyPair createKeyPairForJid:ownJid].publicKeyBits;
+            NSData *globalKeyBits = [WHKeyPair createOwnGlobalKeyPair].publicKeyBits;
             SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+            [WHKeyPair createOwnGlobalKeyPair];
+
+            RACSubject *incomingData = [RACReplaySubject subject];
+            [incomingData sendNext:jid];
+            [incomingData sendNext:globalKeyBits];
+            [incomingData sendNext:keyBits];
 
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[session expect] sendData:ownjid];
+            [[session expect] sendData:isKindOfClass([NSData class])]; // global key
+            [[session expect] sendData:isKindOfClass([NSData class])]; // pair key
+
             [[[session expect] andReturn:[RACSignal return:@YES]] connected];
-            [[session expect] sendData:[OCMArg isNotNil]];
-            [[[session expect] andReturn:[RACSignal return:jid]] incomingData];
-            [[session expect] sendData:[OCMArg isNotNil]];
-            [[[session expect] andReturn:[[RACSignal return:jid] concat:[RACSignal return:keyBits]]] incomingData];
+            [[[session expect] andReturn:incomingData] incomingData];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID];

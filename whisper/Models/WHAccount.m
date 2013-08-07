@@ -8,7 +8,9 @@
 
 #import "WHAccount.h"
 
-#import <Security/Security.h>
+#import "WHKeyPair.h"
+
+@import Security;
 #import <SSKeychain/SSKeychain.h>
 
 static NSString *kServiceName = @"com.7x7labs.Whisper";
@@ -16,6 +18,7 @@ static NSString *kServiceName = @"com.7x7labs.Whisper";
 @interface WHAccount ()
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) WHKeyPair *globalKey;
 @end
 
 static NSString *generateRandomString() {
@@ -34,6 +37,7 @@ static NSString *generateRandomString() {
         WHAccount *account = [WHAccount new];
         account.jid = accounts[0][kSSKeychainAccountKey];
         account.password = [SSKeychain passwordForService:kServiceName account:account.jid];
+        account.globalKey = [WHKeyPair getOwnGlobalKeyPair];
         return account;
     }
 
@@ -41,6 +45,7 @@ static NSString *generateRandomString() {
     WHAccount *account = [WHAccount new];
     account.jid = [generateRandomString() stringByAppendingFormat:@"@%@", kXmppServerHost];
     account.password = generateRandomString();
+    account.globalKey = [WHKeyPair createOwnGlobalKeyPair];
 
     [SSKeychain setPassword:account.password forService:kServiceName account:account.jid];
     return account;

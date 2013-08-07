@@ -24,6 +24,7 @@ static NSManagedObjectContext *moc() {
 @interface Contact () {
     WHKeyPair *_ownKey;
     WHKeyPair *_contactKey;
+    WHKeyPair *_globalKey;
 }
 @end
 
@@ -105,6 +106,12 @@ static NSManagedObjectContext *moc() {
     if (!_contactKey)
         _contactKey = [WHKeyPair getKeyFromJid:self.jid];
     return _contactKey;
+}
+
+- (WHKeyPair *)globalKey {
+    if (!_globalKey)
+        _globalKey = [WHKeyPair getGlobalKeyFromJid:self.jid];
+    return _globalKey;
 }
 
 - (NSString *)encrypt:(NSString *)message {

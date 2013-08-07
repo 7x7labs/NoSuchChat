@@ -14,6 +14,32 @@
 #import "WHMultipeerBrowser.h"
 #import "WHMultipeerSession.h"
 
+@interface RACSignal (WHNext)
+- (instancetype)next:(id (^)(id value))block;
+@end
+
+@implementation RACSignal (WHNext)
+- (instancetype)next:(id (^)(id))block {
+    Class class = self.class;
+
+    return [[self bind:^{
+        __block BOOL first = YES;
+
+        return ^(id value, BOOL *stop) {
+            if (first) {
+                first = NO;
+                id ret = block(value);
+                if ([ret isKindOfClass:[NSError class]])
+                    return [class error:ret];
+                return ret ? [class return:ret] : [class empty];
+            }
+
+            return [class return:value];
+        };
+    }] setNameWithFormat:@"[%@] -next:", self.name];
+}
+@end
+
 @interface WHKeyExchangePeer ()
 @property (nonatomic, strong) NSString *name;
 
@@ -64,24 +90,30 @@
                                                     remote:self.remotePeerID
                                                 invitation:self.invitation];
 
+    __block BOOL called = NO;
     __block NSString *contactJid = nil;
-    return [[[[session.connected
-              flattenMap:^RACStream *(NSNumber *didConnect) {
-                  if (![didConnect boolValue])
-                      return [WHError errorSignalWithDescription:@"Peer refused connection"];
-                  NSError *error = [session sendData:[jid dataUsingEncoding:NSUTF8StringEncoding]];
-                  return error ? [RACSignal error:error] : [session.incomingData take:1];
-              }]
-              flattenMap:^RACStream *(NSData *jidData) {
-                  contactJid = [[NSString alloc] initWithData:jidData encoding:NSUTF8StringEncoding];
-                  NSError *error = [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
-                  return error ? [RACSignal error:error] : [[session.incomingData skip:1] take:1];
-              }]
-              deliverOn:[RACScheduler mainThreadScheduler]]
-              map:^(NSData *publicKey) {
-                  [WHKeyPair addKey:publicKey fromJid:contactJid];
-                  return [Contact createWithName:self.name jid:contactJid];
-              }];
+    return [[[[[session.connected
+            flattenMap:^RACStream *(NSNumber *didConnect) {
+                assert(!called);
+                called = YES;
+                if (![didConnect boolValue])
+                    return [WHError errorSignalWithDescription:@"Peer refused connection"];
+                NSError *error = [session sendData:[jid dataUsingEncoding:NSUTF8StringEncoding]];
+                return error ? [RACSignal error:error] : [session.incomingData take:3];
+            }]
+            next:^(NSData *jidData) {
+                contactJid = [[NSString alloc] initWithData:jidData encoding:NSUTF8StringEncoding];
+                return [session sendData:[WHKeyPair getOwnGlobalKeyPair].publicKeyBits];
+            }]
+            next:^(NSData *globalKey) {
+                [WHKeyPair addGlobalKey:globalKey fromJid:contactJid];
+                return [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
+            }]
+            deliverOn:[RACScheduler mainThreadScheduler]]
+            next:^(NSData *publicKey) {
+                [WHKeyPair addKey:publicKey fromJid:contactJid];
+                return [Contact createWithName:self.name jid:contactJid];
+            }];
 }
 
 - (void)reject {

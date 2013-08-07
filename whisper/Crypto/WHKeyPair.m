@@ -97,12 +97,20 @@ static NSData *tag(NSString *jid, NSString *type) {
     return nil;
 }
 
-+ (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid {
-    [self deleteKeyForJid:jid ofType:@"_incoming"];
++ (WHKeyPair *)createOwnGlobalKeyPair {
+    return [self createKeyPairForJid:@"self"];
+}
+
++ (WHKeyPair *)getOwnGlobalKeyPair {
+    return [self getOwnKeyPairForJid:@"self"];
+}
+
++ (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid ofType:(NSString *)type {
+    [self deleteKeyForJid:jid ofType:type];
 
     NSDictionary *opt = @{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
                           (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, @"_incoming"),
+                          (__bridge id)kSecAttrApplicationTag: tag(jid, type),
                           (__bridge id)kSecValueData: key,
                           };
 
@@ -114,14 +122,30 @@ static NSData *tag(NSString *jid, NSString *type) {
     return keyPair;
 }
 
-+ (WHKeyPair *)getKeyFromJid:(NSString *)jid {
++ (WHKeyPair *)getKeyFromJid:(NSString *)jid ofType:(NSString *)type{
     WHKeyPair *keyPair = [WHKeyPair new];
-    [keyPair getKey:&keyPair->_publicKey forJid:jid ofType:@"_incoming"];
+    [keyPair getKey:&keyPair->_publicKey forJid:jid ofType:type];
     if (keyPair.publicKey) {
-        [keyPair getKeyBitsForJid:jid ofType:@"_incoming"];
+        [keyPair getKeyBitsForJid:jid ofType:type];
         return keyPair;
     }
     return nil;
+}
+
++ (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid {
+    return [self addKey:key fromJid:jid ofType:@"_incoming"];
+}
+
++ (WHKeyPair *)getKeyFromJid:(NSString *)jid {
+    return [self getKeyFromJid:jid ofType:@"_incoming"];
+}
+
++ (WHKeyPair *)addGlobalKey:(NSData *)key fromJid:(NSString *)jid {
+    return [self addKey:key fromJid:jid ofType:@"_global"];
+}
+
++ (WHKeyPair *)getGlobalKeyFromJid:(NSString *)jid {
+    return [self getKeyFromJid:jid ofType:@"_global"];
 }
 
 @end

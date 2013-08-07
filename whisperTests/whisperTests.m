@@ -105,7 +105,15 @@ describe(@"WHAccount", ^{
         for (NSDictionary *account in [SSKeychain allAccounts])
             [SSKeychain deletePasswordForService:account[kSSKeychainWhereKey]
                                          account:account[kSSKeychainAccountKey]];
+    });
 
+    it(@"should set the jid, password and global key", ^{
+        WHAccount *a = [WHAccount get];
+        expect([a.jid length]).to.beGreaterThan(0);
+        expect([a.password length]).to.beGreaterThan(0);
+        expect(a.globalKey.publicKey).notTo.beNil();
+        expect(a.globalKey.privateKey).notTo.beNil();
+        expect(a.globalKey.publicKeyBits).notTo.beNil();
     });
 
     it(@"should return the same account from multiple calls to +get", ^{
@@ -113,6 +121,7 @@ describe(@"WHAccount", ^{
         WHAccount *a2 = [WHAccount get];
         expect(a1.jid).to.equal(a2.jid);
         expect(a1.password).to.equal(a2.password);
+        expect(a1.globalKey.publicKeyBits).to.equal(a2.globalKey.publicKeyBits);
     });
 });
 
