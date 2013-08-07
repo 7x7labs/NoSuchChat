@@ -19,17 +19,20 @@
 @property (nonatomic, strong) NSManagedObjectContext *objectContext;
 @property (nonatomic, strong) NSString *show;
 @property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSMutableSet *subscriptionsRequested;
 @end
 
 @implementation WHXMPPRoster
 - (instancetype)initWithXmppStream:(XMPPStream *)stream {
-    if (self = [super init]) {
-        self.stream = stream;
-        self.queue = dispatch_queue_create("WHXMPPRoster", 0);
-        [stream addDelegate:self delegateQueue:self.queue];
-        self.objectContext = [NSManagedObjectContext new];
-        self.objectContext.parentContext = [WHCoreData managedObjectContext];
-    }
+    if (!(self = [super init])) return self;
+
+    self.stream = stream;
+    self.queue = dispatch_queue_create("WHXMPPRoster", 0);
+    [stream addDelegate:self delegateQueue:self.queue];
+    self.objectContext = [NSManagedObjectContext new];
+    self.objectContext.parentContext = [WHCoreData managedObjectContext];
+    self.subscriptionsRequested = [NSMutableSet set];
+
     return self;
 }
 
@@ -118,9 +121,10 @@
 
     // Subscribe to any contacts we aren't already subscribed to
     @synchronized(self.contactJids) {
-        for (NSString *contactJid in self.contactJids) {
-            if ([jids containsObject:contactJid]) continue;
-            [self sendPresenceType:@"subscribe" to:[XMPPJID jidWithString:contactJid]];
+        for (NSString *jid in self.contactJids) {
+            if ([jids containsObject:jid] || [self.subscriptionsRequested containsObject:jid]) continue;
+            [self.subscriptionsRequested addObject:jid];
+            [self sendPresenceType:@"subscribe" to:[XMPPJID jidWithString:jid]];
         }
     }
 
