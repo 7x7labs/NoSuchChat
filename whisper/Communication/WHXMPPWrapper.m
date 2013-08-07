@@ -8,8 +8,9 @@
 
 #import "WHXMPPWrapper.h"
 
-#import "WHXMPPRoster.h"
 #import "WHError.h"
+#import "WHXMPPCapabilities.h"
+#import "WHXMPPRoster.h"
 
 #import "XMPP.h"
 #import "XMPPReconnect.h"
@@ -34,6 +35,7 @@
 
 @property (nonatomic, strong) XMPPReconnect *reconnect;
 @property (nonatomic, strong) WHXMPPRoster *roster;
+@property (nonatomic, strong) WHXMPPCapabilities *capabilities;
 @end
 
 @implementation WHXMPPWrapper
@@ -47,6 +49,7 @@
         self.connectSignal = [RACReplaySubject subject];
         self.stream = [XMPPStream new];
         self.roster = [[WHXMPPRoster alloc] initWithXmppStream:self.stream];
+        self.capabilities = [[WHXMPPCapabilities alloc] initWithStream:self.stream];
     }
     return self;
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F26B4AA17A023460075E1DB /* keyExchangeTests.m */; };
 		3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4709DF17AC150A007A1DF7 /* WHAlert.m */; };
+		3F4D316C17B2893000A7E8FC /* WHXMPPCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */; };
 		3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */; };
 		3F50C5F317A4336500DC76C1 /* WHSettingsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5F217A4336500DC76C1 /* WHSettingsViewModel.m */; };
 		3F50C5F817A5618000DC76C1 /* XMPPReconnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5F717A5617400DC76C1 /* XMPPReconnect.m */; };
@@ -104,6 +105,8 @@
 		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
 		3F4709DE17AC150A007A1DF7 /* WHAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAlert.h; path = Views/WHAlert.h; sourceTree = "<group>"; };
 		3F4709DF17AC150A007A1DF7 /* WHAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAlert.m; path = Views/WHAlert.m; sourceTree = "<group>"; };
+		3F4D316A17B2893000A7E8FC /* WHXMPPCapabilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHXMPPCapabilities.h; path = Communication/WHXMPPCapabilities.h; sourceTree = "<group>"; };
+		3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHXMPPCapabilities.m; path = Communication/WHXMPPCapabilities.m; sourceTree = "<group>"; };
 		3F50C5EA17A42CAF00DC76C1 /* WHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHSettingsViewController.h; path = ViewControllers/WHSettingsViewController.h; sourceTree = "<group>"; };
 		3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHSettingsViewController.m; path = ViewControllers/WHSettingsViewController.m; sourceTree = "<group>"; };
 		3F50C5F117A4336500DC76C1 /* WHSettingsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHSettingsViewModel.h; path = ViewModels/WHSettingsViewModel.h; sourceTree = "<group>"; };
@@ -523,6 +526,8 @@
 				3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */,
 				3F5FEAE2179DB60D00C6BF62 /* WHPeerList.h */,
 				3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */,
+				3F4D316A17B2893000A7E8FC /* WHXMPPCapabilities.h */,
+				3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */,
 				3F50C62017A56B8100DC76C1 /* WHXMPPRoster.h */,
 				3F50C62117A56B8100DC76C1 /* WHXMPPRoster.m */,
 				3F8D1BA61795F70D0089B129 /* WHXMPPWrapper.h */,
@@ -855,6 +860,7 @@
 				3F8EB1981798424C009F938D /* WHPGP.m in Sources */,
 				3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */,
 				3F50C5F317A4336500DC76C1 /* WHSettingsViewModel.m in Sources */,
+				3F4D316C17B2893000A7E8FC /* WHXMPPCapabilities.m in Sources */,
 				3F50C62217A56B8100DC76C1 /* WHXMPPRoster.m in Sources */,
 				3F8D1BA81795F70D0089B129 /* WHXMPPWrapper.m in Sources */,
 				3F7127B5178F089200835DD2 /* XMPPAnonymousAuthentication.m in Sources */,
