@@ -10,6 +10,9 @@
 
 #import "WHCoreData.h"
 
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+
 @implementation WHAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -19,6 +22,7 @@
         return YES;
     }
 #endif
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [WHCoreData initSqliteContext];
     return YES;
 }
