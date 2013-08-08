@@ -286,6 +286,25 @@ describe(@"WHPGP", ^{
             expect(decrypted).to.equal(message);
         });
     });
+
+    describe(@"encrypt:key", ^{
+        it(@"should give a blob of data with a global key", ^{
+            WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
+            NSString *message = @"hello";
+            NSData *encrypted = [WHPGP encrypt:message key:key];
+            expect(encrypted).toNot.beNil();
+            expect([encrypted length]).to.beGreaterThan(message.length);
+        });
+    });
+
+    describe(@"decrypt:key", ^{
+        it(@"should be able to decrypt encrypted things", ^{
+            WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
+            NSString *message = @"hello";
+            NSData *encrypted = [WHPGP encrypt:message key:key];
+            expect([WHPGP decrypt:encrypted key:key]).to.equal(message);
+        });
+    });
 });
 
 SpecEnd

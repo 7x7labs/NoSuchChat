@@ -9,9 +9,12 @@
 #import "WHXMPPRoster.h"
 
 #import "Contact.h"
+#import "WHAccount.h"
 #import "WHCoreData.h"
+#import "WHPGP.h"
 
 #import "XMPP.h"
+#import "NSData+XMPP.h"
 
 @interface WHXMPPRoster ()
 @property (nonatomic, strong) XMPPStream *stream;
@@ -67,7 +70,7 @@
 
 - (void)setShow:(NSString *)show status:(NSString *)status {
     self.show = show;
-    self.status = status;
+    self.status = [[WHPGP encrypt:status key:[WHAccount get].globalKey] xmpp_base64Encoded];
     [self sendStatus];
 }
 
@@ -170,10 +173,13 @@
     Contact *c = [Contact contactForJid:[jid bare] managedObjectContext:self.objectContext];
     if (!c) return;
 
+    NSString *status = [WHPGP decrypt:[[[presence status] dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
+                                  key:c.globalKey];
+
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         Contact *contact = (Contact *)obj;
         contact.state = [presence show];
-        contact.statusMessage = [presence status];
+        contact.statusMessage = status;
     }];
 }
 

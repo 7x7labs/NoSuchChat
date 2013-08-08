@@ -62,8 +62,8 @@
 }
 
 + (NSData *)encrypt:(NSString *)string
-          senderKey:(WHKeyPair *)senderKey
-        receiverKey:(WHKeyPair *)receiverKey
+         signingKey:(SecKeyRef)signingKey
+      encryptingKey:(SecKeyRef)encryptingKey
 {
     // High-level description of encryption process (per RFC 4480):
     // 1. Sign the message using the sender's private key
@@ -79,35 +79,61 @@
     //    and it adds overhead.
     // 2. CommonCrypto's CFB is different from OpenPGP.
 
-    NSData *signedMessage = [self sign:string withKey:senderKey.privateKey];
+    NSData *signedMessage = [self sign:string withKey:signingKey];
     NSData *compressedMessage = [signedMessage wh_compress];
     NSData *sessionKey = [NSData wh_createSessionKey];
     NSData *encryptedMessage = [compressedMessage wh_AES256EncryptWithKey:sessionKey];
-    NSData *encryptedKey = [sessionKey wh_encryptWithKey:receiverKey.publicKey];
+    NSData *encryptedKey = [sessionKey wh_encryptWithKey:encryptingKey];
     return [self packData:@[encryptedKey, encryptedMessage]];
 }
 
 + (NSString *)decrypt:(NSData *)data
-            senderKey:(WHKeyPair *)senderKey
-          receiverKey:(WHKeyPair *)receiverKey
+        decryptingKey:(SecKeyRef)decryptingKey
+         verifyingKey:(SecKeyRef)verifyingKey
 {
     // The reverse of the above process, naturally
     NSArray *keyAndMessage = [self unpackData:data];
     if ([keyAndMessage count] != 2) return nil;
 
-    NSData *sessionKey = [keyAndMessage[0] wh_decryptWithKey:receiverKey.privateKey];
+    NSData *sessionKey = [keyAndMessage[0] wh_decryptWithKey:decryptingKey];
     NSData *compressedMessage = [keyAndMessage[1] wh_AES256DecryptWithKey:sessionKey];
     NSData *signedMessage = [compressedMessage wh_decompress];
     NSArray *messageAndSignedHash = [self unpackData:signedMessage];
     if ([messageAndSignedHash count] != 2) return nil;
 
     NSData *hash = [messageAndSignedHash[0] sha256];
-    if (![hash wh_verifySignature:messageAndSignedHash[1] withKey:senderKey.publicKey]) {
+    if (![hash wh_verifySignature:messageAndSignedHash[1] withKey:verifyingKey]) {
         NSLog(@"Failed to verify message signature");
         return nil;
     }
 
     return [[NSString alloc] initWithData:messageAndSignedHash[0]
                                  encoding:NSUTF8StringEncoding];
+}
+
++ (NSData *)encrypt:(NSString *)string
+          senderKey:(WHKeyPair *)senderKey
+        receiverKey:(WHKeyPair *)receiverKey
+{
+    return [self encrypt:string
+              signingKey:senderKey.privateKey
+           encryptingKey:receiverKey.publicKey];
+}
+
++ (NSString *)decrypt:(NSData *)data
+            senderKey:(WHKeyPair *)senderKey
+          receiverKey:(WHKeyPair *)receiverKey
+{
+    return [self decrypt:data
+           decryptingKey:receiverKey.privateKey
+            verifyingKey:senderKey.publicKey];
+}
+
++ (NSData *)encrypt:(NSString *)string key:(WHKeyPair *)key {
+    return [self encrypt:string signingKey:key.privateKey encryptingKey:key.privateKey];
+}
+
++ (NSString *)decrypt:(NSData *)data key:(WHKeyPair *)key {
+    return [self decrypt:data decryptingKey:key.publicKey verifyingKey:key.publicKey];
 }
 @end

@@ -18,4 +18,7 @@
 + (NSString *)decrypt:(NSData *)data
             senderKey:(WHKeyPair *)senderKey
           receiverKey:(WHKeyPair *)receiverKey;
+
++ (NSData *)encrypt:(NSString *)string key:(WHKeyPair *)key;
++ (NSString *)decrypt:(NSData *)data key:(WHKeyPair *)key;
 @end
