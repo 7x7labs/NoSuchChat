@@ -130,10 +130,28 @@
 }
 
 + (NSData *)encrypt:(NSString *)string key:(WHKeyPair *)key {
-    return [self encrypt:string signingKey:key.privateKey encryptingKey:key.privateKey];
+    NSData *signedMessage = [self sign:string withKey:key.privateKey];
+    NSData *compressedMessage = [signedMessage wh_compress];
+    NSMutableData *nonce = [NSMutableData dataWithData:[NSData wh_createSessionKey]];
+    [nonce appendData:compressedMessage];
+    return [nonce wh_AES256EncryptWithKey:key.symmetricKey];
 }
 
 + (NSString *)decrypt:(NSData *)data key:(WHKeyPair *)key {
-    return [self decrypt:data decryptingKey:key.publicKey verifyingKey:key.publicKey];
+    NSData *noncedMessage = [data wh_AES256DecryptWithKey:key.symmetricKey];
+    if ([noncedMessage length] < 32) return nil; // First 32 bytes are the nonce
+    NSData *compressedMessage = [noncedMessage subdataWithRange:NSMakeRange(32, [noncedMessage length] - 32)];
+    NSData *signedMessage = [compressedMessage wh_decompress];
+    NSArray *messageAndSignedHash = [self unpackData:signedMessage];
+    if ([messageAndSignedHash count] != 2) return nil;
+
+    NSData *hash = [messageAndSignedHash[0] sha256];
+    if (![hash wh_verifySignature:messageAndSignedHash[1] withKey:key.publicKey]) {
+        NSLog(@"Failed to verify message signature");
+        return nil;
+    }
+
+    return [[NSString alloc] initWithData:messageAndSignedHash[0]
+                                 encoding:NSUTF8StringEncoding];
 }
 @end

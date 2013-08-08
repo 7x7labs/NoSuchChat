@@ -17,6 +17,8 @@
 #define EXP_SHORTHAND
 #import "Expecta.h"
 
+OSStatus SecItemDeleteAll(void); // private API, do not use in non-test code
+
 SpecBegin(CryptoTests)
 
 describe(@"NSData+SHA", ^{
@@ -34,7 +36,7 @@ describe(@"NSData+SHA", ^{
 
 describe(@"WHKeyPair", ^{
     afterEach(^{
-        SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+        SecItemDeleteAll();
     });
     describe(@"createKeyPairForJid", ^{
         it(@"should return a valid key pair", ^{
@@ -228,13 +230,13 @@ describe(@"NSData+Encryption", ^{
 describe(@"WHPGP", ^{
     __block WHKeyPair *sender, *recipient;
 
-    beforeAll(^{
+    beforeEach(^{
         sender = [WHKeyPair createKeyPairForJid:@"a@localhost"];
         recipient = [WHKeyPair createKeyPairForJid:@"b@localhost"];
     });
 
-    afterAll(^{
-        SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+    afterEach(^{
+        SecItemDeleteAll();
     });
 
     describe(@"encrypt:senderKey:receiverKey:", ^{
@@ -295,6 +297,14 @@ describe(@"WHPGP", ^{
             expect(encrypted).toNot.beNil();
             expect([encrypted length]).to.beGreaterThan(message.length);
         });
+
+        it(@"should return different data each time it is called", ^{
+            WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
+            NSString *message = @"hello";
+            NSData *e1 = [WHPGP encrypt:message key:key];
+            NSData *e2 = [WHPGP encrypt:message key:key];
+            expect(e1).notTo.equal(e2);
+        });
     });
 
     describe(@"decrypt:key", ^{
@@ -302,6 +312,8 @@ describe(@"WHPGP", ^{
             WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
             NSString *message = @"hello";
             NSData *encrypted = [WHPGP encrypt:message key:key];
+
+            key = [WHKeyPair getOwnGlobalKeyPair];
             expect([WHPGP decrypt:encrypted key:key]).to.equal(message);
         });
     });

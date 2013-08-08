@@ -92,14 +92,14 @@
 
     __block BOOL called = NO;
     __block NSString *contactJid = nil;
-    return [[[[[session.connected
+    return [[[[[[session.connected
             flattenMap:^RACStream *(NSNumber *didConnect) {
                 assert(!called);
                 called = YES;
                 if (![didConnect boolValue])
                     return [WHError errorSignalWithDescription:@"Peer refused connection"];
                 NSError *error = [session sendData:[jid dataUsingEncoding:NSUTF8StringEncoding]];
-                return error ? [RACSignal error:error] : [session.incomingData take:3];
+                return error ? [RACSignal error:error] : [session.incomingData take:4];
             }]
             next:^(NSData *jidData) {
                 contactJid = [[NSString alloc] initWithData:jidData encoding:NSUTF8StringEncoding];
@@ -107,6 +107,10 @@
             }]
             next:^(NSData *globalKey) {
                 [WHKeyPair addGlobalKey:globalKey fromJid:contactJid];
+                return [session sendData:[WHKeyPair getOwnGlobalKeyPair].symmetricKey];
+            }]
+            next:^(NSData *symmetricKey) {
+                [WHKeyPair addSymmetricKey:symmetricKey fromJid:contactJid];
                 return [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
             }]
             deliverOn:[RACScheduler mainThreadScheduler]]

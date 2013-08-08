@@ -151,7 +151,7 @@
 }
 
 - (NSString *)statusMessage {
-    return self.xmpp.roster.status;
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"statusMessage"];
 }
 
 - (MCPeerID *)peerID {

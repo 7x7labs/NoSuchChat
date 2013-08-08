@@ -236,18 +236,22 @@ describe(@"WHKeyExchangePeer", ^{
             NSData *jid = [contactJid dataUsingEncoding:NSUTF8StringEncoding];
             NSData *ownjid = [@"ownjid@localhost" dataUsingEncoding:NSUTF8StringEncoding];
             NSData *keyBits = [WHKeyPair createKeyPairForJid:ownJid].publicKeyBits;
-            NSData *globalKeyBits = [WHKeyPair createOwnGlobalKeyPair].publicKeyBits;
+            WHKeyPair *globalKey = [WHKeyPair createOwnGlobalKeyPair];
+            NSData *globalKeyBits = globalKey.publicKeyBits;
+            NSData *globalSymmetricKey = globalKey.symmetricKey;
             SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
             [WHKeyPair createOwnGlobalKeyPair];
 
             RACSubject *incomingData = [RACReplaySubject subject];
             [incomingData sendNext:jid];
             [incomingData sendNext:globalKeyBits];
+            [incomingData sendNext:globalSymmetricKey];
             [incomingData sendNext:keyBits];
 
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
             [[session expect] sendData:ownjid];
-            [[session expect] sendData:isKindOfClass([NSData class])]; // global key
+            [[session expect] sendData:isKindOfClass([NSData class])]; // global sign key
+            [[session expect] sendData:isKindOfClass([NSData class])]; // global encryption key
             [[session expect] sendData:isKindOfClass([NSData class])]; // pair key
 
             [[[session expect] andReturn:[RACSignal return:@YES]] connected];
@@ -265,6 +269,10 @@ describe(@"WHKeyExchangePeer", ^{
                 expect(contact.contactKey).notTo.beNil();
                 expect(contact.contactKey.publicKey).notTo.beNil();
                 expect(contact.contactKey.privateKey).to.beNil();
+
+                WHKeyPair *globalKey = [WHKeyPair getGlobalKeyFromJid:contactJid];
+                expect(globalKey.publicKey).notTo.beNil();
+                expect(globalKey.symmetricKey).notTo.beNil();
                 done();
             }];
         });
