@@ -20,6 +20,27 @@ static NSData *tag(NSString *jid, NSString *type) {
     return [[jid stringByAppendingString:type] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
+static NSMutableDictionary *optCommon(NSString *jid, NSString *type, CFTypeRef key, id value) {
+    NSMutableDictionary *opt = [NSMutableDictionary dictionary];
+    opt[(__bridge id)kSecClass] = (__bridge id)kSecClassKey;
+    opt[(__bridge id)kSecAttrApplicationTag] = tag(jid, type);
+    if (key && value)
+        opt[(__bridge id)key] = value;
+    return opt;
+}
+
+static NSDictionary *symmetricDictionary(NSString *jid, NSString *type, CFTypeRef key, id value) {
+    NSMutableDictionary *opt = optCommon(jid, type, key, value);
+    opt[(__bridge id)kSecAttrKeyClass] = (__bridge id)kSecAttrKeyClassSymmetric;
+    return opt;
+}
+
+static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key, id value) {
+    NSMutableDictionary *opt = optCommon(jid, type, key, value);
+    opt[(__bridge id)kSecAttrKeyType] = (__bridge id)kSecAttrKeyTypeRSA;
+    return opt;
+}
+
 @interface WHKeyPair ()
 @property (nonatomic, strong) NSData *publicKeyBits;
 @property (nonatomic, strong) NSData *symmetricKey;
@@ -31,14 +52,22 @@ static NSData *tag(NSString *jid, NSString *type) {
     if (self.privateKey) CFRelease(self.privateKey);
 }
 
-- (void)getKey:(SecKeyRef *)key forJid:(NSString *)jid ofType:(NSString *)type {
-    NSDictionary *opt = @{
-                          (__bridge id)kSecClass: (__bridge id)kSecClassKey,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, type),
-                          (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
-                          (__bridge id)kSecReturnRef: @YES,
-                          };
+- (NSData *)getBits:(NSDictionary *)opt {
+    CFDataRef bits = NULL;
+    OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
+    if (err != errSecSuccess)
+        NSLog(@"Failed getting bits: %d", (int)err);
+    return (__bridge_transfer NSData *)bits;
+}
 
++ (void)deleteKey:(NSDictionary *)opt {
+    OSStatus err = SecItemDelete((__bridge CFDictionaryRef)opt);
+    NSAssert(err == errSecSuccess || err == errSecItemNotFound,
+             @"Failed to delete existing key: %d", (int)err);
+}
+
+- (void)getKey:(SecKeyRef *)key forJid:(NSString *)jid ofType:(NSString *)type {
+    NSDictionary *opt = rsaDictionary(jid, type, kSecReturnRef, @YES);
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)key);
     if (err != errSecSuccess) {
         NSLog(@"Failed getting key: %d", (int)err);
@@ -47,41 +76,15 @@ static NSData *tag(NSString *jid, NSString *type) {
 }
 
 - (void)getKeyBitsForJid:(NSString *)jid ofType:(NSString *)type {
-    NSDictionary *opt = @{
-                          (__bridge id)kSecClass: (__bridge id)kSecClassKey,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, type),
-                          (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
-                          (__bridge id)kSecReturnData: @YES,
-                          };
-
-    CFDataRef bits;
-    OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
-    self.publicKeyBits = (__bridge_transfer NSData *)bits;
-    if (err != errSecSuccess) {
-        NSLog(@"Failed getting bits: %d", (int)err);
-        self.publicKeyBits = nil;
-    }
+    self.publicKeyBits = [self getBits:rsaDictionary(jid, type, kSecReturnData, @YES)];
 }
 
 - (void)getSymmetricKeyForJid:(NSString *)jid {
-    NSDictionary *opt = @{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, @"_sym"),
-                          (__bridge id)kSecAttrKeyClass: (__bridge id)kSecAttrKeyClassSymmetric,
-                          (__bridge id)kSecReturnData: @YES,
-                          };
-
-    CFDataRef bits;
-    OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
-    self.symmetricKey = (__bridge_transfer NSData *)bits;
-    if (err != errSecSuccess)
-        NSLog(@"Failed getting symmetric key bits: %d", (int)err);
+    self.symmetricKey = [self getBits:symmetricDictionary(jid, @"_sym", kSecReturnData, @YES)];
 }
 
-+ (OSStatus)deleteKeyForJid:(NSString *)jid ofType:(NSString *)type {
-    return SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
-                          (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, type),
-                          });
++ (void)deleteKeyForJid:(NSString *)jid ofType:(NSString *)type {
+    [self deleteKey:rsaDictionary(jid, type, nil, nil)];
 }
 
 + (WHKeyPair *)createKeyPairForJid:(NSString *)jid {
@@ -133,12 +136,7 @@ static NSData *tag(NSString *jid, NSString *type) {
 + (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid ofType:(NSString *)type {
     [self deleteKeyForJid:jid ofType:type];
 
-    NSDictionary *opt = @{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, type),
-                          (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
-                          (__bridge id)kSecValueData: key,
-                          };
-
+    NSDictionary *opt = rsaDictionary(jid, type, kSecValueData, key);
     WHKeyPair *keyPair = [WHKeyPair new];
     OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyPair->_publicKey);
     NSAssert(err == errSecSuccess, @"Failed to add key to keychain: %d", (int)err);
@@ -175,21 +173,9 @@ static NSData *tag(NSString *jid, NSString *type) {
 }
 
 + (void)addSymmetricKey:(NSData *)data fromJid:(NSString *)jid {
-    NSDictionary *opt = @{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
-                          (__bridge id)kSecAttrKeyClass: (__bridge id)kSecAttrKeyClassSymmetric,
-                          (__bridge id)kSecAttrApplicationTag: tag(jid, @"_sym"),
-                          };
-
-    OSStatus err = SecItemDelete((__bridge CFDictionaryRef)opt);
-    NSAssert(err == errSecSuccess || err == errSecItemNotFound,
-             @"Failed to delete existing symmetric key: %d", (int)err);
-
-    opt = @{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
-            (__bridge id)kSecAttrApplicationTag: tag(jid, @"_sym"),
-            (__bridge id)kSecAttrKeyClass: (__bridge id)kSecAttrKeyClassSymmetric,
-            (__bridge id)kSecValueData: data,
-            };
-    err = SecItemAdd((__bridge CFDictionaryRef)opt, NULL);
+    [self deleteKey:symmetricDictionary(jid, @"_sym", nil, nil)];
+    NSDictionary *opt = symmetricDictionary(jid, @"_sym", kSecValueData, data);
+    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, NULL);
     NSAssert(err == errSecSuccess, @"Failed to add symmetric key to keychain: %d", (int)err);
 }
 
