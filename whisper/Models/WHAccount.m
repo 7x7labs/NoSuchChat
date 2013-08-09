@@ -38,8 +38,6 @@ static NSString *generateRandomString() {
         account.jid = accounts[0][kSSKeychainAccountKey];
         account.password = [SSKeychain passwordForService:kServiceName account:account.jid];
         account.globalKey = [WHKeyPair getOwnGlobalKeyPair];
-        if (!account.globalKey)
-            account.globalKey = [WHKeyPair createOwnGlobalKeyPair];
         return account;
     }
 

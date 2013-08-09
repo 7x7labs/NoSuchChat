@@ -123,7 +123,10 @@ static NSData *tag(NSString *jid, NSString *type) {
 
 + (WHKeyPair *)getOwnGlobalKeyPair {
     WHKeyPair *kp = [self getOwnKeyPairForJid:@"self"];
-    [kp getSymmetricKeyForJid:@"self"];
+    if (kp)
+        [kp getSymmetricKeyForJid:@"self"];
+    else
+        kp = [self createOwnGlobalKeyPair];
     return kp;
 }
 

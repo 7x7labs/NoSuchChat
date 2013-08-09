@@ -173,9 +173,7 @@
     Contact *c = [Contact contactForJid:[jid bare] managedObjectContext:self.objectContext];
     if (!c) return;
 
-    NSString *status = [WHPGP decrypt:[[[presence status] dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
-                                  key:c.globalKey];
-
+    NSString *status = [c decryptGlobal:[presence status]];
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         Contact *contact = (Contact *)obj;
         contact.state = [presence show];
@@ -189,7 +187,7 @@
     Contact *c = [Contact contactForJid:[[message from] bare] managedObjectContext:self.objectContext];
     if (!c) return;
 
-    NSString *name = [nick[0] stringValue];
+    NSString *name = [c decryptGlobal:[nick[0] stringValue]];
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         ((Contact *)obj).name = name;
     }];

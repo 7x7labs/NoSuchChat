@@ -126,4 +126,9 @@ static NSManagedObjectContext *moc() {
               receiverKey:self.ownKey];
 }
 
+- (NSString *)decryptGlobal:(NSString *)message {
+    return [WHPGP decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
+                      key:self.globalKey];
+}
+
 @end

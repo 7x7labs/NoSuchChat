@@ -12,12 +12,14 @@
 #import "WHChatClient.h"
 #import "WHCoreData.h"
 #import "WHKeyPair.h"
+#import "WHPGP.h"
 #import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
 
 #import "Specta.h"
 #define EXP_SHORTHAND
 #import "Expecta.h"
+#import "NSData+XMPP.h"
 #import "XMPP.h"
 
 #import <OCMock/OCMock.h>
@@ -273,24 +275,28 @@ describe(@"WHXMPPRoster", ^{
     describe(@"xmppStream:didReceiveMessage:", ^{
         __block WHXMPPRoster *roster;
         __block Contact *contact;
+        __block WHKeyPair *kp;
         beforeEach(^{
             [[xmppStream stub] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
             roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
             roster.contactJids = [NSMutableSet set];
             contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+            kp = [WHKeyPair createOwnGlobalKeyPair];
+            [WHKeyPair addGlobalKey:kp.publicKeyBits fromJid:contact.jid];
+            [WHKeyPair addSymmetricKey:kp.symmetricKey fromJid:contact.jid];
         });
 
         it(@"should set the nickname of known users", ^AsyncBlock{
-            NSString *xml =
+            NSString *xml = [NSString stringWithFormat:
                 @"<message from='jid@localhost/location'>"
                 @"  <event xmlns='http://jabber.org/protocol/pubsub#event'>"
                 @"    <items node='841f3c8955c4c41a0cf99620d78a33b996659ded'>"
                 @"      <item>"
-                @"        <nick xmlns='http://jabber.org/protocol/nick'>New Nick</nick>"
+                @"        <nick xmlns='http://jabber.org/protocol/nick'>%@</nick>"
                 @"      </item>"
                 @"    </items>"
                 @"  </event>"
-                @"</message>";
+                @"</message>", [[WHPGP encrypt:@"New Nick" key:kp] xmpp_base64Encoded]];
 
             [RACAble(contact, name) subscribeNext:^(id x) {
                 expect(x).to.equal(@"New Nick");
@@ -321,21 +327,6 @@ describe(@"WHXMPPWrapper", ^{
             xmpp.displayName = @"name";
 
             [mockStream verify];
-            [[mockStream stub] sendElement:OCMOCK_ANY];
-        });
-
-        it(@"should escape XML in the name", ^{
-            id mockStream = [OCMockObject mockForClass:[XMPPStream class]];
-            [xmpp setStream:mockStream];
-            [[mockStream expect] sendElement:[OCMArg checkWithBlock:^BOOL(id obj) {
-                NSString *str = [obj XMLString];
-                expect(str).to.contain(@"&lt;");
-                expect(str).to.contain(@"&gt;");
-                return YES;
-            }]];
-
-            xmpp.displayName = @"<name>";
-
             [[mockStream stub] sendElement:OCMOCK_ANY];
         });
     });

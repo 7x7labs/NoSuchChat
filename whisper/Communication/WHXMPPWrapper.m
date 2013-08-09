@@ -9,9 +9,12 @@
 #import "WHXMPPWrapper.h"
 
 #import "WHError.h"
+#import "WHKeyPair.h"
+#import "WHPGP.h"
 #import "WHXMPPCapabilities.h"
 #import "WHXMPPRoster.h"
 
+#import "NSData+XMPP.h"
 #import "XMPP.h"
 #import "XMPPReconnect.h"
 
@@ -100,9 +103,9 @@
     @"   </pubsub>"
     @"</iq>";
 
-    NSString *encoded = [[NSXMLNode textWithStringValue:displayName] XMLString];
+    NSString *encrypted = [[WHPGP encrypt:displayName key:[WHKeyPair getOwnGlobalKeyPair]] xmpp_base64Encoded];
     NSError *error;
-    NSXMLElement *iq = [[NSXMLElement alloc] initWithXMLString:[NSString stringWithFormat:tmpl, encoded]
+    NSXMLElement *iq = [[NSXMLElement alloc] initWithXMLString:[NSString stringWithFormat:tmpl, encrypted]
                                                          error:&error];
     NSAssert(iq && !error, @"Error encoding nickname iq: %@", error);
     [self.stream sendElement:iq];

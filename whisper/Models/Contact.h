@@ -23,6 +23,7 @@ extern NSString * const WHContactAddedNotification;
 
 - (NSString *)encrypt:(NSString *)message;
 - (NSString *)decrypt:(NSString *)message;
+- (NSString *)decryptGlobal:(NSString *)message;
 
 @property (nonatomic, readonly) WHKeyPair *ownKey;
 @property (nonatomic, readonly) WHKeyPair *contactKey;
