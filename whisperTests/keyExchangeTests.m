@@ -19,7 +19,6 @@
 #define EXP_SHORTHAND
 #import "Expecta.h"
 
-#import <CocoaAsyncSocket/GCDAsyncSocket.h>
 #import <OCMock/OCMock.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 @import MultipeerConnectivity;
@@ -34,7 +33,14 @@ static id isKindOfClass(Class class) {
     }];
 }
 
+OSStatus SecItemDeleteAll(void); // private API, do not use outside of tests
+
 SpecBegin(KeyExchangeTests)
+beforeEach(^{
+    [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+    SecItemDeleteAll();
+});
+
 describe(@"WHMultipeerAdvertiser", ^{
     __block WHMultipeerAdvertiser *advertiser;
     __block id<MCNearbyServiceAdvertiserDelegate> delegate;
@@ -175,10 +181,6 @@ describe(@"WHKeyExchangePeer", ^{
     beforeEach(^{
         ownPeerID = [[MCPeerID alloc] initWithDisplayName:@"own display name"];
         otherPeerID = [[MCPeerID alloc] initWithDisplayName:@"other display name"];
-        [(id)[[UIApplication sharedApplication] delegate] initTestContext];
-    });
-    afterEach(^{
-        SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
     });
 
     describe(@"outgoing connection", ^{

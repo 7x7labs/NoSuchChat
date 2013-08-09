@@ -24,7 +24,8 @@
 
 #import <OCMock/OCMock.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <SSKeychain/SSKeychain.h>
+
+OSStatus SecItemDeleteAll(void); // private API, do not use outside of tests
 
 @interface WHXMPPWrapper (Test)
 - (void)setStream:(XMPPStream *)stream;
@@ -32,11 +33,12 @@
 
 SpecBegin(WhisperTests)
 
-describe(@"Contact", ^{
-    beforeEach(^{
-        [(id)[[UIApplication sharedApplication] delegate] initTestContext];
-    });
+beforeEach(^{
+    [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+    SecItemDeleteAll();
+});
 
+describe(@"Contact", ^{
     it(@"should initially return an empty array from all", ^{
         expect([Contact all]).to.haveCountOf(0);
     });
@@ -103,12 +105,6 @@ describe(@"Contact", ^{
 });
 
 describe(@"WHAccount", ^{
-    beforeEach(^{
-        for (NSDictionary *account in [SSKeychain allAccounts])
-            [SSKeychain deletePasswordForService:account[kSSKeychainWhereKey]
-                                         account:account[kSSKeychainAccountKey]];
-    });
-
     it(@"should set the jid, password and global key", ^{
         WHAccount *a = [WHAccount get];
         expect([a.jid length]).to.beGreaterThan(0);
@@ -131,15 +127,15 @@ describe(@"WHChatClient", ^{
     __block WHChatClient *client;
     __block id xmppStream;
     __block RACSubject *messages;
+    __block Contact *contact;
     beforeEach(^{
-        [(id)[[UIApplication sharedApplication] delegate] initTestContext];
         messages = [RACSubject subject];
         xmppStream = [OCMockObject niceMockForClass:[WHXMPPWrapper class]];
         [[[xmppStream expect] andReturn:messages] messages];
         [[[xmppStream expect] andReturn:[RACSignal new]] connectToServer:@"localhost"
                                                                     port:5222
-                                                                username:[OCMArg any]
-                                                                password:[OCMArg any]];
+                                                                username:OCMOCK_ANY
+                                                                password:OCMOCK_ANY];
         client = [WHChatClient clientForServer:@"localhost" port:5222 stream:xmppStream];
     });
 
@@ -159,14 +155,10 @@ describe(@"WHChatClient", ^{
     });
 
     describe(@"sendMessage", ^{
-        __block Contact *contact;
         beforeEach(^{
             contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
-            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:contact.jid];
-            [WHKeyPair addKey:kp.publicKeyBits fromJid:contact.jid];
-        });
-        afterEach(^{
-            SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+            [WHKeyPair addKey:[WHKeyPair createKeyPairForJid:contact.jid].publicKeyBits
+                      fromJid:contact.jid];
         });
 
 #pragma clang diagnostic push
@@ -190,14 +182,10 @@ describe(@"WHChatClient", ^{
     });
 
     describe(@"message receiving", ^{
-        __block Contact *contact;
         beforeEach(^{
             contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
-            WHKeyPair *kp = [WHKeyPair createKeyPairForJid:contact.jid];
-            [WHKeyPair addKey:kp.publicKeyBits fromJid:contact.jid];
-        });
-        afterEach(^{
-            SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
+            [WHKeyPair addKey:[WHKeyPair createKeyPairForJid:contact.jid].publicKeyBits
+                      fromJid:contact.jid];
         });
 
         it(@"should not trigger an error on an unknown contact", ^AsyncBlock{
@@ -238,16 +226,23 @@ describe(@"WHChatClient", ^{
 
 describe(@"WHXMPPRoster", ^{
     __block id xmppStream;
+    __block WHXMPPRoster *roster;
+    __block Contact *contact;
     beforeEach(^{
-        [(id)[[UIApplication sharedApplication] delegate] initTestContext];
         xmppStream = [OCMockObject mockForClass:[XMPPStream class]];
+
+        [[xmppStream expect] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
+        roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
+        roster.contactJids = [NSMutableSet set];
+
+        contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+    });
+    afterEach(^{
+        [[xmppStream stub] removeDelegate:OCMOCK_ANY];
     });
 
     it(@"should add and remove itself from the stream's delegates", ^{
-        WHXMPPRoster *roster = [WHXMPPRoster alloc];
-        [[xmppStream expect] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
-        (void)[roster initWithXmppStream:xmppStream];
-        [xmppStream verify];
+        [xmppStream verify]; // expect in beforeEach
 
         [[xmppStream expect] removeDelegate:OCMOCK_ANY];
         roster = nil;
@@ -255,15 +250,6 @@ describe(@"WHXMPPRoster", ^{
     });
 
     describe(@"addContact:", ^{
-        __block WHXMPPRoster *roster;
-        __block Contact *contact;
-        beforeEach(^{
-            [[xmppStream stub] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
-            roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
-            roster.contactJids = [NSMutableSet set];
-            contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
-        });
-
         it(@"should add the contact's JID to contactJids", ^{
             [[xmppStream stub] sendElement:OCMOCK_ANY];
 
@@ -273,14 +259,8 @@ describe(@"WHXMPPRoster", ^{
     });
 
     describe(@"xmppStream:didReceiveMessage:", ^{
-        __block WHXMPPRoster *roster;
-        __block Contact *contact;
         __block WHKeyPair *kp;
         beforeEach(^{
-            [[xmppStream stub] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
-            roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
-            roster.contactJids = [NSMutableSet set];
-            contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
             kp = [WHKeyPair createOwnGlobalKeyPair];
             [WHKeyPair addGlobalKey:kp.publicKeyBits fromJid:contact.jid];
             [WHKeyPair addSymmetricKey:kp.symmetricKey fromJid:contact.jid];
