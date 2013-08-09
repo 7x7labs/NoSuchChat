@@ -14,12 +14,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *saveContext;
 @end
 
-static WHCoreData *instance() {
-    static WHCoreData *instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{ instance = [WHCoreData new]; });
-    return instance;
-}
+static WHCoreData *instance;
 
 @implementation WHCoreData
 - (void)initWithType:(NSString *)storeType URL:(NSURL *)storeUrl {
@@ -60,20 +55,22 @@ static WHCoreData *instance() {
 }
 
 + (NSManagedObjectContext *)managedObjectContext {
-    return instance().mainThreadContext;
+    return instance.mainThreadContext;
 }
 
 + (NSManagedObjectContext *)backgroundManagedObjectContext {
-    return instance().backgroundContext;
+    return instance.backgroundContext;
 }
 
 + (void)initSqliteContext {
-    [instance() initWithType:NSSQLiteStoreType
-                         URL:[NSURL fileURLWithPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingString:@"/data.sqlite"]]];
+    instance = [WHCoreData new];
+    [instance initWithType:NSSQLiteStoreType
+                       URL:[NSURL fileURLWithPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingString:@"/data.sqlite"]]];
 }
 
 + (void)initTestContext {
-    [instance() initWithType:NSInMemoryStoreType URL:nil];
+    instance = [WHCoreData new];
+    [instance initWithType:NSInMemoryStoreType URL:nil];
 }
 
 + (RACSignal *)modifyObject:(NSManagedObject *)object
@@ -82,7 +79,7 @@ static WHCoreData *instance() {
     block(object);
 
     NSManagedObjectID *objectId = object.objectID;
-    return [instance() runWithContext:^(NSManagedObjectContext *context) {
+    return [instance runWithContext:^(NSManagedObjectContext *context) {
         NSManagedObject *localObject = [context objectWithID:objectId];
         block(localObject);
         return localObject;
@@ -92,7 +89,7 @@ static WHCoreData *instance() {
 + (RACSignal *)insertObjectOfType:(NSString *)type
                         withBlock:(void (^)(NSManagedObject *))block
 {
-    return [instance() runWithContext:^(NSManagedObjectContext *context) {
+    return [instance runWithContext:^(NSManagedObjectContext *context) {
         NSManagedObject *obj = [NSEntityDescription insertNewObjectForEntityForName:type
                                                              inManagedObjectContext:context];
         block(obj);
@@ -125,7 +122,7 @@ static WHCoreData *instance() {
 }
 
 + (RACSignal *)save {
-    return [instance() save];
+    return [instance save];
 }
 
 - (RACSignal *)save {
