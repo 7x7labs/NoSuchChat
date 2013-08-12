@@ -39,25 +39,31 @@ static NSManagedObjectContext *moc() {
     return array;
 }
 
-+ (Contact *)createWithName:(NSString *)name jid:(NSString *)jid {
-    Contact *contact = [self contactForJid:jid managedObjectContext:moc()];
-    if (contact)
-        return contact;
++ (RACSignal *)createWithName:(NSString *)name jid:(NSString *)jid {
+    RACSubject *subject = [RACReplaySubject subject];
+    NSManagedObjectContext *moc = [WHCoreData backgroundManagedObjectContext];
+    [moc performBlock:^{
+        __block Contact *contact = [self contactForJid:jid managedObjectContext:moc];
+        if (contact) {
+            [subject sendNext:contact];
+            [subject sendCompleted];
+        }
 
-    contact = [NSEntityDescription insertNewObjectForEntityForName:@"Contact"
-                                            inManagedObjectContext:moc()];
-    contact.name = name;
-    contact.jid = jid;
-
-    [[WHCoreData save] subscribeError:^(NSError *error) {
-        NSLog(@"Error saving contact: %@", error);
+        [[WHCoreData insertObjectOfType:@"Contact" withBlock:^(NSManagedObject *obj) {
+            contact = (Contact *)obj;
+            contact.name = name;
+            contact.jid = jid;
+        }] subscribeError:^(NSError *error) {
+            [subject sendError:error];
+        } completed:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:WHContactAddedNotification
+                                                                object:nil
+                                                              userInfo:@{@"created": contact}];
+            [subject sendNext:contact];
+            [subject sendCompleted];
+        }];
     }];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:WHContactAddedNotification
-                                                        object:nil
-                                                      userInfo:@{@"created": contact}];
-
-    return contact;
+    return subject;
 }
 
 + (Contact *)contactForJid:(NSString *)jid

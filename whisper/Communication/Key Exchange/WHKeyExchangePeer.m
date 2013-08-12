@@ -25,13 +25,13 @@
     return [[self bind:^{
         __block BOOL first = YES;
 
-        return ^(id value, BOOL *stop) {
+        return ^RACStream *(id value, BOOL *stop) {
             if (first) {
                 first = NO;
                 id ret = block(value);
                 if ([ret isKindOfClass:[NSError class]])
                     return [class error:ret];
-                return ret ? [class return:ret] : [class empty];
+                return ret ? ret : [class empty];
             }
 
             return [class return:value];

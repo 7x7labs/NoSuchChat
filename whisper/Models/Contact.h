@@ -14,7 +14,7 @@ extern NSString * const WHContactAddedNotification;
 
 @interface Contact : _Contact
 + (NSArray *)all;
-+ (Contact *)createWithName:(NSString *)name jid:(NSString *)jid;
++ (RACSignal *)createWithName:(NSString *)name jid:(NSString *)jid;
 + (Contact *)contactForJid:(NSString *)jid
       managedObjectContext:(NSManagedObjectContext *)context;
 

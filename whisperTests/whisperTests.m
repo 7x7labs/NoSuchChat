@@ -24,12 +24,26 @@
 
 #import <OCMock/OCMock.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <libkern/OSAtomic.h>
 
 OSStatus SecItemDeleteAll(void); // private API, do not use outside of tests
 
 @interface WHXMPPWrapper (Test)
 - (void)setStream:(XMPPStream *)stream;
 @end
+
+// Create a contact then fetch it on the main thread. Works around CoreData
+// objects being threadsafe and that CoreData stuff on background threads still
+// require that the main thread be running
+static Contact *createContact(NSString *name, NSString *jid) {
+    __block uint32_t complete = 0;
+    [[Contact createWithName:name jid:jid] subscribeCompleted:^{
+        OSAtomicOr32Barrier(1, &complete);
+    }];
+    while (!complete)
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+    return [Contact contactForJid:jid managedObjectContext:[WHCoreData managedObjectContext]];
+}
 
 SpecBegin(WhisperTests)
 
@@ -43,23 +57,30 @@ describe(@"Contact", ^{
         expect([Contact all]).to.haveCountOf(0);
     });
 
-    it(@"should be able to create new contacts with the specified name", ^{
-        Contact *contact = [Contact createWithName:@"abc" jid:@"a@b.com"];
-        expect(contact).notTo.beNil();
-        expect(contact.name).to.equal(@"abc");
+    it(@"should be able to create new contacts with the specified name", ^AsyncBlock{
+        [[Contact createWithName:@"abc" jid:@"a@b.com"] subscribeNext:^(Contact *contact) {
+            expect(contact).notTo.beNil();
+            expect(contact.name).to.equal(@"abc");
+            done();
+        }];
     });
 
-    it(@"should return newly created contacts from all", ^{
-        [Contact createWithName:@"def" jid:@"a@b.com"];
-        NSArray *all = [Contact all];
-        expect(all).to.haveCountOf(1);
-        expect([all[0] name]).to.equal(@"def");
+    it(@"should return newly created contacts from all", ^AsyncBlock{
+        [[[Contact createWithName:@"def" jid:@"a@b.com"]
+          deliverOn:[RACScheduler mainThreadScheduler]]
+         subscribeCompleted:^{
+             NSArray *all = [Contact all];
+             expect(all).to.haveCountOf(1);
+             expect([all[0] name]).to.equal(@"def");
+             done();
+         }];
     });
 
-    describe(@"messages", ^{
+    fdescribe(@"messages", ^{
         __block Contact *contact;
         beforeEach(^{
-            contact = [Contact createWithName:@"test contact" jid:@"a@b.com"];
+            [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+            contact = createContact(@"test contact", @"a@b.com");
         });
 
         it(@"should initially be empty", ^{
@@ -85,20 +106,20 @@ describe(@"Contact", ^{
         });
 
         it(@"should only return messages involving the current contact", ^AsyncBlock{
-            Contact *contact2 = [Contact createWithName:@"second contact" jid:@"b@b.com"];
+            Contact *contact2 = createContact(@"second contact", @"b@b.com");
             [[contact2 addSentMessage:@"message" date:[NSDate date]]
              subscribeCompleted:^{
                  expect(contact.messages).to.haveCountOf(0);
                  expect(contact2.messages).to.haveCountOf(1);
                  done();
              }];
-         });
+        });
     });
 
     describe(@"createWithName:jid:", ^{
         it(@"should return the existing contact if given a duplicate jid", ^{
-            Contact *c1 = [Contact createWithName:@"abc" jid:@"a@b.com"];
-            Contact *c2 = [Contact createWithName:@"def" jid:@"a@b.com"];
+            Contact *c1 = createContact(@"abc", @"a@b.com");
+            Contact *c2 = createContact(@"def", @"a@b.com");
             expect(c1).to.equal(c2);
         });
     });
@@ -149,14 +170,14 @@ describe(@"WHChatClient", ^{
         });
 
         it(@"should add newly created contacts", ^{
-            [Contact createWithName:@"name" jid:@"jid@localhost"];
+            createContact(@"name", @"jid@localhost");
             expect(client.contacts).to.haveCountOf(1);
         });
     });
 
     describe(@"sendMessage", ^{
         beforeEach(^{
-            contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+            contact = createContact(@"name", @"jid@localhost");
             [WHKeyPair addKey:[WHKeyPair createKeyPairForJid:contact.jid].publicKeyBits
                       fromJid:contact.jid];
         });
@@ -183,7 +204,7 @@ describe(@"WHChatClient", ^{
 
     describe(@"message receiving", ^{
         beforeEach(^{
-            contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+            contact = createContact(@"name", @"jid@localhost");
             [WHKeyPair addKey:[WHKeyPair createKeyPairForJid:contact.jid].publicKeyBits
                       fromJid:contact.jid];
         });
@@ -191,9 +212,9 @@ describe(@"WHChatClient", ^{
         it(@"should not trigger an error on an unknown contact", ^AsyncBlock{
             [client.incomingMessages
              subscribeNext:^(id _){
-                expect(contact.messages).to.haveCountOf(0);
-                done();
-            }
+                 expect(contact.messages).to.haveCountOf(0);
+                 done();
+             }
              error:^(NSError *error) {
                  expect(error).to.beNil();
                  done();
@@ -235,7 +256,7 @@ describe(@"WHXMPPRoster", ^{
         roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
         roster.contactJids = [NSMutableSet set];
 
-        contact = [Contact createWithName:@"name" jid:@"jid@localhost"];
+        contact = createContact(@"name", @"jid@localhost");
     });
     afterEach(^{
         [[xmppStream stub] removeDelegate:OCMOCK_ANY];
@@ -268,15 +289,15 @@ describe(@"WHXMPPRoster", ^{
 
         it(@"should set the nickname of known users", ^AsyncBlock{
             NSString *xml = [NSString stringWithFormat:
-                @"<message from='jid@localhost/location'>"
-                @"  <event xmlns='http://jabber.org/protocol/pubsub#event'>"
-                @"    <items node='841f3c8955c4c41a0cf99620d78a33b996659ded'>"
-                @"      <item>"
-                @"        <nick xmlns='http://jabber.org/protocol/nick'>%@</nick>"
-                @"      </item>"
-                @"    </items>"
-                @"  </event>"
-                @"</message>", [[WHCrypto encrypt:@"New Nick" key:kp] xmpp_base64Encoded]];
+                             @"<message from='jid@localhost/location'>"
+                             @"  <event xmlns='http://jabber.org/protocol/pubsub#event'>"
+                             @"    <items node='841f3c8955c4c41a0cf99620d78a33b996659ded'>"
+                             @"      <item>"
+                             @"        <nick xmlns='http://jabber.org/protocol/nick'>%@</nick>"
+                             @"      </item>"
+                             @"    </items>"
+                             @"  </event>"
+                             @"</message>", [[WHCrypto encrypt:@"New Nick" key:kp] xmpp_base64Encoded]];
 
             [RACAble(contact, name) subscribeNext:^(id x) {
                 expect(x).to.equal(@"New Nick");

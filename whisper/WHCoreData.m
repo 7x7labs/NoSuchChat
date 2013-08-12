@@ -55,10 +55,12 @@ static WHCoreData *instance;
 }
 
 + (NSManagedObjectContext *)managedObjectContext {
+    NSAssert(instance, @"WHCoreData instance not created yet");
     return instance.mainThreadContext;
 }
 
 + (NSManagedObjectContext *)backgroundManagedObjectContext {
+    NSAssert(instance, @"WHCoreData instance not created yet");
     return instance.backgroundContext;
 }
 
