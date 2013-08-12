@@ -10,8 +10,8 @@
 
 #import "Message.h"
 #import "WHCoreData.h"
+#import "WHCrypto.h"
 #import "WHKeyPair.h"
-#import "WHPGP.h"
 
 #import "NSData+XMPP.h"
 
@@ -115,19 +115,19 @@ static NSManagedObjectContext *moc() {
 }
 
 - (NSString *)encrypt:(NSString *)message {
-    return [[WHPGP encrypt:message
+    return [[WHCrypto encrypt:message
                  senderKey:self.ownKey
                receiverKey:self.contactKey] xmpp_base64Encoded];
 }
 
 - (NSString *)decrypt:(NSString *)message {
-    return [WHPGP decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
+    return [WHCrypto decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
                 senderKey:self.contactKey
               receiverKey:self.ownKey];
 }
 
 - (NSString *)decryptGlobal:(NSString *)message {
-    return [WHPGP decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
+    return [WHCrypto decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
                       key:self.globalKey];
 }
 

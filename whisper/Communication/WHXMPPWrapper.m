@@ -8,9 +8,9 @@
 
 #import "WHXMPPWrapper.h"
 
+#import "WHCrypto.h"
 #import "WHError.h"
 #import "WHKeyPair.h"
-#import "WHPGP.h"
 #import "WHXMPPCapabilities.h"
 #import "WHXMPPRoster.h"
 
@@ -103,7 +103,7 @@
     @"   </pubsub>"
     @"</iq>";
 
-    NSString *encrypted = [[WHPGP encrypt:displayName key:[WHKeyPair getOwnGlobalKeyPair]] xmpp_base64Encoded];
+    NSString *encrypted = [[WHCrypto encrypt:displayName key:[WHKeyPair getOwnGlobalKeyPair]] xmpp_base64Encoded];
     NSError *error;
     NSXMLElement *iq = [[NSXMLElement alloc] initWithXMLString:[NSString stringWithFormat:tmpl, encrypted]
                                                          error:&error];

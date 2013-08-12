@@ -11,8 +11,8 @@
 #import "WHAccount.h"
 #import "WHChatClient.h"
 #import "WHCoreData.h"
+#import "WHCrypto.h"
 #import "WHKeyPair.h"
-#import "WHPGP.h"
 #import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
 
@@ -276,7 +276,7 @@ describe(@"WHXMPPRoster", ^{
                 @"      </item>"
                 @"    </items>"
                 @"  </event>"
-                @"</message>", [[WHPGP encrypt:@"New Nick" key:kp] xmpp_base64Encoded]];
+                @"</message>", [[WHCrypto encrypt:@"New Nick" key:kp] xmpp_base64Encoded]];
 
             [RACAble(contact, name) subscribeNext:^(id x) {
                 expect(x).to.equal(@"New Nick");

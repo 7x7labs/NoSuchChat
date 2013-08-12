@@ -11,7 +11,7 @@
 #import "Contact.h"
 #import "WHAccount.h"
 #import "WHCoreData.h"
-#import "WHPGP.h"
+#import "WHCrypto.h"
 
 #import "XMPP.h"
 #import "NSData+XMPP.h"
@@ -70,7 +70,7 @@
 
 - (void)setShow:(NSString *)show status:(NSString *)status {
     self.show = show;
-    self.status = [[WHPGP encrypt:status key:[WHAccount get].globalKey] xmpp_base64Encoded];
+    self.status = [[WHCrypto encrypt:status key:[WHAccount get].globalKey] xmpp_base64Encoded];
     [self sendStatus];
 }
 

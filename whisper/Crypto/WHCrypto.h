@@ -1,5 +1,5 @@
 //
-//  WHPGP.h
+//  WHCrypto.h
 //  whisper
 //
 //  Created by Thomas Goyne on 7/18/13.
@@ -10,7 +10,7 @@
 
 @class WHKeyPair;
 
-@interface WHPGP : NSObject
+@interface WHCrypto : NSObject
 + (NSData *)encrypt:(NSString *)string
           senderKey:(WHKeyPair *)senderKey
         receiverKey:(WHKeyPair *)receiverKey;

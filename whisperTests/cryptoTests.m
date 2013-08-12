@@ -10,8 +10,8 @@
 #import "NSData+Encryption.h"
 #import "NSData+SHA.h"
 #import "NSData+Signature.h"
+#import "WHCrypto.h"
 #import "WHKeyPair.h"
-#import "WHPGP.h"
 
 #import "Specta.h"
 #define EXP_SHORTHAND
@@ -239,7 +239,7 @@ describe(@"WHPGP", ^{
 
     describe(@"encrypt:senderKey:receiverKey:", ^{
         it(@"should return a blob of data", ^{
-            NSData *encrypted = [WHPGP encrypt:message
+            NSData *encrypted = [WHCrypto encrypt:message
                                      senderKey:sender
                                    receiverKey:recipient];
             expect(encrypted).toNot.beNil();
@@ -247,8 +247,8 @@ describe(@"WHPGP", ^{
         });
 
         it(@"should return different data each time it is called", ^{
-            NSData *e1 = [WHPGP encrypt:message senderKey:sender receiverKey:recipient];
-            NSData *e2 = [WHPGP encrypt:message senderKey:sender receiverKey:recipient];
+            NSData *e1 = [WHCrypto encrypt:message senderKey:sender receiverKey:recipient];
+            NSData *e2 = [WHCrypto encrypt:message senderKey:sender receiverKey:recipient];
             expect(e1).notTo.equal(e2);
         });
     });
@@ -256,27 +256,27 @@ describe(@"WHPGP", ^{
     describe(@"decrypt:senderKey:receiverKey:", ^{
         it(@"should return nil when given invalid data", ^{
             NSData *message = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *decrypted = [WHPGP decrypt:message
+            NSString *decrypted = [WHCrypto decrypt:message
                                        senderKey:sender
                                      receiverKey:recipient];
             expect(decrypted).to.beNil();
         });
 
         it(@"should return nil when given the wrong key", ^{
-            NSData *encrypted = [WHPGP encrypt:message
+            NSData *encrypted = [WHCrypto encrypt:message
                                      senderKey:sender
                                    receiverKey:recipient];
-            NSString *decrypted = [WHPGP decrypt:encrypted
+            NSString *decrypted = [WHCrypto decrypt:encrypted
                                        senderKey:recipient
                                      receiverKey:sender];
             expect(decrypted).to.beNil();
         });
 
         it(@"should be able to decrypt stuff it encrypted", ^{
-            NSData *encrypted = [WHPGP encrypt:message
+            NSData *encrypted = [WHCrypto encrypt:message
                                      senderKey:sender
                                    receiverKey:recipient];
-            NSString *decrypted = [WHPGP decrypt:encrypted
+            NSString *decrypted = [WHCrypto decrypt:encrypted
                                        senderKey:sender
                                      receiverKey:recipient];
             expect(decrypted).to.equal(message);
@@ -286,15 +286,15 @@ describe(@"WHPGP", ^{
     describe(@"encrypt:key", ^{
         it(@"should give a blob of data with a global key", ^{
             WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
-            NSData *encrypted = [WHPGP encrypt:message key:key];
+            NSData *encrypted = [WHCrypto encrypt:message key:key];
             expect(encrypted).toNot.beNil();
             expect([encrypted length]).to.beGreaterThan(message.length);
         });
 
         it(@"should return different data each time it is called", ^{
             WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
-            NSData *e1 = [WHPGP encrypt:message key:key];
-            NSData *e2 = [WHPGP encrypt:message key:key];
+            NSData *e1 = [WHCrypto encrypt:message key:key];
+            NSData *e2 = [WHCrypto encrypt:message key:key];
             expect(e1).notTo.equal(e2);
         });
     });
@@ -302,10 +302,10 @@ describe(@"WHPGP", ^{
     describe(@"decrypt:key", ^{
         it(@"should be able to decrypt encrypted things", ^{
             WHKeyPair *key = [WHKeyPair createOwnGlobalKeyPair];
-            NSData *encrypted = [WHPGP encrypt:message key:key];
+            NSData *encrypted = [WHCrypto encrypt:message key:key];
 
             key = [WHKeyPair getOwnGlobalKeyPair];
-            expect([WHPGP decrypt:encrypted key:key]).to.equal(message);
+            expect([WHCrypto decrypt:encrypted key:key]).to.equal(message);
         });
     });
 });

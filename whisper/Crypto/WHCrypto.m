@@ -1,12 +1,12 @@
 //
-//  WHPGP.m
+//  WHCrypto.m
 //  whisper
 //
 //  Created by Thomas Goyne on 7/18/13.
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import "WHPGP.h"
+#import "WHCrypto.h"
 
 #import "NSData+Compression.h"
 #import "NSData+Encryption.h"
@@ -19,7 +19,7 @@
 #define kBlockSize  kCCBlockSizeAES128
 #define kKeySize    kCCKeySizeAES256
 
-@implementation WHPGP
+@implementation WHCrypto
 + (NSData *)packData:(NSArray *)arr {
     NSUInteger outputLength = [[arr valueForKeyPath:@"@sum.length"] unsignedIntegerValue]
                                + [arr count] * 4;
