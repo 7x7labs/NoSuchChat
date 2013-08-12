@@ -12,6 +12,6 @@
 @import CoreData;
 @import MultipeerConnectivity;
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#endif
 
 extern NSString * const kXmppServerHost;
+#endif

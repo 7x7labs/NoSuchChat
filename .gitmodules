@@ -1,3 +1,6 @@
 [submodule "Vendor/XMPPFramework"]
 	path = Vendor/XMPPFramework
 	url = https://github.com/tgoyne/XMPPFramework.git
+[submodule "Vendor/curve25519-donna"]
+	path = Vendor/curve25519-donna
+	url = https://github.com/agl/curve25519-donna.git
