@@ -52,22 +52,16 @@
 		3F8D1B84179495430089B129 /* _Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B83179495430089B129 /* _Contact.m */; };
 		3F8D1B871794957B0089B129 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B861794957B0089B129 /* Contact.m */; };
 		3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
-		3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
 		3F8D1B8D1794A6690089B129 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8C1794A6690089B129 /* CoreData.framework */; };
 		3F8D1B8F1794CBF00089B129 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8E1794CBF00089B129 /* SenTestingKit.framework */; };
 		3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B921794DD200089B129 /* WHContactsViewController.m */; };
 		3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */; };
 		3F8D1B9C179597FC0089B129 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9B179597FC0089B129 /* Message.m */; };
-		3F8D1B9D179597FC0089B129 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9B179597FC0089B129 /* Message.m */; };
 		3F8D1BA0179598090089B129 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
-		3F8D1BA1179598090089B129 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
 		3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */; };
 		3F8D1BA81795F70D0089B129 /* WHXMPPWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */; };
-		3F8D1BA91795F70D0089B129 /* WHXMPPWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */; };
 		3F8EB18C1796E639009F938D /* WHAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18B1796E639009F938D /* WHAccount.m */; };
-		3F8EB18D1796E639009F938D /* WHAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18B1796E639009F938D /* WHAccount.m */; };
 		3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
-		3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
 		3F8EB1981798424C009F938D /* WHCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1971798424C009F938D /* WHCrypto.m */; };
 		3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB19D1798BF96009F938D /* NSData+Signature.m */; };
 		3F8EB1A11798C040009F938D /* NSData+SHA.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A01798C040009F938D /* NSData+SHA.m */; };
@@ -900,15 +894,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F8D1BA1179598090089B129 /* _Message.m in Sources */,
 				3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */,
 				3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */,
-				3F8D1B9D179597FC0089B129 /* Message.m in Sources */,
-				3F8EB18D1796E639009F938D /* WHAccount.m in Sources */,
-				3F8EB1911796FB7E009F938D /* WHChatClient.m in Sources */,
-				3F8D1B8B1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */,
-				3F8D1BA91795F70D0089B129 /* WHXMPPWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

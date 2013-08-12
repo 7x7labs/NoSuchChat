@@ -37,7 +37,7 @@ OSStatus SecItemDeleteAll(void); // private API, do not use outside of tests
 
 SpecBegin(KeyExchangeTests)
 beforeEach(^{
-    [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+    [WHCoreData initTestContext];
     SecItemDeleteAll();
 });
 

@@ -48,7 +48,7 @@ static Contact *createContact(NSString *name, NSString *jid) {
 SpecBegin(WhisperTests)
 
 beforeEach(^{
-    [(id)[[UIApplication sharedApplication] delegate] initTestContext];
+    [WHCoreData initTestContext];
     SecItemDeleteAll();
 });
 
@@ -76,10 +76,9 @@ describe(@"Contact", ^{
          }];
     });
 
-    fdescribe(@"messages", ^{
+    describe(@"messages", ^{
         __block Contact *contact;
         beforeEach(^{
-            [(id)[[UIApplication sharedApplication] delegate] initTestContext];
             contact = createContact(@"test contact", @"a@b.com");
         });
 
