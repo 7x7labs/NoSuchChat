@@ -228,7 +228,7 @@ describe(@"NSData+Encryption", ^{
     });
 });
 
-describe(@"WHPGP", ^{
+describe(@"WHCrypto", ^{
     __block WHKeyPair *sender, *recipient;
     NSString *message = @"hello";
 
@@ -240,8 +240,8 @@ describe(@"WHPGP", ^{
     describe(@"encrypt:senderKey:receiverKey:", ^{
         it(@"should return a blob of data", ^{
             NSData *encrypted = [WHCrypto encrypt:message
-                                     senderKey:sender
-                                   receiverKey:recipient];
+                                        senderKey:sender
+                                      receiverKey:recipient];
             expect(encrypted).toNot.beNil();
             expect([encrypted length]).to.beGreaterThan(message.length);
         });
@@ -257,28 +257,28 @@ describe(@"WHPGP", ^{
         it(@"should return nil when given invalid data", ^{
             NSData *message = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
             NSString *decrypted = [WHCrypto decrypt:message
-                                       senderKey:sender
-                                     receiverKey:recipient];
+                                          senderKey:sender
+                                        receiverKey:recipient];
             expect(decrypted).to.beNil();
         });
 
         it(@"should return nil when given the wrong key", ^{
             NSData *encrypted = [WHCrypto encrypt:message
-                                     senderKey:sender
-                                   receiverKey:recipient];
+                                        senderKey:sender
+                                      receiverKey:recipient];
             NSString *decrypted = [WHCrypto decrypt:encrypted
-                                       senderKey:recipient
-                                     receiverKey:sender];
+                                          senderKey:recipient
+                                        receiverKey:sender];
             expect(decrypted).to.beNil();
         });
 
         it(@"should be able to decrypt stuff it encrypted", ^{
             NSData *encrypted = [WHCrypto encrypt:message
-                                     senderKey:sender
-                                   receiverKey:recipient];
+                                        senderKey:sender
+                                      receiverKey:recipient];
             NSString *decrypted = [WHCrypto decrypt:encrypted
-                                       senderKey:sender
-                                     receiverKey:recipient];
+                                          senderKey:sender
+                                        receiverKey:recipient];
             expect(decrypted).to.equal(message);
         });
     });

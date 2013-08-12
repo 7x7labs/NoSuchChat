@@ -122,19 +122,19 @@ static NSManagedObjectContext *moc() {
 
 - (NSString *)encrypt:(NSString *)message {
     return [[WHCrypto encrypt:message
-                 senderKey:self.ownKey
-               receiverKey:self.contactKey] xmpp_base64Encoded];
+                    senderKey:self.ownKey
+                  receiverKey:self.contactKey] xmpp_base64Encoded];
 }
 
 - (NSString *)decrypt:(NSString *)message {
     return [WHCrypto decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
-                senderKey:self.contactKey
-              receiverKey:self.ownKey];
+                   senderKey:self.contactKey
+                 receiverKey:self.ownKey];
 }
 
 - (NSString *)decryptGlobal:(NSString *)message {
     return [WHCrypto decrypt:[[message dataUsingEncoding:NSUTF8StringEncoding] xmpp_base64Decoded]
-                      key:self.globalKey];
+                         key:self.globalKey];
 }
 
 @end

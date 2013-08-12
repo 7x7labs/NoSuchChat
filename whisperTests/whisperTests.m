@@ -296,7 +296,8 @@ describe(@"WHXMPPRoster", ^{
                              @"      </item>"
                              @"    </items>"
                              @"  </event>"
-                             @"</message>", [[WHCrypto encrypt:@"New Nick" key:kp] xmpp_base64Encoded]];
+                             @"</message>", [[WHCrypto encrypt:@"New Nick" key:kp]
+                                             xmpp_base64Encoded]];
 
             [RACAble(contact, name) subscribeNext:^(id x) {
                 expect(x).to.equal(@"New Nick");
