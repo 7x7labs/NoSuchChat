@@ -13,7 +13,9 @@
 @import Security;
 #import <SSKeychain/SSKeychain.h>
 
-static NSString *kServiceName = @"com.7x7labs.Whisper";
+static NSString *serviceName() {
+    return [@"com.7x7labs.Whisper." stringByAppendingString:kXmppServerHost];
+}
 
 @interface WHAccount ()
 @property (nonatomic, strong) NSString *jid;
@@ -32,11 +34,11 @@ static NSString *generateRandomString() {
 
 @implementation WHAccount
 + (WHAccount *)get {
-    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
+    NSArray *accounts = [SSKeychain accountsForService:serviceName()];
     if ([accounts count]) {
         WHAccount *account = [WHAccount new];
         account.jid = accounts[0][kSSKeychainAccountKey];
-        account.password = [SSKeychain passwordForService:kServiceName account:account.jid];
+        account.password = [SSKeychain passwordForService:serviceName() account:account.jid];
         account.globalKey = [WHKeyPair getOwnGlobalKeyPair];
         return account;
     }
@@ -47,7 +49,7 @@ static NSString *generateRandomString() {
     account.password = generateRandomString();
     account.globalKey = [WHKeyPair createOwnGlobalKeyPair];
 
-    [SSKeychain setPassword:account.password forService:kServiceName account:account.jid];
+    [SSKeychain setPassword:account.password forService:serviceName() account:account.jid];
     return account;
 }
 
