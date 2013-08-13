@@ -45,6 +45,76 @@
 		3F7127D2178F0C6100835DD2 /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127CF178F0C6100835DD2 /* libidn.a */; };
 		3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127D3178F0D6F00835DD2 /* libresolv.dylib */; };
 		3F77024117B949C800EF5C50 /* curve25519-donna.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F77024017B949C800EF5C50 /* curve25519-donna.c */; };
+		3F77024917BA9F3F00EF5C50 /* _Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B83179495430089B129 /* _Contact.m */; };
+		3F77024A17BA9F3F00EF5C50 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
+		3F77024B17BA9F3F00EF5C50 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B861794957B0089B129 /* Contact.m */; };
+		3F77024C17BA9F3F00EF5C50 /* curve25519-donna.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F77024017B949C800EF5C50 /* curve25519-donna.c */; };
+		3F77024D17BA9F3F00EF5C50 /* DDList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127AA178F089200835DD2 /* DDList.m */; };
+		3F77024E17BA9F3F00EF5C50 /* GCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127AC178F089200835DD2 /* GCDMulticastDelegate.m */; };
+		3F77024F17BA9F3F00EF5C50 /* hostname.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F94B76517B07BA600B1B3B9 /* hostname.m */; };
+		3F77025017BA9F3F00EF5C50 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C604178CFDA1007E6ECC /* main.m */; };
+		3F77025117BA9F3F00EF5C50 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9B179597FC0089B129 /* Message.m */; };
+		3F77025217BA9F3F00EF5C50 /* Models.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */; };
+		3F77025317BA9F3F00EF5C50 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */; };
+		3F77025417BA9F3F00EF5C50 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
+		3F77025517BA9F3F00EF5C50 /* NSData+SHA.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A01798C040009F938D /* NSData+SHA.m */; };
+		3F77025617BA9F3F00EF5C50 /* NSData+Signature.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB19D1798BF96009F938D /* NSData+Signature.m */; };
+		3F77025717BA9F3F00EF5C50 /* NSData+XMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71278F178F089200835DD2 /* NSData+XMPP.m */; };
+		3F77025817BA9F3F00EF5C50 /* NSNumber+XMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712791178F089200835DD2 /* NSNumber+XMPP.m */; };
+		3F77025917BA9F3F00EF5C50 /* NSXMLElement+XMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712793178F089200835DD2 /* NSXMLElement+XMPP.m */; };
+		3F77025A17BA9F3F00EF5C50 /* RFImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127AE178F089200835DD2 /* RFImageToDataTransformer.m */; };
+		3F77025B17BA9F3F00EF5C50 /* WHAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18B1796E639009F938D /* WHAccount.m */; };
+		3F77025C17BA9F3F00EF5C50 /* WHAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */; };
+		3F77025D17BA9F3F00EF5C50 /* WHAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4709DF17AC150A007A1DF7 /* WHAlert.m */; };
+		3F77025E17BA9F3F00EF5C50 /* WHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */; };
+		3F77025F17BA9F3F00EF5C50 /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
+		3F77026017BA9F3F00EF5C50 /* WHChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */; };
+		3F77026117BA9F3F00EF5C50 /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
+		3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B921794DD200089B129 /* WHContactsViewController.m */; };
+		3F77026317BA9F3F00EF5C50 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
+		3F77026417BA9F3F00EF5C50 /* WHCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1971798424C009F938D /* WHCrypto.m */; };
+		3F77026517BA9F3F00EF5C50 /* WHError.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FB2968717AC34D600D24E0D /* WHError.m */; };
+		3F77026617BA9F3F00EF5C50 /* WHKeyExchangePeer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */; };
+		3F77026717BA9F3F00EF5C50 /* WHKeyPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1A31798DC8C009F938D /* WHKeyPair.m */; };
+		3F77026817BA9F3F00EF5C50 /* WHMultipeerAdvertiser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */; };
+		3F77026917BA9F3F00EF5C50 /* WHMultipeerBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033717A9C768006FBFBE /* WHMultipeerBrowser.m */; };
+		3F77026A17BA9F3F00EF5C50 /* WHMultipeerSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033D17A9E51C006FBFBE /* WHMultipeerSession.m */; };
+		3F77026B17BA9F3F00EF5C50 /* WHPeerList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */; };
+		3F77026C17BA9F3F00EF5C50 /* WHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */; };
+		3F77026D17BA9F3F00EF5C50 /* WHSettingsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5F217A4336500DC76C1 /* WHSettingsViewModel.m */; };
+		3F77026E17BA9F3F00EF5C50 /* WHXMPPCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */; };
+		3F77026F17BA9F3F00EF5C50 /* WHXMPPRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C62117A56B8100DC76C1 /* WHXMPPRoster.m */; };
+		3F77027017BA9F3F00EF5C50 /* WHXMPPWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */; };
+		3F77027117BA9F3F00EF5C50 /* XMPPAnonymousAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277C178F089200835DD2 /* XMPPAnonymousAuthentication.m */; };
+		3F77027217BA9F3F00EF5C50 /* XMPPDeprecatedDigestAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71277F178F089200835DD2 /* XMPPDeprecatedDigestAuthentication.m */; };
+		3F77027317BA9F3F00EF5C50 /* XMPPDeprecatedPlainAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712782178F089200835DD2 /* XMPPDeprecatedPlainAuthentication.m */; };
+		3F77027417BA9F3F00EF5C50 /* XMPPDigestMD5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712785178F089200835DD2 /* XMPPDigestMD5Authentication.m */; };
+		3F77027517BA9F3F00EF5C50 /* XMPPElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712797178F089200835DD2 /* XMPPElement.m */; };
+		3F77027617BA9F3F00EF5C50 /* XMPPIDTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127B0178F089200835DD2 /* XMPPIDTracker.m */; };
+		3F77027717BA9F3F00EF5C50 /* XMPPIQ.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71279A178F089200835DD2 /* XMPPIQ.m */; };
+		3F77027817BA9F3F00EF5C50 /* XMPPJID.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71279C178F089200835DD2 /* XMPPJID.m */; };
+		3F77027917BA9F3F00EF5C50 /* XMPPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71279F178F089200835DD2 /* XMPPMessage.m */; };
+		3F77027A17BA9F3F00EF5C50 /* XMPPModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127A1178F089200835DD2 /* XMPPModule.m */; };
+		3F77027B17BA9F3F00EF5C50 /* XMPPParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127A3178F089200835DD2 /* XMPPParser.m */; };
+		3F77027C17BA9F3F00EF5C50 /* XMPPPlainAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F712788178F089200835DD2 /* XMPPPlainAuthentication.m */; };
+		3F77027D17BA9F3F00EF5C50 /* XMPPPresence.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127A5178F089200835DD2 /* XMPPPresence.m */; };
+		3F77027E17BA9F3F00EF5C50 /* XMPPReconnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5F717A5617400DC76C1 /* XMPPReconnect.m */; };
+		3F77027F17BA9F3F00EF5C50 /* XMPPSRVResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127B2178F089200835DD2 /* XMPPSRVResolver.m */; };
+		3F77028017BA9F3F00EF5C50 /* XMPPStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127A7178F089200835DD2 /* XMPPStream.m */; };
+		3F77028117BA9F3F00EF5C50 /* XMPPStringPrep.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7127B4178F089200835DD2 /* XMPPStringPrep.m */; };
+		3F77028217BA9F3F00EF5C50 /* XMPPXFacebookPlatformAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71278B178F089200835DD2 /* XMPPXFacebookPlatformAuthentication.m */; };
+		3F77028417BA9F3F00EF5C50 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D1B8C1794A6690089B129 /* CoreData.framework */; };
+		3F77028517BA9F3F00EF5C50 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */; };
+		3F77028617BA9F3F00EF5C50 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */; };
+		3F77028717BA9F3F00EF5C50 /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127CF178F0C6100835DD2 /* libidn.a */; };
+		3F77028817BA9F3F00EF5C50 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
+		3F77028917BA9F3F00EF5C50 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127D3178F0D6F00835DD2 /* libresolv.dylib */; };
+		3F77028A17BA9F3F00EF5C50 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
+		3F77028B17BA9F3F00EF5C50 /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB02DAB17AA19A900FD059A /* MultipeerConnectivity.framework */; };
+		3F77028C17BA9F3F00EF5C50 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */; };
+		3F77028E17BA9F3F00EF5C50 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C610178CFDA1007E6ECC /* Images.xcassets */; };
+		3F77028F17BA9F3F00EF5C50 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C601178CFDA1007E6ECC /* InfoPlist.strings */; };
+		3F77029017BA9F3F00EF5C50 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA0C60A178CFDA1007E6ECC /* Main.storyboard */; };
 		3F81033517A9C5EE006FBFBE /* WHMultipeerAdvertiser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */; };
 		3F81033817A9C768006FBFBE /* WHMultipeerBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033717A9C768006FBFBE /* WHMultipeerBrowser.m */; };
 		3F81033E17A9E51C006FBFBE /* WHMultipeerSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F81033D17A9E51C006FBFBE /* WHMultipeerSession.m */; };
@@ -174,6 +244,7 @@
 		3F7127D0178F0C6100835DD2 /* stringprep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringprep.h; sourceTree = "<group>"; };
 		3F7127D3178F0D6F00835DD2 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		3F77024017B949C800EF5C50 /* curve25519-donna.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "curve25519-donna.c"; path = "Vendor/curve25519-donna/curve25519-donna.c"; sourceTree = "<group>"; };
+		3F77029517BA9F3F00EF5C50 /* whisper copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "whisper copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F81033317A9C5EE006FBFBE /* WHMultipeerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerAdvertiser.h; path = Communication/Multipeer/WHMultipeerAdvertiser.h; sourceTree = "<group>"; };
 		3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHMultipeerAdvertiser.m; path = Communication/Multipeer/WHMultipeerAdvertiser.m; sourceTree = "<group>"; };
 		3F81033617A9C768006FBFBE /* WHMultipeerBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerBrowser.h; path = Communication/Multipeer/WHMultipeerBrowser.h; sourceTree = "<group>"; };
@@ -214,7 +285,7 @@
 		3F8EB1A21798DC8C009F938D /* WHKeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyPair.h; path = Crypto/WHKeyPair.h; sourceTree = "<group>"; };
 		3F8EB1A31798DC8C009F938D /* WHKeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyPair.m; path = Crypto/WHKeyPair.m; sourceTree = "<group>"; };
 		3F94B76517B07BA600B1B3B9 /* hostname.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hostname.m; sourceTree = "<group>"; };
-		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C5F5178CFDA1007E6ECC /* whisper - localhost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "whisper - localhost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -242,6 +313,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3F77028317BA9F3F00EF5C50 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F77028417BA9F3F00EF5C50 /* CoreData.framework in Frameworks */,
+				3F77028517BA9F3F00EF5C50 /* CoreGraphics.framework in Frameworks */,
+				3F77028617BA9F3F00EF5C50 /* Foundation.framework in Frameworks */,
+				3F77028717BA9F3F00EF5C50 /* libidn.a in Frameworks */,
+				3F77028817BA9F3F00EF5C50 /* libPods.a in Frameworks */,
+				3F77028917BA9F3F00EF5C50 /* libresolv.dylib in Frameworks */,
+				3F77028A17BA9F3F00EF5C50 /* libz.dylib in Frameworks */,
+				3F77028B17BA9F3F00EF5C50 /* MultipeerConnectivity.framework in Frameworks */,
+				3F77028C17BA9F3F00EF5C50 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FA0C5F2178CFDA1007E6ECC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -575,7 +662,8 @@
 		3FA0C5F6178CFDA1007E6ECC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3FA0C5F5178CFDA1007E6ECC /* whisper.app */,
+				3F77029517BA9F3F00EF5C50 /* whisper copy.app */,
+				3FA0C5F5178CFDA1007E6ECC /* whisper - localhost.app */,
 				3FA0C616178CFDA1007E6ECC /* whisperTests.octest */,
 			);
 			name = Products;
@@ -668,9 +756,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3FA0C5F4178CFDA1007E6ECC /* whisper */ = {
+		3F77024417BA9F3F00EF5C50 /* whisper - tigase.im */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3FA0C627178CFDA1007E6ECC /* Build configuration list for PBXNativeTarget "whisper" */;
+			buildConfigurationList = 3F77029217BA9F3F00EF5C50 /* Build configuration list for PBXNativeTarget "whisper - tigase.im" */;
+			buildPhases = (
+				3F77024517BA9F3F00EF5C50 /* Check Pods Manifest.lock */,
+				3F77024617BA9F3F00EF5C50 /* ShellScript */,
+				3F77024717BA9F3F00EF5C50 /* ShellScript */,
+				3F77024817BA9F3F00EF5C50 /* Sources */,
+				3F77028317BA9F3F00EF5C50 /* Frameworks */,
+				3F77028D17BA9F3F00EF5C50 /* Resources */,
+				3F77029117BA9F3F00EF5C50 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "whisper - tigase.im";
+			productName = whisper;
+			productReference = 3F77029517BA9F3F00EF5C50 /* whisper copy.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3FA0C5F4178CFDA1007E6ECC /* whisper - localhost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FA0C627178CFDA1007E6ECC /* Build configuration list for PBXNativeTarget "whisper - localhost" */;
 			buildPhases = (
 				45BFFCACFBE0460A8383688C /* Check Pods Manifest.lock */,
 				3F8D1B7C179493F60089B129 /* ShellScript */,
@@ -684,9 +793,9 @@
 			);
 			dependencies = (
 			);
-			name = whisper;
+			name = "whisper - localhost";
 			productName = whisper;
-			productReference = 3FA0C5F5178CFDA1007E6ECC /* whisper.app */;
+			productReference = 3FA0C5F5178CFDA1007E6ECC /* whisper - localhost.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3FA0C615178CFDA1007E6ECC /* whisperTests */ = {
@@ -717,6 +826,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "7x7 Labs";
 				TargetAttributes = {
+					3F77024417BA9F3F00EF5C50 = {
+						DevelopmentTeam = HMZPVRBV86;
+					};
 					3FA0C5F4178CFDA1007E6ECC = {
 						DevelopmentTeam = HMZPVRBV86;
 					};
@@ -738,13 +850,24 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3FA0C5F4178CFDA1007E6ECC /* whisper */,
+				3FA0C5F4178CFDA1007E6ECC /* whisper - localhost */,
 				3FA0C615178CFDA1007E6ECC /* whisperTests */,
+				3F77024417BA9F3F00EF5C50 /* whisper - tigase.im */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3F77028D17BA9F3F00EF5C50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F77028E17BA9F3F00EF5C50 /* Images.xcassets in Resources */,
+				3F77028F17BA9F3F00EF5C50 /* InfoPlist.strings in Resources */,
+				3F77029017BA9F3F00EF5C50 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FA0C5F3178CFDA1007E6ECC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -766,6 +889,62 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3F77024517BA9F3F00EF5C50 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3F77024617BA9F3F00EF5C50 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\n/usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models";
+		};
+		3F77024717BA9F3F00EF5C50 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HOST_NAME=\"NSString * const kXmppServerHost = @\\\"tigase.im\\\";\"\nHOST_NAME_FILE=\"${SOURCE_ROOT}/whisper/hostname.m\"\n\nif [ -f ${HOST_NAME_FILE} ]; then\n  OLD_HOST_NAME=$(cat ${HOST_NAME_FILE})\nfi\n\nif [ \"${HOST_NAME}\" != \"${OLD_HOST_NAME}\" ]; then\n  echo \"${HOST_NAME}\" > ${HOST_NAME_FILE}\nfi\n";
+		};
+		3F77029117BA9F3F00EF5C50 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3F8D1B7C179493F60089B129 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -825,6 +1004,71 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3F77024817BA9F3F00EF5C50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F77024917BA9F3F00EF5C50 /* _Contact.m in Sources */,
+				3F77024A17BA9F3F00EF5C50 /* _Message.m in Sources */,
+				3F77024B17BA9F3F00EF5C50 /* Contact.m in Sources */,
+				3F77024C17BA9F3F00EF5C50 /* curve25519-donna.c in Sources */,
+				3F77024D17BA9F3F00EF5C50 /* DDList.m in Sources */,
+				3F77024E17BA9F3F00EF5C50 /* GCDMulticastDelegate.m in Sources */,
+				3F77024F17BA9F3F00EF5C50 /* hostname.m in Sources */,
+				3F77025017BA9F3F00EF5C50 /* main.m in Sources */,
+				3F77025117BA9F3F00EF5C50 /* Message.m in Sources */,
+				3F77025217BA9F3F00EF5C50 /* Models.xcdatamodeld in Sources */,
+				3F77025317BA9F3F00EF5C50 /* NSData+Compression.m in Sources */,
+				3F77025417BA9F3F00EF5C50 /* NSData+Encryption.m in Sources */,
+				3F77025517BA9F3F00EF5C50 /* NSData+SHA.m in Sources */,
+				3F77025617BA9F3F00EF5C50 /* NSData+Signature.m in Sources */,
+				3F77025717BA9F3F00EF5C50 /* NSData+XMPP.m in Sources */,
+				3F77025817BA9F3F00EF5C50 /* NSNumber+XMPP.m in Sources */,
+				3F77025917BA9F3F00EF5C50 /* NSXMLElement+XMPP.m in Sources */,
+				3F77025A17BA9F3F00EF5C50 /* RFImageToDataTransformer.m in Sources */,
+				3F77025B17BA9F3F00EF5C50 /* WHAccount.m in Sources */,
+				3F77025C17BA9F3F00EF5C50 /* WHAddContactViewController.m in Sources */,
+				3F77025D17BA9F3F00EF5C50 /* WHAlert.m in Sources */,
+				3F77025E17BA9F3F00EF5C50 /* WHAppDelegate.m in Sources */,
+				3F77025F17BA9F3F00EF5C50 /* WHChatClient.m in Sources */,
+				3F77026017BA9F3F00EF5C50 /* WHChatViewController.m in Sources */,
+				3F77026117BA9F3F00EF5C50 /* WHCheckList.m in Sources */,
+				3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */,
+				3F77026317BA9F3F00EF5C50 /* WHCoreData.m in Sources */,
+				3F77026417BA9F3F00EF5C50 /* WHCrypto.m in Sources */,
+				3F77026517BA9F3F00EF5C50 /* WHError.m in Sources */,
+				3F77026617BA9F3F00EF5C50 /* WHKeyExchangePeer.m in Sources */,
+				3F77026717BA9F3F00EF5C50 /* WHKeyPair.m in Sources */,
+				3F77026817BA9F3F00EF5C50 /* WHMultipeerAdvertiser.m in Sources */,
+				3F77026917BA9F3F00EF5C50 /* WHMultipeerBrowser.m in Sources */,
+				3F77026A17BA9F3F00EF5C50 /* WHMultipeerSession.m in Sources */,
+				3F77026B17BA9F3F00EF5C50 /* WHPeerList.m in Sources */,
+				3F77026C17BA9F3F00EF5C50 /* WHSettingsViewController.m in Sources */,
+				3F77026D17BA9F3F00EF5C50 /* WHSettingsViewModel.m in Sources */,
+				3F77026E17BA9F3F00EF5C50 /* WHXMPPCapabilities.m in Sources */,
+				3F77026F17BA9F3F00EF5C50 /* WHXMPPRoster.m in Sources */,
+				3F77027017BA9F3F00EF5C50 /* WHXMPPWrapper.m in Sources */,
+				3F77027117BA9F3F00EF5C50 /* XMPPAnonymousAuthentication.m in Sources */,
+				3F77027217BA9F3F00EF5C50 /* XMPPDeprecatedDigestAuthentication.m in Sources */,
+				3F77027317BA9F3F00EF5C50 /* XMPPDeprecatedPlainAuthentication.m in Sources */,
+				3F77027417BA9F3F00EF5C50 /* XMPPDigestMD5Authentication.m in Sources */,
+				3F77027517BA9F3F00EF5C50 /* XMPPElement.m in Sources */,
+				3F77027617BA9F3F00EF5C50 /* XMPPIDTracker.m in Sources */,
+				3F77027717BA9F3F00EF5C50 /* XMPPIQ.m in Sources */,
+				3F77027817BA9F3F00EF5C50 /* XMPPJID.m in Sources */,
+				3F77027917BA9F3F00EF5C50 /* XMPPMessage.m in Sources */,
+				3F77027A17BA9F3F00EF5C50 /* XMPPModule.m in Sources */,
+				3F77027B17BA9F3F00EF5C50 /* XMPPParser.m in Sources */,
+				3F77027C17BA9F3F00EF5C50 /* XMPPPlainAuthentication.m in Sources */,
+				3F77027D17BA9F3F00EF5C50 /* XMPPPresence.m in Sources */,
+				3F77027E17BA9F3F00EF5C50 /* XMPPReconnect.m in Sources */,
+				3F77027F17BA9F3F00EF5C50 /* XMPPSRVResolver.m in Sources */,
+				3F77028017BA9F3F00EF5C50 /* XMPPStream.m in Sources */,
+				3F77028117BA9F3F00EF5C50 /* XMPPStringPrep.m in Sources */,
+				3F77028217BA9F3F00EF5C50 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FA0C5F1178CFDA1007E6ECC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -905,7 +1149,7 @@
 /* Begin PBXTargetDependency section */
 		3FA0C61C178CFDA1007E6ECC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3FA0C5F4178CFDA1007E6ECC /* whisper */;
+			target = 3FA0C5F4178CFDA1007E6ECC /* whisper - localhost */;
 			targetProxy = 3FA0C61B178CFDA1007E6ECC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -938,6 +1182,69 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3F77029317BA9F3F00EF5C50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFED660267384000B03310C3 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "whisper/whisper-Prefix.pch";
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				INFOPLIST_FILE = "whisper/whisper-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Vendor/XMPPFramework/Vendor/libidn",
+				);
+				LLVM_LTO = NO;
+				PRODUCT_NAME = "whisper copy";
+				PROVISIONING_PROFILE = "";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		3F77029417BA9F3F00EF5C50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFED660267384000B03310C3 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "whisper/whisper-Prefix.pch";
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				INFOPLIST_FILE = "whisper/whisper-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Vendor/XMPPFramework/Vendor/libidn",
+				);
+				LLVM_LTO = YES;
+				LLVM_VECTORIZE_LOOPS = YES;
+				PRODUCT_NAME = "whisper copy";
+				PROVISIONING_PROFILE = "";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		3FA0C625178CFDA1007E6ECC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1114,6 +1421,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3F77029217BA9F3F00EF5C50 /* Build configuration list for PBXNativeTarget "whisper - tigase.im" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F77029317BA9F3F00EF5C50 /* Debug */,
+				3F77029417BA9F3F00EF5C50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3FA0C5F0178CFDA1007E6ECC /* Build configuration list for PBXProject "whisper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1123,7 +1439,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3FA0C627178CFDA1007E6ECC /* Build configuration list for PBXNativeTarget "whisper" */ = {
+		3FA0C627178CFDA1007E6ECC /* Build configuration list for PBXNativeTarget "whisper - localhost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3FA0C628178CFDA1007E6ECC /* Debug */,
