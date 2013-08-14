@@ -8,6 +8,7 @@
 
 #import "WHAppDelegate.h"
 
+#import "Message.h"
 #import "WHCoreData.h"
 
 #import "DDLog.h"
@@ -23,6 +24,7 @@
 #endif
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [WHCoreData initSqliteContext];
+    [Message deleteOlderThan:[NSDate dateWithTimeIntervalSinceNow:-(60 * 60 * 24 * 7)]];
     return YES;
 }
 
