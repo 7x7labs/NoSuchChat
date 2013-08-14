@@ -143,6 +143,23 @@ describe(@"WHAccount", ^{
     });
 });
 
+describe(@"WHChatMessage", ^{
+    it(@"should set the sent date to now if it is nil", ^{
+        WHChatMessage *message = [[WHChatMessage alloc] initWithSenderJid:@"unknown@localhost"
+                                                                     body:@"body"
+                                                                     sent:nil];
+        expect(message.sent).notTo.beNil();
+    });
+
+    it(@"should use the passed sent date if it is not nil", ^{
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:20];
+        WHChatMessage *message = [[WHChatMessage alloc] initWithSenderJid:@"unknown@localhost"
+                                                                     body:@"body"
+                                                                     sent:date];
+        expect(message.sent).to.equal(date);
+    });
+});
+
 describe(@"WHChatClient", ^{
     __block WHChatClient *client;
     __block id xmppStream;
@@ -219,7 +236,8 @@ describe(@"WHChatClient", ^{
                  done();
              }];
             [messages sendNext:[[WHChatMessage alloc] initWithSenderJid:@"unknown@localhost"
-                                                                   body:@"body"]];
+                                                                   body:@"body"
+                                                                   sent:nil]];
         });
 
         it(@"should not add messages to the wrong contact", ^AsyncBlock{
@@ -228,7 +246,8 @@ describe(@"WHChatClient", ^{
                 done();
             }];
             [messages sendNext:[[WHChatMessage alloc] initWithSenderJid:@"unknown@localhost"
-                                                                   body:@"body"]];
+                                                                   body:@"body"
+                                                                   sent:nil]];
         });
 
         it(@"should add messages to known contacts to that contact", ^AsyncBlock{
@@ -238,7 +257,8 @@ describe(@"WHChatClient", ^{
                 done();
             }];
             [messages sendNext:[[WHChatMessage alloc] initWithSenderJid:@"jid@localhost"
-                                                                   body:@"body"]];
+                                                                   body:@"body"
+                                                                   sent:nil]];
         });
 
     });

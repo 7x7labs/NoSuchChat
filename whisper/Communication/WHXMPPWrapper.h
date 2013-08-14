@@ -11,8 +11,9 @@
 @interface WHChatMessage : NSObject
 @property (nonatomic, strong) NSString *senderJid;
 @property (nonatomic, strong) NSString *body;
+@property (nonatomic, strong) NSDate *sent;
 
-- (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body;
+- (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body sent:(NSDate *)sent;
 @end
 
 @interface WHXMPPWrapper : NSObject

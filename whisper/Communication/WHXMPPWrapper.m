@@ -15,15 +15,17 @@
 #import "WHXMPPRoster.h"
 
 #import "NSData+XMPP.h"
+#import "NSXMLElement+XEP_0203.h"
 #import "XMPP.h"
 #import "XMPPReconnect.h"
 
 @implementation WHChatMessage
-- (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body {
+- (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body sent:(NSDate *)sent {
     self = [super init];
     if (self) {
         self.senderJid = [[XMPPJID jidWithString:senderJid] bare];
         self.body = body;
+        self.sent = sent ?: [NSDate date];
     }
     return self;
 }
@@ -147,7 +149,8 @@
     if ([message isChatMessageWithBody]) {
         [(RACSubject *)self.messages sendNext:[[WHChatMessage alloc]
                                                initWithSenderJid:[message fromStr]
-                                               body:[[message elementForName:@"body"] stringValue]]];
+                                               body:[[message elementForName:@"body"] stringValue]
+                                               sent:[message delayedDeliveryDate]]];
     }
 }
 
