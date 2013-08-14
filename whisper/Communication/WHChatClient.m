@@ -105,6 +105,13 @@
 
               if (!contact)
                   return [RACSignal return:nil];
+
+              if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+                  UILocalNotification *localNotification = [UILocalNotification new];
+                  localNotification.alertBody = [NSString stringWithFormat:@"New message from %@", contact.name];;
+                  [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+              }
+
               return [contact addReceivedMessage:[contact decrypt:[message body]]
                                             date:[NSDate date]];
           }]
