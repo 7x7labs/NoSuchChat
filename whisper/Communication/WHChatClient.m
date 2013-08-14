@@ -16,6 +16,8 @@
 #import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
 
+#import "NSXMLElement+XEP_0203.h"
+
 #import <EXTScope.h>
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
@@ -113,7 +115,7 @@
               }
 
               return [contact addReceivedMessage:[contact decrypt:[message body]]
-                                            date:[NSDate date]];
+                                            date:[message wasDelayed] ? [message delayedDeliveryDate] : [NSDate date]];
           }]
          multicast:[RACSubject subject]];
     [incomingMessages connect];
