@@ -113,6 +113,28 @@ describe(@"Contact", ^{
                  done();
              }];
         });
+
+        it(@"should have a message after deleting messages older than the message", ^AsyncBlock{
+            [[[contact addSentMessage:@"test message" date:[NSDate date]]
+             sequenceNext:^{
+                 return [Message deleteOlderThan:[[contact.messages anyObject] sent]];
+             }]
+             subscribeCompleted:^{
+                 expect(contact.messages).to.haveCountOf(1);
+                 done();
+             }];
+        });
+
+        it(@"should be empty after deleting messages older than now", ^AsyncBlock{
+            [[[contact addSentMessage:@"test message" date:[NSDate date]]
+             sequenceNext:^{
+                 return [Message deleteOlderThan:[NSDate date]];
+             }]
+             subscribeCompleted:^{
+                 expect(contact.messages).to.haveCountOf(0);
+                 done();
+             }];
+        });
     });
 
     describe(@"createWithName:jid:", ^{

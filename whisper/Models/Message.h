@@ -9,4 +9,5 @@
 #import "_Message.h"
 
 @interface Message : _Message
++ (RACSignal *)deleteOlderThan:(NSDate *)date;
 @end
