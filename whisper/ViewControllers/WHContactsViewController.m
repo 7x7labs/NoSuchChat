@@ -59,7 +59,12 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     cell.textLabel.text = [self.contacts[indexPath.row] name];
+    cell.editing = YES;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.contacts[indexPath.row] delete];
 }
 
 #pragma mark UITableViewDelegate
@@ -67,4 +72,5 @@
     self.sequeContact = self.contacts[indexPath.row];
     [self performSegueWithIdentifier:@"show chat" sender:self];
 }
+
 @end

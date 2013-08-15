@@ -137,4 +137,12 @@ static NSManagedObjectContext *moc() {
                          key:self.globalKey];
 }
 
+- (RACSignal *)delete {
+    NSString *jid = self.jid;
+    return [[WHCoreData deleteObject:self]
+            doCompleted:^{
+                [WHKeyPair deleteKeysForJid:jid];
+            }];
+}
+
 @end

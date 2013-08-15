@@ -16,6 +16,8 @@
 + (RACSignal *)insertObjectOfType:(NSString *)type
                         withBlock:(void (^)(NSManagedObject *))block;
 
++ (RACSignal *)deleteObject:(NSManagedObject *)object;
+
 + (RACSignal *)save;
 
 + (void)initTestContext;

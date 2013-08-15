@@ -179,4 +179,10 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
     NSAssert(err == errSecSuccess, @"Failed to add symmetric key to keychain: %d", (int)err);
 }
 
++ (void)deleteKeysForJid:(NSString *)jid {
+    NSArray *types = @[@"_incoming", @"_global", @"_public", @"_private", @"_sym"];
+    for (NSString *type in types)
+        [self deleteKeyForJid:jid ofType:type];
+}
+
 @end

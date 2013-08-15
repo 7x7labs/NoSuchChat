@@ -32,16 +32,19 @@ OSStatus SecItemDeleteAll(void); // private API, do not use outside of tests
 - (void)setStream:(XMPPStream *)stream;
 @end
 
-// Create a contact then fetch it on the main thread. Works around CoreData
-// objects being threadsafe and that CoreData stuff on background threads still
-// require that the main thread be running
-static Contact *createContact(NSString *name, NSString *jid) {
+// CoreData stuff on background threads doesn't work if the main thread is
+// blocked, so do a busy wait for the signal to complete
+static void waitForSignalComplete(RACSignal *signal) {
     __block uint32_t complete = 0;
-    [[Contact createWithName:name jid:jid] subscribeCompleted:^{
+    [signal subscribeCompleted:^{
         OSAtomicOr32Barrier(1, &complete);
     }];
     while (!complete)
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+}
+
+static Contact *createContact(NSString *name, NSString *jid) {
+    waitForSignalComplete([Contact createWithName:name jid:jid]);
     return [Contact contactForJid:jid managedObjectContext:[WHCoreData managedObjectContext]];
 }
 
@@ -143,6 +146,67 @@ describe(@"Contact", ^{
             Contact *c2 = createContact(@"def", @"a@b.com");
             expect(c1).to.equal(c2);
         });
+    });
+});
+
+fdescribe(@"Deleting contacts", ^{
+    __block Contact *contact;
+    __block RACSignal *(^deleteContact)();
+    NSString *contactJid = @"a@b.com";
+    beforeEach(^{
+        contact = createContact(@"test contact", contactJid);
+        waitForSignalComplete([contact addSentMessage:@"hello" date:[NSDate date]]);
+        deleteContact = ^{
+            return [[contact delete] deliverOn:[RACScheduler mainThreadScheduler]];
+        };
+    });
+
+    it(@"should remove the contact from [Contact all]", ^AsyncBlock{
+        [deleteContact() subscribeCompleted:^{
+            expect([Contact all]).to.haveCountOf(0);
+            done();
+        }];
+    });
+
+    it(@"should delete keys generated for the contact", ^AsyncBlock{
+        [WHKeyPair createKeyPairForJid:contact.jid];
+        expect([WHKeyPair getOwnKeyPairForJid:contactJid]).notTo.beNil();
+        [deleteContact() subscribeCompleted:^{
+             expect([WHKeyPair getOwnKeyPairForJid:contactJid]).to.beNil();
+             done();
+         }];
+    });
+
+    it(@"should not delete keys generated for other contacts", ^AsyncBlock{
+        [WHKeyPair createKeyPairForJid:@"otherjid@localhost"];
+        [deleteContact() subscribeCompleted:^{
+            expect([WHKeyPair getOwnKeyPairForJid:@"otherjid@localhost"]).notTo.beNil();
+            done();
+        }];
+    });
+
+    it(@"should delete keys received from the contact", ^AsyncBlock{
+        WHKeyPair *kp = [WHKeyPair createOwnGlobalKeyPair];
+        [WHKeyPair addKey:kp.publicKeyBits fromJid:contactJid];
+        [WHKeyPair addGlobalKey:kp.publicKeyBits fromJid:contactJid];
+        [WHKeyPair addSymmetricKey:kp.symmetricKey fromJid:contactJid];
+        [deleteContact() subscribeCompleted:^{
+            expect([WHKeyPair getKeyFromJid:contactJid]).to.beNil();
+            expect([WHKeyPair getGlobalKeyFromJid:contactJid]).to.beNil();
+            done();
+        }];
+    });
+
+    it(@"should delete messages for the contact", ^AsyncBlock{
+        [deleteContact() subscribeCompleted:^{
+            NSError *error;
+            NSArray *array = [[WHCoreData managedObjectContext]
+                              executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Message"]
+                              error:&error];
+            expect(error).to.beNil();
+            expect(array).to.haveCountOf(0);
+            done();
+        }];
     });
 });
 

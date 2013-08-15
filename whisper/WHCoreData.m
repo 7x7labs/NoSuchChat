@@ -99,6 +99,25 @@ static WHCoreData *instance;
     }];
 }
 
++ (RACSignal *)deleteObject:(NSManagedObject *)object {
+    NSManagedObjectID *objectID = object.objectID;
+    RACSubject *subject = [RACReplaySubject subject];
+    [instance.backgroundContext performBlock:^{
+        [instance.backgroundContext deleteObject:[instance.backgroundContext objectWithID:objectID]];
+
+        NSError *error;
+        if (![instance.backgroundContext save:&error])
+            return [subject sendError:error];
+
+        [[self save] subscribeError:^(NSError *e) {
+            [subject sendError:e];
+        } completed:^{
+            [subject sendCompleted];
+        }];
+    }];
+    return subject;
+}
+
 - (RACSignal *)runWithContext:(id (^)(NSManagedObjectContext *))block {
     RACSubject *subject = [RACReplaySubject subject];
     [self.backgroundContext performBlock:^{

@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface WHKeyPair : NSObject
 @property (nonatomic, readonly) SecKeyRef publicKey;
 @property (nonatomic, readonly) SecKeyRef privateKey;
@@ -26,4 +24,6 @@
 + (WHKeyPair *)addGlobalKey:(NSData *)key fromJid:(NSString *)jid;
 + (void)addSymmetricKey:(NSData *)key fromJid:(NSString *)jid;
 + (WHKeyPair *)getGlobalKeyFromJid:(NSString *)jid;
+
++ (void)deleteKeysForJid:(NSString *)jid;
 @end
