@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface WHAppDelegate : UIResponder <UIApplicationDelegate>
 @property (strong, nonatomic) UIWindow *window;
+
+- (void)backgroundFetchComplete;
 @end

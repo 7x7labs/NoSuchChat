@@ -8,6 +8,7 @@
 
 #import "WHXMPPWrapper.h"
 
+#import "WHAppDelegate.h"
 #import "WHCrypto.h"
 #import "WHError.h"
 #import "WHKeyPair.h"
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) XMPPReconnect *reconnect;
 @property (nonatomic, strong) WHXMPPRoster *roster;
 @property (nonatomic, strong) WHXMPPCapabilities *capabilities;
+@property (nonatomic, strong) dispatch_source_t offlineMessagesTimer;
 @end
 
 @implementation WHXMPPWrapper
@@ -70,7 +72,6 @@
     self.stream.hostName = server;
     self.stream.hostPort = port;
     self.stream.myJID = [XMPPJID jidWithString:username];
-    self.stream.enableBackgroundingOnSocket = YES;
 
     // Should dump this off on a queue rather than running synchronously
     NSError *error = nil;
@@ -113,6 +114,14 @@
     [self.stream sendElement:iq];
 }
 
+- (void)resetOfflineMessagesTimer {
+    if (self.offlineMessagesTimer)
+        dispatch_source_set_timer(self.offlineMessagesTimer,
+                                  dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1),
+                                  1 * NSEC_PER_SEC,
+                                  0);
+}
+
 #pragma mark - xmppStream
 - (void)xmppStream:(XMPPStream *)sender willSecureWithSettings:(NSMutableDictionary *)settings {
     settings[(NSString *)kCFStreamSSLAllowsAnyRoot] = @YES;
@@ -132,6 +141,18 @@
 }
 
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
+    // Notify the app delegate once a second has passed with no messages
+    // received, since there's no notification of when offline message playback
+    // is complete.
+    self.offlineMessagesTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    [self resetOfflineMessagesTimer];
+    dispatch_source_set_event_handler(self.offlineMessagesTimer, ^{
+        dispatch_source_cancel(self.offlineMessagesTimer);
+        self.offlineMessagesTimer = nil;
+        [(WHAppDelegate *)[[UIApplication sharedApplication] delegate] backgroundFetchComplete];
+    });
+    dispatch_resume(self.offlineMessagesTimer);
+
     [self.stream sendElement:[XMPPPresence presence]];
     [self.connectSignal sendCompleted];
 }
@@ -146,6 +167,8 @@
 }
 
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
+    [self resetOfflineMessagesTimer];
+
     if ([message isChatMessageWithBody]) {
         [(RACSubject *)self.messages sendNext:[[WHChatMessage alloc]
                                                initWithSenderJid:[message fromStr]

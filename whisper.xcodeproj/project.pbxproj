@@ -865,6 +865,11 @@
 					};
 					3FA0C5F4178CFDA1007E6ECC = {
 						DevelopmentTeam = HMZPVRBV86;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					3FA0C615178CFDA1007E6ECC = {
 						TestTargetID = 3FA0C5F4178CFDA1007E6ECC;
