@@ -885,8 +885,8 @@
 			projectRoot = "";
 			targets = (
 				3FA0C5F4178CFDA1007E6ECC /* whisper - localhost */,
-				3FA0C615178CFDA1007E6ECC /* whisperTests */,
 				3F77024417BA9F3F00EF5C50 /* whisper - tigase.im */,
+				3FA0C615178CFDA1007E6ECC /* whisperTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1377,7 +1377,7 @@
 					"$(SRCROOT)/Vendor/XMPPFramework/Vendor/libidn",
 				);
 				LLVM_LTO = NO;
-				PRODUCT_NAME = "whisper";
+				PRODUCT_NAME = whisper;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
@@ -1408,7 +1408,7 @@
 				);
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
-				PRODUCT_NAME = "whisper";
+				PRODUCT_NAME = whisper;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
@@ -1432,7 +1432,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
-				PRODUCT_NAME = "whisper";
+				PRODUCT_NAME = whisper;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1451,7 +1451,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "whisper/whisper-Prefix.pch";
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
-				PRODUCT_NAME = "whisper";
+				PRODUCT_NAME = whisper;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
