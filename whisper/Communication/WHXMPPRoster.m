@@ -57,14 +57,14 @@
     [self sendPresenceType:@"subscribed" to:jid];
 }
 
-- (void)removeContact:(Contact *)contact {
+- (void)removeContact:(NSString *)contactJid {
     @synchronized(self.contactJids) {
-        [self.contactJids removeObject:contact.jid];
+        [self.contactJids removeObject:contactJid];
     }
 
     // Remove the contact from the roster, which also removes subscriptions in
     // both directions
-    [self sendRosterIQ:@"set" body:@{@"jid": contact.jid,
+    [self sendRosterIQ:@"set" body:@{@"jid": contactJid,
                                      @"subscription": @"remove"}];
 }
 

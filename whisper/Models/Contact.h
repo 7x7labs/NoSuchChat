@@ -11,6 +11,7 @@
 @class WHKeyPair;
 
 extern NSString * const WHContactAddedNotification;
+extern NSString * const WHContactRemovedNotification;
 
 @interface Contact : _Contact
 + (NSArray *)all;

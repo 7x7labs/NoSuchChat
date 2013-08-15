@@ -18,7 +18,7 @@
 - (instancetype)initWithXmppStream:(XMPPStream *)stream;
 
 - (void)addContact:(Contact *)contact;
-- (void)removeContact:(Contact *)contact;
+- (void)removeContact:(NSString *)contactJid;
 
 - (void)setShow:(NSString *)show status:(NSString *)status;
 @end

@@ -16,6 +16,7 @@
 #import "NSData+XMPP.h"
 
 NSString * const WHContactAddedNotification = @"WHContactAddedNotification";
+NSString * const WHContactRemovedNotification = @"WHContactRemovedNotification";
 
 static NSManagedObjectContext *moc() {
     return [WHCoreData managedObjectContext];
@@ -139,10 +140,13 @@ static NSManagedObjectContext *moc() {
 
 - (RACSignal *)delete {
     NSString *jid = self.jid;
-    return [[WHCoreData deleteObject:self]
+    return [[[WHCoreData deleteObject:self]
             doCompleted:^{
                 [WHKeyPair deleteKeysForJid:jid];
-            }];
+                [[NSNotificationCenter defaultCenter] postNotificationName:WHContactRemovedNotification
+                                                                    object:nil
+                                                                  userInfo:@{@"removed": jid}];
+            }] replay];
 }
 
 @end
