@@ -3,7 +3,6 @@ PODS:
   - CocoaLumberjack (1.6.2)
   - Expecta (0.2.2)
   - JRSwizzle (1.0)
-  - KissXML (5.0)
   - libextobjc/EXTConcreteProtocol (0.2.5):
     - libextobjc/RuntimeExtensions
   - libextobjc/EXTKeyPathCoding (0.2.5):
@@ -24,27 +23,49 @@ PODS:
     - ReactiveCocoa/Core
   - Specta (0.1.11)
   - SSKeychain (1.2.0)
+  - XMPPFramework/Authentication (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+  - XMPPFramework/Categories (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+  - XMPPFramework/Core (HEAD based on 3.6.1):
+    - CocoaAsyncSocket (~> 7.3.1)
+    - CocoaLumberjack (~> 1.6.2)
+    - XMPPFramework/Authentication
+    - XMPPFramework/Categories
+    - XMPPFramework/KissXML
+    - XMPPFramework/Utilities
+  - XMPPFramework/KissXML (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+  - XMPPFramework/Reconnect (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+  - XMPPFramework/Utilities (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+  - XMPPFramework/XEP-0082 (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+  - XMPPFramework/XEP-0203 (HEAD based on 3.6.1):
+    - XMPPFramework/Core
+    - XMPPFramework/XEP-0082
 
 DEPENDENCIES:
-  - CocoaAsyncSocket
-  - CocoaLumberjack
   - Expecta
-  - KissXML
   - OCMock
   - ReactiveCocoa
   - Specta
   - SSKeychain
+  - XMPPFramework/Reconnect (HEAD)
+  - XMPPFramework/XEP-0082 (HEAD)
+  - XMPPFramework/XEP-0203 (HEAD)
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 6e59036ecae1e93d6c78f5766149983ceac558ba
   CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
   Expecta: 99adbb2e366a02796477523bfd426143350d9caf
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
-  KissXML: 4c66b6f39ef49c23e6bb8d335b94136f12b1b615
   libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
   OCMock: 5300ae6b75398fc3ae6cbf9102191333d35f6852
   ReactiveCocoa: 0586996422c05830e2f70ca8c8a5214e9070983f
   Specta: 82746c6fd70b104c5d37cfbadb7bf15a2cbc4da0
   SSKeychain: 2fe90c92034129d9615a508529b601a520f297d1
+  XMPPFramework: 9c8f9c9df99ad1db072086c8a2611c243cb5bde1
 
-COCOAPODS: 0.22.3
+COCOAPODS: 0.23.0
