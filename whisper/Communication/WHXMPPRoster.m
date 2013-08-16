@@ -96,6 +96,18 @@
     [self.stream sendElement:presence];
 }
 
+- (void)unsubscribe:(NSString *)jid {
+    Contact *c = [Contact contactForJid:jid managedObjectContext:self.objectContext];
+    @try {
+        [c delete];
+        [self removeContact:jid];
+    }
+    @catch (NSException *exception) {
+        // Invalid contact that's already been deleted elsewhere
+        // No need to do anything
+    }
+}
+
 #pragma mark - XMPPStreamDelegate
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
     // Request the roster from the server
@@ -150,13 +162,19 @@
         return;
     }
 
-    // Contact refused our subscription request or removed us
+    // Contact refused our subscription request
     if ([[presence type] isEqualToString:@"unsubscribed"]) {
-        // Remove the contact?
+        [self unsubscribe:[[presence from] bare]];
 
         // Acknowledge the unsubscription so that the server does not keep
         // notifying us about it
         [self sendPresenceType:@"unsubscribe" to:[presence from]];
+        return;
+    }
+
+    // Contact has removed us, so remove them
+    if ([[presence type] isEqualToString:@"unsubscribe"]) {
+        [self unsubscribe:[[presence from] bare]];
         return;
     }
 
