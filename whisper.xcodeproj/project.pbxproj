@@ -954,7 +954,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\n/usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models";
+			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\nif command -v /usr/local/bin/mogenerator; then\n  /usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models\nelse\n  echo 'mogenerator is required to build whisper. It can be installed with Homebrew or downloaded from http://rentzsch.github.io/mogenerator/'\n  exit 1\nfi";
 		};
 		3F77024717BA9F3F00EF5C50 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -995,7 +995,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\n/usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models";
+			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\nif command -v /usr/local/bin/mogenerator; then\n  /usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models\nelse\n  echo 'mogenerator is required to build whisper. It can be installed with Homebrew or downloaded from http://rentzsch.github.io/mogenerator/'\n  exit 1\nfi";
 		};
 		3F94B76717B07C3A00B1B3B9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
