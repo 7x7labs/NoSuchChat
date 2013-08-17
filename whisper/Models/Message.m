@@ -40,4 +40,8 @@
     }];
     return subject;
 }
+
+- (RACSignal *)delete {
+    return [WHCoreData deleteObject:self];
+}
 @end

@@ -12,9 +12,8 @@
 #import "WHChatClient.h"
 
 #import <EXTScope.h>
-#import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
-@interface WHChatViewController () <UITableViewDataSource, UITextFieldDelegate>
+@interface WHChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *message;
 @property (weak, nonatomic) IBOutlet UIButton *send;
 @property (weak, nonatomic) IBOutlet UITableView *chatLog;
@@ -43,6 +42,7 @@
                                map:^(NSString *text) { return @([text length] > 0); }];
 
     self.chatLog.dataSource = self;
+    self.chatLog.delegate = self;
 }
 
 - (IBAction)sendMessage {
@@ -50,11 +50,14 @@
     self.message.text = @"";
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    
     return YES;
+}
+
+#pragma mark UITableViewDelegate
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.messages[indexPath.row] delete];
 }
 
 #pragma mark UITableViewDataSource
@@ -69,6 +72,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     cell.textLabel.text = [self.messages[indexPath.row] text];
+    cell.editing = YES;
     return cell;
 }
 @end

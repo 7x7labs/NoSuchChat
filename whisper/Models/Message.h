@@ -10,4 +10,5 @@
 
 @interface Message : _Message
 + (RACSignal *)deleteOlderThan:(NSDate *)date;
+- (RACSignal *)delete;
 @end
