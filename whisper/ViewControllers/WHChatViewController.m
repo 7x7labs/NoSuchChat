@@ -43,6 +43,8 @@
 
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;
+    
+    [self.message becomeFirstResponder];
 }
 
 - (IBAction)sendMessage {
@@ -51,8 +53,9 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+    [self.client sendMessage:self.message.text to:self.contact];
+    self.message.text = @"";
+    return NO;
 }
 
 #pragma mark UITableViewDelegate
