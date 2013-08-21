@@ -74,13 +74,13 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7xO-si-eOJ">
-                                <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7xO-si-eOJ">
+                                <rect key="frame" x="0.0" y="568" width="0.0" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9VD-2K-7z1">
-                                <rect key="frame" x="14" y="223" width="219" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9VD-2K-7z1">
+                                <rect key="frame" x="20" y="223" width="213" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -88,7 +88,7 @@
                                     <outlet property="delegate" destination="dg0-6N-Xr7" id="fSo-vY-9Cb"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EeS-mt-haf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EeS-mt-haf">
                                 <rect key="frame" x="233" y="223" width="73" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -109,11 +109,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="EeS-mt-haf" firstAttribute="leading" secondItem="9VD-2K-7z1" secondAttribute="trailing" id="7he-KW-QHx"/>
+                            <constraint firstItem="9VD-2K-7z1" firstAttribute="leading" secondItem="mQC-Vr-p0t" secondAttribute="leading" constant="20" symbolic="YES" id="BXg-W6-HDJ"/>
+                            <constraint firstAttribute="trailing" secondItem="EeS-mt-haf" secondAttribute="trailing" constant="14" id="BZm-Ir-xHR"/>
                             <constraint firstAttribute="trailing" secondItem="gqg-sX-19K" secondAttribute="trailing" id="Bsb-Mi-c8M"/>
+                            <constraint firstItem="9VD-2K-7z1" firstAttribute="top" secondItem="EeS-mt-haf" secondAttribute="top" id="E15-pg-mtm"/>
                             <constraint firstItem="gqg-sX-19K" firstAttribute="top" secondItem="mQC-Vr-p0t" secondAttribute="top" id="Fsw-rB-BlZ"/>
                             <constraint firstAttribute="bottom" secondItem="7xO-si-eOJ" secondAttribute="bottom" id="OCD-YD-VwY"/>
                             <constraint firstItem="7xO-si-eOJ" firstAttribute="leading" secondItem="mQC-Vr-p0t" secondAttribute="leading" id="Pls-bX-eBz"/>
+                            <constraint firstItem="7xO-si-eOJ" firstAttribute="top" secondItem="mQC-Vr-p0t" secondAttribute="top" constant="568" id="Qxq-xi-i8N"/>
+                            <constraint firstItem="EeS-mt-haf" firstAttribute="top" secondItem="gqg-sX-19K" secondAttribute="bottom" constant="23" id="acR-M3-avU"/>
                             <constraint firstItem="gqg-sX-19K" firstAttribute="leading" secondItem="7xO-si-eOJ" secondAttribute="leading" id="o0s-fJ-DWH"/>
+                            <constraint firstAttribute="trailing" secondItem="7xO-si-eOJ" secondAttribute="trailing" constant="320" id="yud-ZS-jnI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rIy-z9-IYX">
@@ -251,24 +258,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vaw-5l-UBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="383" y="194"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="f0g-4q-pz9">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="RJ6-DL-d4I" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="vDc-2i-xaE"/>
-                        <viewControllerLayoutGuide type="bottom" id="AJo-mK-KLZ"/>
-                    </layoutGuides>
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="oFC-p0-Ixx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2AD-Dh-MYE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
