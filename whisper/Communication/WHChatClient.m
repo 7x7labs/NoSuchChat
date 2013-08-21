@@ -46,8 +46,7 @@
 {
     if (!(self = [super init])) return self;
 
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"User Name",
-                                                              @"statusMessage": @""}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"User Name"}];
 
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
@@ -137,9 +136,7 @@
          [WHAlert alertWithMessage:[error localizedDescription]];
     }];
 
-    [self.xmpp.roster
-     setShow:@""
-     status:[[NSUserDefaults standardUserDefaults] stringForKey:@"statusMessage"]];
+    [self.xmpp.roster setShow:@""];
     return self;
 }
 
@@ -153,17 +150,12 @@
     [self.cancelSignal sendCompleted];
 }
 
-- (void)setStatus:(NSString *)status message:(NSString *)message {
-    [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"statusMessage"];
-    [self.xmpp.roster setShow:status status:message];
+- (void)setStatus:(NSString *)status {
+    [self.xmpp.roster setShow:status];
 }
 
 - (NSString *)availability {
     return self.xmpp.roster.show;
-}
-
-- (NSString *)statusMessage {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:@"statusMessage"];
 }
 
 - (MCPeerID *)peerID {

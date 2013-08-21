@@ -14,7 +14,6 @@
 @interface WHSettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *displayName;
 @property (weak, nonatomic) IBOutlet UITableView *availabilityTable;
-@property (weak, nonatomic) IBOutlet UITextView *statusMessage;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
 @property (nonatomic, strong) WHSettingsViewModel *viewModel;
@@ -40,11 +39,9 @@
 
 
     RACBind(self.displayName.text) = RACBind(self.viewModel.displayName);
-    RACBind(self.statusMessage.text) = RACBind(self.viewModel.statusMessage);
     RACBind(self.viewModel.availability) = RACBind(self.availabilityCheckList.value);
 
     RAC(self.viewModel.displayName) = self.displayName.rac_textSignal;
-    RAC(self.viewModel.statusMessage) = self.statusMessage.rac_textSignal;
 
     self.saveButton.rac_command = [RACCommand commandWithCanExecuteSignal:RACAbleWithStart(self.viewModel.valid)];
     [self.saveButton.rac_command subscribeNext:^(id _) {

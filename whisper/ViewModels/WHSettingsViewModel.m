@@ -31,7 +31,6 @@ static NSSet *validAvaibilityStates() {
     self.client = client;
     self.displayName = client.displayName;
     self.availability = client.availability;
-    self.statusMessage = client.statusMessage;
     RAC(self.valid) = [RACSignal
                        combineLatest:@[RACAbleWithStart(self, displayName),
                                        RACAbleWithStart(self, availability)]
@@ -46,6 +45,6 @@ static NSSet *validAvaibilityStates() {
 - (void)save {
     NSAssert(self.valid, @"Cannot save invalid viewmodel");
     self.client.displayName = self.displayName;
-    [self.client setStatus:self.availability message:self.statusMessage];
+    [self.client setStatus:self.availability];
 }
 @end

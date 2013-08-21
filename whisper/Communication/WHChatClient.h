@@ -15,13 +15,12 @@
 + (WHChatClient *)clientForServer:(NSString *)host port:(uint16_t)port stream:(WHXMPPWrapper *)xmpp;
 
 - (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact;
-- (void)setStatus:(NSString *)status message:(NSString *)message;
+- (void)setStatus:(NSString *)status;
 
 @property (nonatomic, readonly) NSArray *contacts;
 @property (nonatomic, readonly) NSString *jid;
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, readonly) NSString *availability;
-@property (nonatomic, readonly) NSString *statusMessage;
 
 @property (nonatomic, readonly) MCPeerID *peerID;
 @property (nonatomic, readonly) RACSignal *incomingMessages;

@@ -161,13 +161,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cuB-zs-yCl">
-                                <rect key="frame" x="20" y="303" width="280" height="245"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TbN-aV-egE">
                                 <rect key="frame" x="20" y="118" width="280" height="177"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -193,7 +186,6 @@
                         <outlet property="availabilityTable" destination="TbN-aV-egE" id="zxT-NO-AeK"/>
                         <outlet property="displayName" destination="t0Z-rt-3We" id="E1i-B3-rH6"/>
                         <outlet property="saveButton" destination="MME-5j-EnX" id="d9O-w9-n5B"/>
-                        <outlet property="statusMessage" destination="cuB-zs-yCl" id="xn6-au-cuR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t63-Z0-nyQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

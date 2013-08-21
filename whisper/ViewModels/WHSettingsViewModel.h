@@ -11,7 +11,6 @@
 @interface WHSettingsViewModel : NSObject
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, strong) NSString *availability;
-@property (nonatomic, strong) NSString *statusMessage;
 @property (nonatomic) BOOL valid;
 
 - (instancetype)initWithClient:(WHChatClient *)client;

@@ -21,7 +21,6 @@
 @property (nonatomic, strong) dispatch_queue_t queue;
 @property (nonatomic, strong) NSManagedObjectContext *objectContext;
 @property (nonatomic, strong) NSString *show;
-@property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSMutableSet *subscriptionsRequested;
 @end
 
@@ -68,9 +67,8 @@
                                      @"subscription": @"remove"}];
 }
 
-- (void)setShow:(NSString *)show status:(NSString *)status {
-    self.show = show;
-    self.status = [[WHCrypto encrypt:status key:[WHAccount get].globalKey] xmpp_base64Encoded];
+- (void)setShow:(NSString *)show {
+    _show = show;
     [self sendStatus];
 }
 
@@ -92,7 +90,6 @@
 - (void)sendStatus {
     XMPPPresence *presence = [XMPPPresence presence];
     [presence addChild:[NSXMLElement elementWithName:@"show" stringValue:self.show]];
-    [presence addChild:[NSXMLElement elementWithName:@"status" stringValue:self.status]];
     [self.stream sendElement:presence];
 }
 
@@ -191,11 +188,9 @@
     Contact *c = [Contact contactForJid:[jid bare] managedObjectContext:self.objectContext];
     if (!c) return;
 
-    NSString *status = [c decryptGlobal:[presence status]];
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         Contact *contact = (Contact *)obj;
         contact.state = [presence show];
-        contact.statusMessage = status;
     }];
 }
 
