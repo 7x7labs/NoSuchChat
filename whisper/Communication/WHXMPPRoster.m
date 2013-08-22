@@ -190,7 +190,12 @@
 
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         Contact *contact = (Contact *)obj;
-        contact.state = [presence show];
+        @try {
+            contact.state = [presence show];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Error updating presence for jid %@: %@", jid, exception);
+        }
     }];
 }
 
