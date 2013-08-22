@@ -10,6 +10,15 @@ PODS:
   - libextobjc/EXTScope (0.3):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.3)
+  - libwebp (0.3.0-rc7):
+    - libwebp/dec
+    - libwebp/dsp
+    - libwebp/utils
+    - libwebp/webp
+  - libwebp/dec (0.3.0-rc7)
+  - libwebp/dsp (0.3.0-rc7)
+  - libwebp/utils (0.3.0-rc7)
+  - libwebp/webp (0.3.0-rc7)
   - OCMock (2.2.1)
   - ReactiveCocoa (1.9.7):
     - ReactiveCocoa/Core
@@ -21,6 +30,11 @@ PODS:
     - libextobjc/EXTScope (~> 0.3.0)
   - ReactiveCocoa/RACExtensions (1.9.7):
     - ReactiveCocoa/Core
+  - SDWebImage (3.4):
+    - libwebp
+    - SDWebImage/MapKit
+  - SDWebImage/MapKit (3.4):
+    - libwebp
   - Specta (0.1.11)
   - SSKeychain (1.2.0)
   - XMPPFramework/Authentication (HEAD based on 3.6.1):
@@ -50,6 +64,7 @@ DEPENDENCIES:
   - Expecta
   - OCMock
   - ReactiveCocoa
+  - SDWebImage
   - Specta
   - SSKeychain
   - XMPPFramework/Reconnect (HEAD)
@@ -62,8 +77,10 @@ SPEC CHECKSUMS:
   Expecta: 99adbb2e366a02796477523bfd426143350d9caf
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
+  libwebp: 40517fa1fd3716eded73b4696c45fc0b66e4b414
   OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
   ReactiveCocoa: b680ab9b8c64a3c9956492f0702006ea541164fc
+  SDWebImage: f13f791e411c632489824aa7f129e230b52bf5c4
   Specta: 82746c6fd70b104c5d37cfbadb7bf15a2cbc4da0
   SSKeychain: 2fe90c92034129d9615a508529b601a520f297d1
   XMPPFramework: 9c8f9c9df99ad1db072086c8a2611c243cb5bde1

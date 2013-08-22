@@ -12,7 +12,9 @@
 #import "Message.h"
 #import "WHChatClient.h"
 
+#import <CommonCrypto/CommonDigest.h>
 #import <EXTScope.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface WHChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
@@ -127,6 +129,12 @@
     
     UILabel *timestampLabel = (UILabel *)[cell viewWithTag:103];
     timestampLabel.text = [self formatDate:message.sent];
+
+    // TODO: Better way to lookup the jid?
+    NSString *jid = ([message.incoming boolValue] ? message.contact.jid : self.client.jid);
+    NSURL *avatarURL = [self buildGravatarURL:jid];
+    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
+    [avatarImage setImageWithURL:avatarURL];
     
     cell.editing = YES;
     return cell;
@@ -141,6 +149,26 @@
     dateString = [dateString lowercaseString];
     
     return dateString;
+}
+
+// TODO: Move this method to an appropriate home
+- (NSURL *)buildGravatarURL:(NSString *)emailAddress {
+	NSString *curatedEmail = [[emailAddress stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+							  lowercaseString];
+    
+	const char *cStr = [curatedEmail UTF8String];
+    unsigned char result[16];
+    CC_MD5(cStr, strlen(cStr), result);
+    
+	NSString *md5email = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                              result[0], result[1], result[2], result[3],
+                              result[4], result[5], result[6], result[7],
+                              result[8], result[9], result[10], result[11],
+                              result[12], result[13], result[14], result[15]
+                          ];
+	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=80&d=identicon", md5email];
+    
+	return [NSURL URLWithString:gravatarEndPoint];
 }
 
 @end
