@@ -74,6 +74,7 @@
         case MCSessionStateNotConnected:
             [(RACSubject *)self.connected sendNext:@NO];
             [(RACSubject *)self.connected sendCompleted];
+            [(RACSubject *)self.incomingData sendCompleted];
             break;
     }
 }
