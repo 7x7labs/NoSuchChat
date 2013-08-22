@@ -10,15 +10,6 @@
 
 #import "WHChatClient.h"
 
-static NSSet *validAvaibilityStates() {
-    static NSSet *values;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        values = [NSSet setWithObjects:@"", @"away", @"chat", @"dnd", @"xa", nil];
-    });
-    return values;
-}
-
 @interface WHSettingsViewModel ()
 @property (nonatomic, strong) WHChatClient *client;
 @end
@@ -30,13 +21,11 @@ static NSSet *validAvaibilityStates() {
 
     self.client = client;
     self.displayName = client.displayName;
-    self.availability = client.availability;
+    
     RAC(self.valid) = [RACSignal
-                       combineLatest:@[RACAbleWithStart(self, displayName),
-                                       RACAbleWithStart(self, availability)]
-                       reduce:^(NSString *displayName, NSString *availability) {
-                           return @([displayName length] > 0 &&
-                                    [validAvaibilityStates() containsObject:availability]);
+                       combineLatest:@[RACAbleWithStart(self, displayName)]
+                       reduce:^(NSString *displayName) {
+                           return @([displayName length] > 0);
                        }];
 
     return self;
@@ -45,6 +34,5 @@ static NSSet *validAvaibilityStates() {
 - (void)save {
     NSAssert(self.valid, @"Cannot save invalid viewmodel");
     self.client.displayName = self.displayName;
-    [self.client setStatus:self.availability];
 }
 @end
