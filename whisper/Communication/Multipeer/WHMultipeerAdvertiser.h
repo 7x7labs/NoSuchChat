@@ -10,4 +10,6 @@
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, readonly) MCPeerID *peerID;
 @property (nonatomic, readonly) RACSignal *invitations;
+
+- (instancetype)initWithJid:(NSString *)jid;
 @end

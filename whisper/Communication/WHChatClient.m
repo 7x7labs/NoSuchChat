@@ -51,7 +51,7 @@
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
     self.xmpp = xmpp;
-    self.advertiser = [WHMultipeerAdvertiser new];
+    self.advertiser = [[WHMultipeerAdvertiser alloc] initWithJid:self.jid];
 
     self.displayName = [[NSUserDefaults standardUserDefaults] stringForKey:@"displayName"];
     [NSUserDefaults.standardUserDefaults.rac_lift setObject:RACAble(self, displayName)

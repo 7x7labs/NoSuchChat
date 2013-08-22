@@ -14,12 +14,14 @@
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCNearbyServiceAdvertiser *advertiser;
 @property (nonatomic, strong) RACSubject *invitations;
+@property (nonatomic, strong) NSString *jid;
 @end
 
 @implementation WHMultipeerAdvertiser
-- (instancetype)init {
+- (instancetype)initWithJid:(NSString *)jid {
     if (!(self = [super init])) return self;
     self.invitations = [RACSubject subject];
+    self.jid = jid;
     return self;
 }
 
@@ -33,7 +35,7 @@
 
     self.peerID = [[MCPeerID alloc] initWithDisplayName:displayName];
     self.advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
-                                                        discoveryInfo:@{}
+                                                        discoveryInfo:@{@"jid": self.jid}
                                                           serviceType:@"7x7-whisper"];
     self.advertiser.delegate = self;
     [self.advertiser startAdvertisingPeer];
