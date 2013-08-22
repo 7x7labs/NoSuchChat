@@ -37,8 +37,9 @@
     [self.browser startBrowsingForPeers];
 }
 
-- (WHMultipeerSession *)connectToPeer:(MCPeerID *)peerID {
+- (WHMultipeerSession *)connectToPeer:(MCPeerID *)peerID ownJid:(NSString *)jid {
     return [[WHMultipeerSession alloc] initWithRemotePeerID:peerID
+                                                     ownJid:jid
                                              serviceBrowser:self.browser];
 }
 

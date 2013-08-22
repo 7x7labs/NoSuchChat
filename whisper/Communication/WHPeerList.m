@@ -37,6 +37,7 @@
 
         self.peerSet[peerID] = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
                                                                remotePeerID:peerID
+                                                                    peerJid:peerJid
                                                                     browser:self.browser];
         self.peers = [self.peerSet allValues];
     }];

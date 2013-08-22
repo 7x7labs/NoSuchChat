@@ -45,6 +45,7 @@
 
 @property (nonatomic, strong) MCPeerID *ownPeerID;
 @property (nonatomic, strong) MCPeerID *remotePeerID;
+@property (nonatomic, strong) NSString *peerJid;
 @property (nonatomic, strong) WHMultipeerBrowser *browser;
 @property (nonatomic, strong) invitationHandler invitation;
 @end
@@ -52,28 +53,30 @@
 @implementation WHKeyExchangePeer
 - (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
                      remotePeerID:(MCPeerID *)remotePeerID
+                          peerJid:(NSString *)peerJid
+                          browser:(WHMultipeerBrowser *)browser
 {
     if (!(self = [super init])) return self;
     self.name = remotePeerID.displayName;
     self.ownPeerID = ownPeerID;
     self.remotePeerID = remotePeerID;
-    return self;
-}
+    self.peerJid = peerJid;
 
-- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
-                     remotePeerID:(MCPeerID *)remotePeerID
-                          browser:(WHMultipeerBrowser *)browser
-{
-    if (!(self = [self initWithOwnPeerID:ownPeerID remotePeerID:remotePeerID])) return nil;
     self.browser = browser;
     return self;
 }
 
 - (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
                      remotePeerID:(MCPeerID *)remotePeerID
-                    invitation:(invitationHandler)invitation
+                          peerJid:(NSString *)peerJid
+                       invitation:(invitationHandler)invitation
 {
-    if (!(self = [self initWithOwnPeerID:ownPeerID remotePeerID:remotePeerID])) return nil;
+    if (!(self = [super init])) return self;
+    self.name = remotePeerID.displayName;
+    self.ownPeerID = ownPeerID;
+    self.remotePeerID = remotePeerID;
+    self.peerJid = peerJid;
+
     self.invitation = invitation;
     return self;
 }
@@ -84,39 +87,35 @@
 
     WHMultipeerSession *session;
     if (self.browser)
-        session = [self.browser connectToPeer:self.remotePeerID];
+        session = [self.browser connectToPeer:self.remotePeerID ownJid:jid];
     else
         session = [[WHMultipeerSession alloc] initWithSelf:self.ownPeerID
                                                     remote:self.remotePeerID
                                                 invitation:self.invitation];
 
     __block BOOL called = NO;
-    __block NSString *contactJid = nil;
-    return [[[[[[session.connected
+    WHKeyPair *newKP = [WHKeyPair createKeyPairForJid:self.peerJid];
+    return [[[[[session.connected
             flattenMap:^RACStream *(NSNumber *didConnect) {
                 assert(!called);
                 called = YES;
                 if (![didConnect boolValue])
                     return [WHError errorSignalWithDescription:@"Peer refused connection"];
-                NSError *error = [session sendData:[jid dataUsingEncoding:NSUTF8StringEncoding]];
-                return error ? [RACSignal error:error] : [session.incomingData take:4];
-            }]
-            next:^(NSData *jidData) {
-                contactJid = [[NSString alloc] initWithData:jidData encoding:NSUTF8StringEncoding];
-                return [session sendData:[WHKeyPair getOwnGlobalKeyPair].publicKeyBits];
+                NSError *error = [session sendData:[WHKeyPair getOwnGlobalKeyPair].publicKeyBits];
+                return error ? [RACSignal error:error] : [session.incomingData take:3];
             }]
             next:^(NSData *globalKey) {
-                [WHKeyPair addGlobalKey:globalKey fromJid:contactJid];
+                [WHKeyPair addGlobalKey:globalKey fromJid:self.peerJid];
                 return [session sendData:[WHKeyPair getOwnGlobalKeyPair].symmetricKey];
             }]
             next:^(NSData *symmetricKey) {
-                [WHKeyPair addSymmetricKey:symmetricKey fromJid:contactJid];
-                return [session sendData:[WHKeyPair createKeyPairForJid:contactJid].publicKeyBits];
+                [WHKeyPair addSymmetricKey:symmetricKey fromJid:self.peerJid];
+                return [session sendData:newKP.publicKeyBits];
             }]
             deliverOn:[RACScheduler mainThreadScheduler]]
             next:^(NSData *publicKey) {
-                [WHKeyPair addKey:publicKey fromJid:contactJid];
-                return [Contact createWithName:self.name jid:contactJid];
+                [WHKeyPair addKey:publicKey fromJid:self.peerJid];
+                return [Contact createWithName:self.name jid:self.peerJid];
             }];
 }
 

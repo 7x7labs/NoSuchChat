@@ -50,8 +50,10 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
        withContext:(NSData *)context
  invitationHandler:(void (^)(BOOL accept, MCSession *session))invitationHandler
 {
+    NSString *jid = [[NSString alloc] initWithData:context encoding:NSUTF8StringEncoding];
     [(RACSubject *)self.invitations sendNext:[[WHKeyExchangePeer alloc] initWithOwnPeerID:self.peerID
                                                                              remotePeerID:peerID
+                                                                                  peerJid:jid
                                                                                invitation:invitationHandler]];
 }
 

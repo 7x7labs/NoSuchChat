@@ -18,9 +18,11 @@ typedef void (^invitationHandler)(BOOL accept, MCSession *session);
 
 - (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
                      remotePeerID:(MCPeerID *)remotePeerID
+                          peerJid:(NSString *)peerJid
                           browser:(WHMultipeerBrowser *)browser;
 
 - (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
                      remotePeerID:(MCPeerID *)remotePeerID
+                          peerJid:(NSString *)peerJid
                     invitation:(invitationHandler)invitation;
 @end

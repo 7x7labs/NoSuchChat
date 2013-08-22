@@ -33,10 +33,14 @@
 }
 
 - (instancetype)initWithRemotePeerID:(MCPeerID *)remotePeer
-              serviceBrowser:(MCNearbyServiceBrowser *)browser
+                              ownJid:(NSString *)ownJid
+                      serviceBrowser:(MCNearbyServiceBrowser *)browser
 {
     if (!(self = [self initWithSelf:browser.myPeerID remote:remotePeer])) return self;
-    [browser invitePeer:self.peerID toSession:self.session withContext:nil timeout:0];
+    [browser invitePeer:self.peerID
+              toSession:self.session
+            withContext:[ownJid dataUsingEncoding:NSUTF8StringEncoding]
+                timeout:0];
     return self;
 }
 
