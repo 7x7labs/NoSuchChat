@@ -13,3 +13,5 @@ whisper/CoreData
 whisper.xcworkspace/xcshareddata/whisper.xccheckout
 whisper/hostname.m
 .prosody-data
+.bundle
+
