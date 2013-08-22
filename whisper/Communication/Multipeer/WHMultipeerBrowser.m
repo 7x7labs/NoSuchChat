@@ -51,7 +51,7 @@
       foundPeer:(MCPeerID *)peerID
 withDiscoveryInfo:(NSDictionary *)info
 {
-    [(RACSubject *)self.peers sendNext:peerID];
+    [(RACSubject *)self.peers sendNext:RACTuplePack(peerID, info[@"jid"])];
 }
 
 - (void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID {

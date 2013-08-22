@@ -12,4 +12,5 @@
 
 @interface WHAddContactViewController : UIViewController
 @property (nonatomic, strong) WHChatClient *client;
+@property (nonatomic, strong) NSArray *contacts;
 @end

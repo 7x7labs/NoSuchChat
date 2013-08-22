@@ -45,7 +45,7 @@ describe(@"WHMultipeerAdvertiser", ^{
     __block WHMultipeerAdvertiser *advertiser;
     __block id<MCNearbyServiceAdvertiserDelegate> delegate;
     beforeEach(^{
-        advertiser = [WHMultipeerAdvertiser new];
+        advertiser = [[WHMultipeerAdvertiser alloc] initWithJid:@"jid@localhost"];
         delegate = (id)advertiser;
     });
 
@@ -90,7 +90,7 @@ describe(@"WHMultipeerBrowser", ^{
     __block WHMultipeerBrowser *browser;
     __block id<MCNearbyServiceBrowserDelegate> delegate;
     beforeEach(^{
-        advertiser = [WHMultipeerAdvertiser new];
+        advertiser = [[WHMultipeerAdvertiser alloc] initWithJid:@"self@localhost"];
         advertiser.displayName = @"display name";
 
         browser = [[WHMultipeerBrowser alloc] initWithPeer:advertiser.peerID];
@@ -98,11 +98,13 @@ describe(@"WHMultipeerBrowser", ^{
     });
 
     it(@"should forward found peers to the signal", ^AsyncBlock{
-        [[browser.peers take:1] subscribeNext:^(MCPeerID *peer) {
-            expect(peer).to.equal(advertiser.peerID);
+        [[browser.peers take:1] subscribeNext:^(RACTuple *peer) {
+            RACTupleUnpack(MCPeerID *peerID, NSString *peerJid) = peer;
+            expect(peerID).to.equal(advertiser.peerID);
+            expect(peerJid).to.equal(@"jid@localhost");
             done();
         }];
-        [delegate browser:nil foundPeer:advertiser.peerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:advertiser.peerID withDiscoveryInfo:@{@"jid": @"jid@localhost"}];
     });
 
     it(@"should forward removed peers to the signal", ^AsyncBlock{
@@ -125,13 +127,15 @@ describe(@"WHMultipeerBrowser", ^{
 
 describe(@"WHPeerList", ^{
     __block WHPeerList *peerList;
-    __block MCPeerID *ownPeerID;
-    __block MCPeerID *otherPeerID;
+    __block MCPeerID *ownPeerID, *otherPeerID;
+    __block NSDictionary *ownDiscoInfo, *otherDiscoInfo;
     __block id<MCNearbyServiceBrowserDelegate> delegate;
     beforeEach(^{
         ownPeerID = [[MCPeerID alloc] initWithDisplayName:@"own peer ID"];
         otherPeerID = [[MCPeerID alloc] initWithDisplayName:@"other peer ID"];
-        peerList = [[WHPeerList alloc] initWithOwnPeerID:ownPeerID];
+        ownDiscoInfo = @{@"jid": @"self@localhost"};
+        otherDiscoInfo = @{@"jid": @"other@localhost"};
+        peerList = [[WHPeerList alloc] initWithOwnPeerID:ownPeerID contactJids:[NSSet set]];
         delegate = (id)[peerList browser];
     });
 
@@ -140,23 +144,31 @@ describe(@"WHPeerList", ^{
     });
 
     it(@"should not add own peer id", ^{
-        [delegate browser:nil foundPeer:ownPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:ownPeerID withDiscoveryInfo:ownDiscoInfo];
         expect(peerList.peers).to.haveCountOf(0);
     });
 
     it(@"should add a different peer id", ^{
-        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:otherDiscoInfo];
         expect(peerList.peers).to.haveCountOf(1);
     });
 
     it(@"should not add duplicates", ^{
-        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
-        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:otherDiscoInfo];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:otherDiscoInfo];
         expect(peerList.peers).to.haveCountOf(1);
     });
 
+    it(@"should ignore existing contacts", ^{
+        peerList = [[WHPeerList alloc] initWithOwnPeerID:ownPeerID
+                                             contactJids:[NSSet setWithObject:@"other@localhost"]];
+        delegate = (id)[peerList browser];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:otherDiscoInfo];
+        expect(peerList.peers).to.haveCountOf(0);
+    });
+
     it(@"should removed lost peer ids", ^{
-        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:otherDiscoInfo];
         [delegate browser:nil lostPeer:otherPeerID];
         expect(peerList.peers).to.haveCountOf(0);
     });
@@ -170,7 +182,7 @@ describe(@"WHPeerList", ^{
         [RACAble(peerList, peers) subscribeNext:^(id _) {
             done();
         }];
-        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:@{}];
+        [delegate browser:nil foundPeer:otherPeerID withDiscoveryInfo:otherDiscoInfo];
     });
 });
 

@@ -9,5 +9,5 @@
 @interface WHPeerList : NSObject
 @property (nonatomic, readonly) NSArray *peers;
 
-- (instancetype)initWithOwnPeerID:(MCPeerID *)peerID;
+- (instancetype)initWithOwnPeerID:(MCPeerID *)peerID contactJids:(NSSet *)jids;
 @end

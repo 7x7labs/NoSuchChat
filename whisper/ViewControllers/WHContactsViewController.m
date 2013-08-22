@@ -44,6 +44,8 @@
         [dest setContact:self.sequeContact];
     if ([dest respondsToSelector:@selector(setClient:)])
         [dest setClient:self.client];
+    if ([dest respondsToSelector:@selector(setContacts:)])
+        [dest setContacts:self.contacts];
 }
 
 #pragma mark - Table view data source

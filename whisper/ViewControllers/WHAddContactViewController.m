@@ -29,7 +29,8 @@
     self.possibleContacts.dataSource = self;
     self.possibleContacts.delegate = self;
 
-    self.peerList = [[WHPeerList alloc] initWithOwnPeerID:self.client.peerID];
+    self.peerList = [[WHPeerList alloc] initWithOwnPeerID:self.client.peerID
+                                              contactJids:[NSSet setWithArray:[self.contacts valueForKey:@"jid"]]];
 
     @weakify(self)
     [RACAble(self.peerList, peers) subscribeNext:^(id _) {
