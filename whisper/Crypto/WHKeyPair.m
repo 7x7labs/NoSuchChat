@@ -24,6 +24,7 @@ static NSMutableDictionary *optCommon(NSString *jid, NSString *type, CFTypeRef k
     NSMutableDictionary *opt = [NSMutableDictionary dictionary];
     opt[(__bridge id)kSecClass] = (__bridge id)kSecClassKey;
     opt[(__bridge id)kSecAttrApplicationTag] = tag(jid, type);
+    opt[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAlwaysThisDeviceOnly;
     if (key && value)
         opt[(__bridge id)key] = value;
     return opt;
@@ -97,6 +98,7 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
         (__bridge id)kSecAttrKeyType: (__bridge id)kSecAttrKeyTypeRSA,
         (__bridge id)kSecPrivateKeyAttrs: @{(__bridge id)kSecAttrApplicationTag:tag(jid, @"_private")},
         (__bridge id)kSecPublicKeyAttrs: @{(__bridge id)kSecAttrApplicationTag:tag(jid, @"_public")},
+        (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAlwaysThisDeviceOnly
     };
 
     WHKeyPair *keyPair = [WHKeyPair new];
