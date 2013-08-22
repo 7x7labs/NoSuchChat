@@ -142,7 +142,7 @@
 
 - (NSString *)formatDate:(NSDate *)date {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"h:mma 'on' MMM d"];
+    [dateFormat setDateFormat:@"h:mma ' on' MMM d"];
     
     NSString *dateString;
     dateString = [dateFormat stringFromDate:date];
