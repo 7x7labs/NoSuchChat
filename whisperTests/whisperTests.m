@@ -357,7 +357,7 @@ describe(@"WHXMPPRoster", ^{
     beforeEach(^{
         xmppStream = [OCMockObject mockForClass:[XMPPStream class]];
 
-        [[xmppStream expect] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
+        [[[xmppStream expect] ignoringNonObjectArgs] addDelegate:OCMOCK_ANY delegateQueue:OCMOCK_ANY];
         roster = [[WHXMPPRoster alloc] initWithXmppStream:xmppStream];
         roster.contactJids = [NSMutableSet set];
 
