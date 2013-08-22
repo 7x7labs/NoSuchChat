@@ -149,7 +149,7 @@ describe(@"Contact", ^{
     });
 });
 
-fdescribe(@"Deleting contacts", ^{
+describe(@"Deleting contacts", ^{
     __block Contact *contact;
     __block RACSignal *(^deleteContact)();
     NSString *contactJid = @"a@b.com";
