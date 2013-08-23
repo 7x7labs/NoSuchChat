@@ -221,6 +221,7 @@ describe(@"WHKeyExchangePeer", ^{
         it(@"should report an error when the connection is refused", ^AsyncBlock {
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
             [[[session expect] andReturn:[RACSignal return:@NO]] connected];
+            [[session expect] disconnect];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
@@ -254,6 +255,7 @@ describe(@"WHKeyExchangePeer", ^{
 
             [[[session expect] andReturn:[RACSignal return:@YES]] connected];
             [[[session expect] andReturn:incomingData] incomingData];
+            [[session expect] disconnect];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];

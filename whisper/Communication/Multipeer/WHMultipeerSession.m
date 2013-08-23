@@ -62,6 +62,10 @@
     return error;
 }
 
+- (void)disconnect {
+    [self.session disconnect];
+}
+
 #pragma mark - MCSessionDelegate
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
     switch (state) {

@@ -21,21 +21,18 @@
 @implementation RACSignal (WHNext)
 - (instancetype)next:(id (^)(id))block {
     Class class = self.class;
+    __block BOOL first = YES;
 
-    return [[self bind:^{
-        __block BOOL first = YES;
+    return [[self flattenMap:^RACStream *(id value) {
+        if (first) {
+            first = NO;
+            id ret = block(value);
+            if ([ret isKindOfClass:[NSError class]])
+                return [class error:ret];
+            return ret ? ret : [class empty];
+        }
 
-        return ^RACStream *(id value, BOOL *stop) {
-            if (first) {
-                first = NO;
-                id ret = block(value);
-                if ([ret isKindOfClass:[NSError class]])
-                    return [class error:ret];
-                return ret ? ret : [class empty];
-            }
-
-            return [class return:value];
-        };
+        return [class return:value];
     }] setNameWithFormat:@"[%@] -next:", self.name];
 }
 @end
@@ -99,8 +96,10 @@
             flattenMap:^RACStream *(NSNumber *didConnect) {
                 assert(!called);
                 called = YES;
-                if (![didConnect boolValue])
+                if (![didConnect boolValue]) {
+                    [session disconnect];
                     return [WHError errorSignalWithDescription:@"Peer refused connection"];
+                }
                 NSError *error = [session sendData:[WHKeyPair getOwnGlobalKeyPair].publicKeyBits];
                 return error ? [RACSignal error:error] : [session.incomingData take:3];
             }]
@@ -115,6 +114,7 @@
             deliverOn:[RACScheduler mainThreadScheduler]]
             next:^(NSData *publicKey) {
                 [WHKeyPair addKey:publicKey fromJid:self.peerJid];
+                [session disconnect];
                 return [Contact createWithName:self.name jid:self.peerJid];
             }];
 }
