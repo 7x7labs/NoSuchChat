@@ -83,21 +83,22 @@
        }];
 
     self.cancelSignal = [RACSubject subject];
-    RAC(self, contacts) =
-        [[[[RACSignal merge:@[[NSNotificationCenter.defaultCenter
-                               rac_addObserverForName:WHContactAddedNotification object:nil],
-                              [NSNotificationCenter.defaultCenter
-                               rac_addObserverForName:WHContactRemovedNotification object:nil]]]
-         takeUntil:self.cancelSignal]
-         map:^(NSNotification *notification) {
-             @strongify(self)
-             if (notification.userInfo[@"created"])
-                 [self.xmpp.roster addContact:notification.userInfo[@"created"]];
-             if (notification.userInfo[@"removed"])
-                 [self.xmpp.roster removeContact:notification.userInfo[@"removed"]];
-             return [Contact all];
-         }]
-         startWith:[Contact all]];
+    RAC(self, contacts) = [[[[[RACSignal
+        merge:@[[NSNotificationCenter.defaultCenter
+                 rac_addObserverForName:WHContactAddedNotification object:nil],
+                [NSNotificationCenter.defaultCenter
+                 rac_addObserverForName:WHContactRemovedNotification object:nil]]]
+        takeUntil:self.cancelSignal]
+        deliverOn:[RACScheduler mainThreadScheduler]]
+        map:^(NSNotification *notification) {
+            @strongify(self)
+            if (notification.userInfo[@"created"])
+                [self.xmpp.roster addContact:notification.userInfo[@"created"]];
+            if (notification.userInfo[@"removed"])
+                [self.xmpp.roster removeContact:notification.userInfo[@"removed"]];
+            return [Contact all];
+        }]
+        startWith:[Contact all]];
 
     RACMulticastConnection *incomingMessages =
         [[self.xmpp.messages

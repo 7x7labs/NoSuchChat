@@ -60,7 +60,8 @@
     [self.activityIndicator startAnimating];
     self.activityIndicator.hidden = NO;
 
-    [[self.peerList.peers[indexPath.row] connectWithJid:self.client.jid]
+    [[[self.peerList.peers[indexPath.row] connectWithJid:self.client.jid]
+     deliverOn:[RACScheduler mainThreadScheduler]]
      subscribeError:^(NSError *error) {
          [WHAlert alertWithMessage:[error localizedDescription]];
      } completed:^{
