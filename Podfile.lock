@@ -20,6 +20,7 @@ PODS:
   - libwebp/utils (0.3.0-rc7)
   - libwebp/webp (0.3.0-rc7)
   - OCMock (2.2.1)
+  - Reachability (3.1.1)
   - ReactiveCocoa (1.9.7):
     - ReactiveCocoa/Core
     - ReactiveCocoa/RACExtensions
@@ -63,6 +64,7 @@ PODS:
 DEPENDENCIES:
   - Expecta
   - OCMock
+  - Reachability
   - ReactiveCocoa
   - SDWebImage
   - Specta
@@ -79,6 +81,7 @@ SPEC CHECKSUMS:
   libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
   libwebp: 40517fa1fd3716eded73b4696c45fc0b66e4b414
   OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
+  Reachability: 2be6bc2fd2bd31d97f5db33e75e4b29c79e95883
   ReactiveCocoa: b680ab9b8c64a3c9956492f0702006ea541164fc
   SDWebImage: f13f791e411c632489824aa7f129e230b52bf5c4
   Specta: 82746c6fd70b104c5d37cfbadb7bf15a2cbc4da0

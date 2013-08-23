@@ -15,10 +15,12 @@
 #import "WHXMPPCapabilities.h"
 #import "WHXMPPRoster.h"
 
-#import "NSData+XMPP.h"
-#import "NSXMLElement+XEP_0203.h"
-#import "XMPP.h"
-#import "XMPPReconnect.h"
+#import <EXTScope.h>
+#import <Reachability/Reachability.h>
+#import <XMPPFramework/NSData+XMPP.h>
+#import <XMPPFramework/NSXMLElement+XEP_0203.h>
+#import <XMPPFramework/XMPP.h>
+#import <XMPPFramework/XMPPReconnect.h>
 
 @implementation WHChatMessage
 - (WHChatMessage *)initWithSenderJid:(NSString *)senderJid body:(NSString *)body sent:(NSDate *)sent {
@@ -38,6 +40,7 @@
 
 @property (nonatomic, strong) XMPPStream *stream;
 @property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) Reachability *reach;
 
 @property (nonatomic, strong) XMPPReconnect *reconnect;
 @property (nonatomic, strong) WHXMPPRoster *roster;
@@ -51,13 +54,20 @@
 }
 
 - (instancetype)init {
-    if (self = [super init]) {
-        self.messages = [RACReplaySubject subject];
-        self.connectSignal = [RACReplaySubject subject];
-        self.stream = [XMPPStream new];
-        self.roster = [[WHXMPPRoster alloc] initWithXmppStream:self.stream];
-        self.capabilities = [[WHXMPPCapabilities alloc] initWithStream:self.stream];
-    }
+    if (!(self = [super init])) return self;
+    self.messages = [RACReplaySubject subject];
+    self.connectSignal = [RACReplaySubject subject];
+    self.reach = [Reachability reachabilityWithHostname:kXmppServerHost];
+    self.stream = [XMPPStream new];
+    self.roster = [[WHXMPPRoster alloc] initWithXmppStream:self.stream];
+    self.capabilities = [[WHXMPPCapabilities alloc] initWithStream:self.stream];
+
+    @weakify(self)
+    self.reach.reachableBlock = ^(Reachability *_) {
+        @strongify(self)
+        [self.reconnect manualStart];
+    };
+
     return self;
 }
 
@@ -72,6 +82,8 @@
     self.stream.hostName = server;
     self.stream.hostPort = port;
     self.stream.myJID = [XMPPJID jidWithString:username];
+
+    [self.reach startNotifier];
 
     // Should dump this off on a queue rather than running synchronously
     NSError *error = nil;
@@ -155,6 +167,10 @@
 
     [self.stream sendElement:[XMPPPresence presence]];
     [self.connectSignal sendCompleted];
+
+    // Reconnect module now handles monitoring the connection
+    [self.reach stopNotifier];
+    self.reach = nil;
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)_ {
