@@ -12,7 +12,8 @@
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCSession *session;
 @property (nonatomic, strong) RACSubject *connected;
-@property (nonatomic, strong) RACSubject *incomingData;
+@property (nonatomic, strong) NSData *readBuffer;
+@property (nonatomic, strong) NSCondition *readLock;
 @end
 
 @implementation WHMultipeerSession
@@ -28,7 +29,7 @@
                               encryptionPreference:MCEncryptionNone];
     self.session.delegate = self;
     self.connected = [RACReplaySubject subject];
-    self.incomingData = [RACReplaySubject subject];
+    self.readLock = [NSCondition new];
     return self;
 }
 
@@ -62,8 +63,28 @@
     return error;
 }
 
+- (NSData *)read {
+    [self.readLock lock];
+
+    NSData *ret = nil;
+    if (!self.readBuffer)
+        [self.readLock wait];
+
+    ret = self.readBuffer;
+    _readBuffer = nil;
+    [self.readLock unlock];
+    return ret;
+}
+
 - (void)disconnect {
     [self.session disconnect];
+}
+
+- (void)setReadBuffer:(NSData *)data {
+    [self.readLock lock];
+    _readBuffer = data;
+    [self.readLock broadcast];
+    [self.readLock unlock];
 }
 
 #pragma mark - MCSessionDelegate
@@ -78,13 +99,13 @@
         case MCSessionStateNotConnected:
             [(RACSubject *)self.connected sendNext:@NO];
             [(RACSubject *)self.connected sendCompleted];
-            [(RACSubject *)self.incomingData sendCompleted];
+            self.readBuffer = nil;
             break;
     }
 }
 
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
-    [(RACSubject *)self.incomingData sendNext:data];
+    self.readBuffer = data;
 }
 
 // Required methods we don't use

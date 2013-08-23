@@ -9,3 +9,4 @@ pod 'Specta'
 pod 'XMPPFramework/Reconnect', :head
 pod 'XMPPFramework/XEP-0082', :head
 pod 'XMPPFramework/XEP-0203', :head
+pod 'curve25519-donna', :podspec => 'podspecs/curve25519-donna.podspec'

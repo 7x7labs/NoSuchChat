@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F26B4AA17A023460075E1DB /* keyExchangeTests.m */; };
+		3F3BEC6A17CBE59700F4D41A /* WHDiffieHellman.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */; };
+		3F3BEC6B17CBE59700F4D41A /* WHDiffieHellman.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */; };
 		3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4709DF17AC150A007A1DF7 /* WHAlert.m */; };
 		3F4D316C17B2893000A7E8FC /* WHXMPPCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */; };
 		3F50C5EC17A42CAF00DC76C1 /* WHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */; };
@@ -116,6 +118,8 @@
 
 /* Begin PBXFileReference section */
 		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
+		3F3BEC6817CBE59700F4D41A /* WHDiffieHellman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHDiffieHellman.h; path = Crypto/WHDiffieHellman.h; sourceTree = "<group>"; };
+		3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHDiffieHellman.m; path = Crypto/WHDiffieHellman.m; sourceTree = "<group>"; };
 		3F4709DE17AC150A007A1DF7 /* WHAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAlert.h; path = Views/WHAlert.h; sourceTree = "<group>"; };
 		3F4709DF17AC150A007A1DF7 /* WHAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAlert.m; path = Views/WHAlert.m; sourceTree = "<group>"; };
 		3F4D316A17B2893000A7E8FC /* WHXMPPCapabilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHXMPPCapabilities.h; path = Communication/WHXMPPCapabilities.h; sourceTree = "<group>"; };
@@ -313,18 +317,13 @@
 			isa = PBXGroup;
 			children = (
 				3F81032F17A9C00E006FBFBE /* Multipeer */,
+				3F97CD3217C7B0F20022F5C2 /* XMPP */,
 				3F8EB18E1796FB7E009F938D /* WHChatClient.h */,
 				3F8EB18F1796FB7E009F938D /* WHChatClient.m */,
 				3F5FEAF9179F4D3000C6BF62 /* WHKeyExchangePeer.h */,
 				3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */,
 				3F5FEAE2179DB60D00C6BF62 /* WHPeerList.h */,
 				3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */,
-				3F4D316A17B2893000A7E8FC /* WHXMPPCapabilities.h */,
-				3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */,
-				3F50C62017A56B8100DC76C1 /* WHXMPPRoster.h */,
-				3F50C62117A56B8100DC76C1 /* WHXMPPRoster.m */,
-				3F8D1BA61795F70D0089B129 /* WHXMPPWrapper.h */,
-				3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */,
 			);
 			name = Communication;
 			sourceTree = "<group>";
@@ -342,10 +341,25 @@
 				3F8EB19D1798BF96009F938D /* NSData+Signature.m */,
 				3F8EB1961798424C009F938D /* WHCrypto.h */,
 				3F8EB1971798424C009F938D /* WHCrypto.m */,
+				3F3BEC6817CBE59700F4D41A /* WHDiffieHellman.h */,
+				3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */,
 				3F8EB1A21798DC8C009F938D /* WHKeyPair.h */,
 				3F8EB1A31798DC8C009F938D /* WHKeyPair.m */,
 			);
 			name = Crypto;
+			sourceTree = "<group>";
+		};
+		3F97CD3217C7B0F20022F5C2 /* XMPP */ = {
+			isa = PBXGroup;
+			children = (
+				3F4D316A17B2893000A7E8FC /* WHXMPPCapabilities.h */,
+				3F4D316B17B2893000A7E8FC /* WHXMPPCapabilities.m */,
+				3F50C62017A56B8100DC76C1 /* WHXMPPRoster.h */,
+				3F50C62117A56B8100DC76C1 /* WHXMPPRoster.m */,
+				3F8D1BA61795F70D0089B129 /* WHXMPPWrapper.h */,
+				3F8D1BA71795F70D0089B129 /* WHXMPPWrapper.m */,
+			);
+			name = XMPP;
 			sourceTree = "<group>";
 		};
 		3FA0C5EC178CFDA1007E6ECC = {
@@ -730,6 +744,7 @@
 				3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */,
 				3F77026317BA9F3F00EF5C50 /* WHCoreData.m in Sources */,
 				3F77026417BA9F3F00EF5C50 /* WHCrypto.m in Sources */,
+				3F3BEC6B17CBE59700F4D41A /* WHDiffieHellman.m in Sources */,
 				3F77026517BA9F3F00EF5C50 /* WHError.m in Sources */,
 				3F77026617BA9F3F00EF5C50 /* WHKeyExchangePeer.m in Sources */,
 				3F77026717BA9F3F00EF5C50 /* WHKeyPair.m in Sources */,
@@ -770,6 +785,7 @@
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3F8EB1981798424C009F938D /* WHCrypto.m in Sources */,
+				3F3BEC6A17CBE59700F4D41A /* WHDiffieHellman.m in Sources */,
 				3FB2968817AC34D600D24E0D /* WHError.m in Sources */,
 				3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */,
 				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,

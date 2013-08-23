@@ -8,6 +8,7 @@
 
 #import "Contact.h"
 #import "WHCoreData.h"
+#import "WHDiffieHellman.h"
 #import "WHKeyExchangePeer.h"
 #import "WHKeyPair.h"
 #import "WHMultipeerAdvertiser.h"
@@ -234,7 +235,6 @@ describe(@"WHKeyExchangePeer", ^{
         });
 
         it(@"should create a new contact once the key exchange is complete", ^AsyncBlock{
-            NSData *jid = [contactJid dataUsingEncoding:NSUTF8StringEncoding];
             NSData *keyBits = [WHKeyPair createKeyPairForJid:ownJid].publicKeyBits;
             WHKeyPair *globalKey = [WHKeyPair createOwnGlobalKeyPair];
             NSData *globalKeyBits = globalKey.publicKeyBits;
@@ -242,20 +242,27 @@ describe(@"WHKeyExchangePeer", ^{
             SecItemDelete((__bridge CFDictionaryRef)@{(__bridge id)kSecClass: (__bridge id)kSecClassKey});
             [WHKeyPair createOwnGlobalKeyPair];
 
-            RACSubject *incomingData = [RACReplaySubject subject];
-            [incomingData sendNext:jid];
-            [incomingData sendNext:globalKeyBits];
-            [incomingData sendNext:globalSymmetricKey];
-            [incomingData sendNext:keyBits];
-
             id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
+
+            [[[session expect] andDo:^(NSInvocation *invocation) {
+                __unsafe_unretained NSData *publicKey;
+                [invocation getArgument:&publicKey atIndex:2];
+
+                WHDiffieHellman *dh = [WHDiffieHellman new];
+                NSData *dhPublic = dh.publicKey;
+                [dh setOtherPublic:publicKey];
+
+                [[[session expect] andReturn:dhPublic] read];
+                [[[session expect] andReturn:[dh encrypt:globalKeyBits]] read];
+                [[[session expect] andReturn:[dh encrypt:globalSymmetricKey]] read];
+                [[[session expect] andReturn:[dh encrypt:keyBits]] read];
+                [[session expect] disconnect];
+            }] sendData:isKindOfClass([NSData class])]; // dh public key
+
             [[session expect] sendData:isKindOfClass([NSData class])]; // global sign key
             [[session expect] sendData:isKindOfClass([NSData class])]; // global encryption key
             [[session expect] sendData:isKindOfClass([NSData class])]; // pair key
-
-            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
-            [[[session expect] andReturn:incomingData] incomingData];
-            [[session expect] disconnect];
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];

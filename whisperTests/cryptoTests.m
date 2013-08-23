@@ -11,6 +11,7 @@
 #import "NSData+SHA.h"
 #import "NSData+Signature.h"
 #import "WHCrypto.h"
+#import "WHDiffieHellman.h"
 #import "WHKeyPair.h"
 
 #import "Specta.h"
@@ -306,6 +307,62 @@ describe(@"WHCrypto", ^{
 
             key = [WHKeyPair getOwnGlobalKeyPair];
             expect([WHCrypto decrypt:encrypted key:key]).to.equal(message);
+        });
+    });
+});
+
+describe(@"WHDiffieHellman", ^{
+    __block WHDiffieHellman *dh, *dh2;
+    beforeEach(^{
+        dh = [WHDiffieHellman new];
+        dh2 = [WHDiffieHellman new];
+    });
+
+    describe(@"encrypt:", ^{
+        it(@"should return input before the key exchange has occured", ^{
+            NSData *input = [@"abc" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *output = [dh encrypt:input];
+            expect(input).to.equal(output);
+        });
+
+        it(@"should return something different from the input after key exchange", ^{
+            [dh setOtherPublic:dh2.publicKey];
+
+            NSData *input = [@"abc" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *output = [dh encrypt:input];
+            expect(input).notTo.equal(output);
+        });
+
+        it(@"should return different values from repeated calls", ^{
+            [dh setOtherPublic:dh2.publicKey];
+
+            NSData *input = [@"abc" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *output1 = [dh encrypt:input];
+            NSData *output2 = [dh encrypt:input];
+            expect(output1).notTo.equal(output2);
+        });
+    });
+
+    describe(@"decrypt:", ^{
+        it(@"should return input before the key exchange has occured", ^{
+            NSData *input = [@"abc" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *output = [dh decrypt:input];
+            expect(input).to.equal(output);
+        });
+
+        it(@"should decrypt stuff encrypted with encrypt:", ^{
+            [dh setOtherPublic:dh2.publicKey];
+            [dh2 setOtherPublic:dh.publicKey];
+
+            NSData *input = [@"abc" dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *encrypted = [dh encrypt:input];
+            NSData *decrypted = [dh2 decrypt:encrypted];
+            expect(decrypted).to.equal(input);
+
+            // Twice to test chaining
+            encrypted = [dh encrypt:input];
+            decrypted = [dh2 decrypt:encrypted];
+            expect(decrypted).to.equal(input);
         });
     });
 });

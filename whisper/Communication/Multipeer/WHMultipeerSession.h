@@ -19,8 +19,9 @@ typedef void (^invitationHandler)(BOOL accept, MCSession *session);
                   invitation:(invitationHandler)invitation;
 
 - (NSError *)sendData:(NSData *)data;
+- (NSData *)read;
+
 - (void)disconnect;
 
 @property (nonatomic, readonly) RACSignal *connected;
-@property (nonatomic, readonly) RACSignal *incomingData;
 @end

@@ -9,33 +9,11 @@
 #import "WHKeyExchangePeer.h"
 
 #import "Contact.h"
+#import "WHDiffieHellman.h"
 #import "WHError.h"
 #import "WHKeyPair.h"
 #import "WHMultipeerBrowser.h"
 #import "WHMultipeerSession.h"
-
-@interface RACSignal (WHNext)
-- (instancetype)next:(id (^)(id value))block;
-@end
-
-@implementation RACSignal (WHNext)
-- (instancetype)next:(id (^)(id))block {
-    Class class = self.class;
-    __block BOOL first = YES;
-
-    return [[self flattenMap:^RACStream *(id value) {
-        if (first) {
-            first = NO;
-            id ret = block(value);
-            if ([ret isKindOfClass:[NSError class]])
-                return [class error:ret];
-            return ret ? ret : [class empty];
-        }
-
-        return [class return:value];
-    }] setNameWithFormat:@"[%@] -next:", self.name];
-}
-@end
 
 @interface WHKeyExchangePeer ()
 @property (nonatomic, strong) NSString *name;
@@ -90,34 +68,52 @@
                                                     remote:self.remotePeerID
                                                 invitation:self.invitation];
 
-    __block BOOL called = NO;
     WHKeyPair *newKP = [WHKeyPair createKeyPairForJid:self.peerJid];
-    return [[[[[session.connected
-            flattenMap:^RACStream *(NSNumber *didConnect) {
-                assert(!called);
-                called = YES;
-                if (![didConnect boolValue]) {
-                    [session disconnect];
-                    return [WHError errorSignalWithDescription:@"Peer refused connection"];
-                }
-                NSError *error = [session sendData:[WHKeyPair getOwnGlobalKeyPair].publicKeyBits];
-                return error ? [RACSignal error:error] : [session.incomingData take:3];
-            }]
-            next:^(NSData *globalKey) {
-                [WHKeyPair addGlobalKey:globalKey fromJid:self.peerJid];
-                return [session sendData:[WHKeyPair getOwnGlobalKeyPair].symmetricKey];
-            }]
-            next:^(NSData *symmetricKey) {
-                [WHKeyPair addSymmetricKey:symmetricKey fromJid:self.peerJid];
-                return [session sendData:newKP.publicKeyBits];
-            }]
-            deliverOn:[RACScheduler mainThreadScheduler]]
-            next:^(NSData *publicKey) {
-                [WHKeyPair addKey:publicKey fromJid:self.peerJid];
+    return [[session.connected
+        deliverOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault name:@"Key exchange data reading"]]
+        flattenMap:^RACStream *(NSNumber *didConnect) {
+            if (![didConnect boolValue]) {
                 [session disconnect];
-                return [Contact createWithName:self.name jid:self.peerJid];
-            }];
-}
+                return [WHError errorSignalWithDescription:@"Peer refused connection"];
+            }
+
+            WHDiffieHellman *dh = [WHDiffieHellman new];
+
+            #define SEND(data_expr) \
+                do { \
+                    NSData *data = data_expr; \
+                    data = [dh encrypt:data]; \
+                    NSError *error; \
+                    if ((error = [session sendData:data])) \
+                        return [RACSignal error:error]; \
+                } while (0)
+
+            #define RECV(expr) \
+                do { \
+                    NSData *data = [session read]; \
+                    if (!data) \
+                        return [RACSignal empty]; \
+                    data = [dh decrypt:data]; \
+                    expr; \
+                } while (0)
+
+            SEND(dh.publicKey);
+            RECV([dh setOtherPublic:data]);
+
+            SEND([WHKeyPair getOwnGlobalKeyPair].publicKeyBits);
+            RECV([WHKeyPair addGlobalKey:data fromJid:self.peerJid]);
+
+            SEND([WHKeyPair getOwnGlobalKeyPair].symmetricKey);
+            RECV([WHKeyPair addSymmetricKey:data fromJid:self.peerJid]);
+
+            SEND(newKP.publicKeyBits);
+            RECV([WHKeyPair addKey:data fromJid:self.peerJid]);
+
+            [session disconnect];
+
+            return [Contact createWithName:self.name jid:self.peerJid];
+        }];
+    }
 
 - (void)reject {
     NSAssert(self.invitation, @"Can only reject incoming connections");
