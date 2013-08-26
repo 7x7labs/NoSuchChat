@@ -22,6 +22,8 @@ typedef void (^invitationHandler)(BOOL accept, MCSession *session);
 - (NSData *)read;
 
 - (void)disconnect;
+- (void)cancel;
 
 @property (nonatomic, readonly) RACSignal *connected;
+@property (nonatomic, readonly) BOOL cancelled;
 @end

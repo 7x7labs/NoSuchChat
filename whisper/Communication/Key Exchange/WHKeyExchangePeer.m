@@ -15,6 +15,13 @@
 #import "WHMultipeerBrowser.h"
 #import "WHMultipeerSession.h"
 
+static NSMutableDictionary *activeSessions() {
+    static NSMutableDictionary *sessions;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{ sessions = [NSMutableDictionary new]; });
+    return sessions;
+}
+
 @interface WHKeyExchangePeer ()
 @property (nonatomic, strong) NSString *name;
 
@@ -60,21 +67,56 @@
     NSAssert(!!self.browser != !!self.invitation,
              @"WHKeyExchangePeer needs a service browser or invitation handler to connect");
 
+    WHKeyPair *newKP;
     WHMultipeerSession *session;
-    if (self.browser)
-        session = [self.browser connectToPeer:self.remotePeerID ownJid:jid];
-    else
-        session = [[WHMultipeerSession alloc] initWithSelf:self.ownPeerID
-                                                    remote:self.remotePeerID
-                                                invitation:self.invitation];
+    @synchronized (activeSessions()) {
+        WHMultipeerSession *existingSession = activeSessions()[self.peerJid];
+        if (existingSession) {
+            // We can't just always use the existing session, because the
+            // sessions may have been created in different order on each device,
+            // so we could end up with both sessions being cancelled.
+            // To work around this, we reject or cancel the connection initiated
+            // by the peer with the greater JID, even if this means throwing
+            // away the further-progressed one.
+            NSComparisonResult order = [self.peerJid compare:jid];
+            if (self.invitation) {
+                if (order == NSOrderedDescending) {
+                    self.invitation(NO, nil);
+                    return [RACSignal empty];
+                }
+            }
+            else if (order == NSOrderedAscending)
+                return [RACSignal empty];
 
-    WHKeyPair *newKP = [WHKeyPair createKeyPairForJid:self.peerJid];
-    return [[session.connected
-        deliverOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault name:@"Key exchange data reading"]]
+            [existingSession cancel];
+        }
+
+        if (self.browser)
+            session = [self.browser connectToPeer:self.remotePeerID ownJid:jid];
+        else
+            session = [[WHMultipeerSession alloc] initWithSelf:self.ownPeerID
+                                                        remote:self.remotePeerID
+                                                    invitation:self.invitation];
+
+        activeSessions()[self.peerJid] = session;
+
+        // Create the keypair within the synchronized block to avoid a crazy
+        // race condition where a session is cancelled immediately before the
+        // keypair is created, and then that thread doesn't run until after the
+        // surviving session has created its keypair.
+        newKP = [WHKeyPair createKeyPairForJid:self.peerJid];
+    }
+
+    return [[[session.connected
+        deliverOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault
+                                                 name:@"Key exchange data reading"]]
         flattenMap:^RACStream *(NSNumber *didConnect) {
             if (![didConnect boolValue]) {
-                [session disconnect];
-                return [WHError errorSignalWithDescription:@"Peer refused connection"];
+                [self endSession:session];
+                if (session.cancelled)
+                    return [RACSignal empty];
+                else
+                    return [WHError errorSignalWithDescription:@"Peer refused connection"];
             }
 
             WHDiffieHellman *dh = [WHDiffieHellman new];
@@ -84,15 +126,19 @@
                     NSData *data = data_expr; \
                     data = [dh encrypt:data]; \
                     NSError *error; \
-                    if ((error = [session sendData:data])) \
+                    if ((error = [session sendData:data])) {\
+                        [self endSession:session]; \
                         return [RACSignal error:error]; \
+                    } \
                 } while (0)
 
             #define RECV(expr) \
                 do { \
                     NSData *data = [session read]; \
-                    if (!data) \
+                    if (!data) {\
+                        [self endSession:session]; \
                         return [RACSignal empty]; \
+                    } \
                     data = [dh decrypt:data]; \
                     expr; \
                 } while (0)
@@ -109,11 +155,28 @@
             SEND(newKP.publicKeyBits);
             RECV([WHKeyPair addKey:data fromJid:self.peerJid]);
 
-            [session disconnect];
+            [self endSession:session];
 
             return [Contact createWithName:self.name jid:self.peerJid];
-        }];
+        }]
+        replayLast];
+}
+
+- (void)endSession:(WHMultipeerSession *)session {
+    [session disconnect];
+    @synchronized(activeSessions()) {
+        [activeSessions() removeObjectForKey:self.peerJid];
     }
+}
+
+// Used purely by unit tests to clean up
++ (void)cancelAll {
+    @synchronized(activeSessions()) {
+        for (WHMultipeerSession *session in [activeSessions() allValues])
+            [session cancel];
+        [activeSessions() removeAllObjects];
+    }
+}
 
 - (void)reject {
     NSAssert(self.invitation, @"Can only reject incoming connections");

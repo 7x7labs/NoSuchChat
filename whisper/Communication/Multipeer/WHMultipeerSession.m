@@ -14,6 +14,7 @@
 @property (nonatomic, strong) RACSubject *connected;
 @property (nonatomic, strong) NSData *readBuffer;
 @property (nonatomic, strong) NSCondition *readLock;
+@property (nonatomic) BOOL cancelled;
 @end
 
 @implementation WHMultipeerSession
@@ -78,6 +79,15 @@
 
 - (void)disconnect {
     [self.session disconnect];
+    self.session = nil;
+}
+
+- (void)cancel {
+    self.cancelled = YES;
+    [self disconnect];
+    self.readBuffer = nil;
+    [(RACSubject *)self.connected sendNext:@NO];
+    [(RACSubject *)self.connected sendCompleted];
 }
 
 - (void)setReadBuffer:(NSData *)data {
@@ -105,7 +115,8 @@
 }
 
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
-    self.readBuffer = data;
+    if (!self.cancelled)
+        self.readBuffer = data;
 }
 
 // Required methods we don't use

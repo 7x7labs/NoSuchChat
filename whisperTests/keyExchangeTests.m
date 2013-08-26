@@ -28,6 +28,10 @@
 - (WHMultipeerBrowser *)browser;
 @end
 
+@interface WHKeyExchangePeer (Test)
++ (void)cancelAll;
+@end
+
 static id isKindOfClass(Class class) {
     return [OCMArg checkWithBlock:^(id obj) {
         return [obj isKindOfClass:class];
@@ -190,44 +194,57 @@ describe(@"WHPeerList", ^{
 describe(@"WHKeyExchangePeer", ^{
     NSString *contactJid = @"contact@locahost";
     NSString *ownJid = @"ownjid@locahost";
+    NSString *greaterContactJid = @"zcontact@locahost";
     __block MCPeerID *ownPeerID, *otherPeerID;
     beforeEach(^{
         ownPeerID = [[MCPeerID alloc] initWithDisplayName:@"own display name"];
         otherPeerID = [[MCPeerID alloc] initWithDisplayName:@"other display name"];
     });
 
-    WHKeyExchangePeer *(^peerWithBrowser)(id) = ^(id browser) {
+    WHKeyExchangePeer *(^peerWithBrowserAndJid)(id, NSString *) = ^(id browser, NSString *jid) {
         return [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
                                                remotePeerID:otherPeerID
-                                                    peerJid:contactJid
+                                                    peerJid:jid
                                                     browser:browser];
+    };
+
+    WHKeyExchangePeer *(^peerWithHandlerAndJid)(id, NSString *) = ^(id handler, NSString *jid) {
+        return [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
+                                               remotePeerID:otherPeerID
+                                                    peerJid:jid
+                                                 invitation:handler];
+    };
+
+    id (^disconnectedSession)(BOOL) = ^(BOOL cancelled) {
+        id mock = [OCMockObject mockForClass:[WHMultipeerSession class]];
+        [[[mock expect] andReturn:[RACSignal return:@NO]] connected];
+        [[mock expect] disconnect];
+        [[[mock expect] andReturnValue:@(cancelled)] cancelled];
+        return mock;
     };
 
     describe(@"outgoing connection", ^{
         it(@"should set its name to the remote peer's display name", ^{
-            WHKeyExchangePeer *peer = peerWithBrowser(nil);
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(nil, contactJid);
             expect(peer.name).to.equal(otherPeerID.displayName);
         });
 
         it(@"should ask the browser to connect to the peer", ^{
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
-            [[[browser expect] andReturn:nil] connectToPeer:otherPeerID ownJid:ownJid];
+            [[[browser expect] andReturn:disconnectedSession(YES)] connectToPeer:otherPeerID ownJid:ownJid];
 
-            WHKeyExchangePeer *peer = peerWithBrowser(browser);
-            [peer connectWithJid:ownJid];
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, contactJid);
+            [[peer connectWithJid:ownJid] subscribeCompleted:^{ }];
 
             [browser verify];
         });
 
         it(@"should report an error when the connection is refused", ^AsyncBlock {
-            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
-            [[[session expect] andReturn:[RACSignal return:@NO]] connected];
-            [[session expect] disconnect];
-
+            id session = disconnectedSession(NO);
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
 
-            WHKeyExchangePeer *peer = peerWithBrowser(browser);
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, contactJid);
             [[peer connectWithJid:ownJid] subscribeError:^(NSError *error) {
                 [session verify];
                 done();
@@ -267,10 +284,7 @@ describe(@"WHKeyExchangePeer", ^{
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
-                                                                      remotePeerID:otherPeerID
-                                                                           peerJid:contactJid
-                                                                           browser:browser];
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, contactJid);
             [[peer connectWithJid:ownJid] subscribeNext:^(Contact *contact) {
                 expect(contact.name).to.equal(otherPeerID.displayName);
                 expect(contact.ownKey).notTo.beNil();
@@ -290,31 +304,118 @@ describe(@"WHKeyExchangePeer", ^{
 
     describe(@"incoming connection", ^{
         it(@"should pass a session to the invitation handler", ^AsyncBlock{
-            invitationHandler handler = ^(BOOL accept, MCSession *session){
+            invitationHandler handler = ^(BOOL accept, MCSession *session) {
                 expect(accept).to.beTruthy();
                 expect(session).to.beKindOf([MCSession class]);
                 done();
             };
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
-                                                                      remotePeerID:otherPeerID
-                                                                           peerJid:contactJid
-                                                                        invitation:handler];
+            WHKeyExchangePeer *peer = peerWithHandlerAndJid(handler, contactJid);
             [peer connectWithJid:ownJid];
         });
 
         it(@"should be able to reject connections", ^AsyncBlock{
-            invitationHandler handler = ^(BOOL accept, MCSession *session){
+            invitationHandler handler = ^(BOOL accept, MCSession *session) {
                 expect(accept).to.beFalsy();
                 expect(session).to.beNil();
                 done();
             };
 
-            WHKeyExchangePeer *peer = [[WHKeyExchangePeer alloc] initWithOwnPeerID:ownPeerID
-                                                                      remotePeerID:otherPeerID
-                                                                           peerJid:contactJid
-                                                                        invitation:handler];
+            WHKeyExchangePeer *peer = peerWithHandlerAndJid(handler, contactJid);
             [peer reject];
+        });
+    });
+
+    describe(@"simultaneous connections", ^{
+        afterEach(^{ [WHKeyExchangePeer cancelAll]; });
+
+        it(@"should reject incoming connections if there is a preexisting outgoing connection and peer's JID is greater than own JID", ^AsyncBlock {
+
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[[session expect] andDo:^(NSInvocation *invocation) {
+                invitationHandler handler = ^(BOOL accept, MCSession *session) {
+                    expect(accept).to.beFalsy();
+                    expect(session).to.beNil();
+                };
+                [peerWithHandlerAndJid(handler, greaterContactJid) connectWithJid:ownJid];
+            }] andReturn:[RACSignal return:@NO]] connected];
+            [[session expect] disconnect];
+            [[[session expect] andReturnValue:@YES] cancelled];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
+
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, greaterContactJid);
+            [[peer connectWithJid:ownJid] subscribeCompleted:^{ done(); }];
+        });
+
+        it(@"should cancel existing incoming connections when initiating a connection with a peer with a greater JID", ^AsyncBlock {
+            WHKeyExchangePeer *incoming = peerWithHandlerAndJid(^(BOOL accept, MCSession *session) {}, greaterContactJid);
+            [[incoming connectWithJid:ownJid] subscribeCompleted:^{ done(); }];
+
+            id session = disconnectedSession(NO);
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
+
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, greaterContactJid);
+            [[peer connectWithJid:ownJid] subscribeError:^(NSError *error) { }];
+        });
+
+        it(@"should immediately complete outgoing connections with no action if there is a preexisting incoming connection and peer's JID is less than own JID", ^AsyncBlock {
+
+            WHKeyExchangePeer *incoming = peerWithHandlerAndJid(^(BOOL accept, MCSession *session) {}, contactJid);
+            [incoming connectWithJid:ownJid];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            WHKeyExchangePeer *outgoing = peerWithBrowserAndJid(browser, contactJid);
+            [[outgoing connectWithJid:ownJid] subscribeCompleted:^{ done(); }];
+        });
+
+        it(@"should cancel existing outgoing connections when receiving an incoming connection from a peer with a lesser JID", ^AsyncBlock {
+
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
+
+            [[[session expect] andDo:^(NSInvocation *invocation) {
+                [[session expect] cancel];
+                [[[session expect] andReturn:nil] read];
+                [[session expect] disconnect];
+
+                WHKeyExchangePeer *incoming = peerWithHandlerAndJid(^(BOOL accept, MCSession *session) {}, contactJid);
+                [incoming connectWithJid:ownJid];
+            }] sendData:isKindOfClass([NSData class])];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
+
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, contactJid);
+            [[peer connectWithJid:ownJid] subscribeCompleted:^{
+                [session verify];
+                done();
+            }];
+        });
+
+        it(@"should not cancel existing outgoing connections when receiving an incoming connection from a peer with a greater JID", ^AsyncBlock {
+
+            id session = [OCMockObject mockForClass:[WHMultipeerSession class]];
+            [[[session expect] andReturn:[RACSignal return:@YES]] connected];
+
+            [[[session expect] andDo:^(NSInvocation *invocation) {
+                [[[session expect] andReturn:nil] read];
+                [[session expect] disconnect];
+
+                WHKeyExchangePeer *incoming = peerWithHandlerAndJid(^(BOOL accept, MCSession *session) {}, greaterContactJid);
+                [incoming connectWithJid:ownJid];
+            }] sendData:isKindOfClass([NSData class])];
+
+            id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
+            [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];
+
+            WHKeyExchangePeer *peer = peerWithBrowserAndJid(browser, greaterContactJid);
+            [[peer connectWithJid:ownJid] subscribeCompleted:^{
+                [session verify];
+                done();
+            }];
         });
     });
 });
