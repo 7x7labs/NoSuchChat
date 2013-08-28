@@ -23,6 +23,7 @@
 @property (nonatomic, strong) WHXMPPWrapper *xmpp;
 @property (nonatomic, strong) NSArray *contacts;
 @property (nonatomic, strong) NSString *jid;
+@property (nonatomic) BOOL connected;
 @property (nonatomic, strong) RACSubject *cancelSignal;
 @property (nonatomic, strong) RACSignal *incomingMessages;
 @property (nonatomic, strong) WHMultipeerAdvertiser *advertiser;
@@ -58,6 +59,7 @@
                                                      forKey:@"displayName"];
     RACBind(self.advertiser.displayName) = RACBind(self.displayName);
     RACBind(self.xmpp.displayName) = RACBind(self.displayName);
+    RACBind(self.connected) = RACBind(self.xmpp.connected);
 
     @weakify(self)
     [[[self.advertiser.invitations

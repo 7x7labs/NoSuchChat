@@ -43,8 +43,12 @@
         [self scrollToEnd:self.chatLog];
     }];
 
-    RAC(self.send, enabled) = [self.message.rac_textSignal
-                               map:^(NSString *text) { return @([text length] > 0); }];
+    RAC(self.send, enabled) = [RACSignal
+                               combineLatest:@[self.message.rac_textSignal,
+                                               RACAbleWithStart(self, client.connected)]
+                               reduce:^(NSString *text, NSNumber *connected) {
+                                   return @([connected boolValue] && [text length] > 0);
+                               }];
 
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;

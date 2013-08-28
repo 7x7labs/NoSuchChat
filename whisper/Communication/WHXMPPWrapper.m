@@ -37,6 +37,7 @@
 @interface WHXMPPWrapper ()
 @property (nonatomic, strong) RACSubject *messages;
 @property (nonatomic, strong) RACSubject *connectSignal;
+@property (nonatomic) BOOL connected;
 @property (nonatomic, strong) NSMutableDictionary *pendingMessages;
 
 @property (nonatomic, strong) XMPPStream *stream;
@@ -152,6 +153,7 @@
 
 - (void)xmppStreamDidDisconnect:(XMPPStream *)sender withError:error {
     [self.connectSignal sendError:error];
+    self.connected = NO;
 }
 
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
@@ -169,6 +171,7 @@
 
     [self.stream sendElement:[XMPPPresence presence]];
     [self.connectSignal sendCompleted];
+    self.connected = YES;
 
     // Reconnect module now handles monitoring the connection
     [self.reach stopNotifier];

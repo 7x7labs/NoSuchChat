@@ -29,4 +29,5 @@
 @property (nonatomic, readonly) RACSignal *messages;
 @property (nonatomic, readonly) WHXMPPRoster *roster;
 @property (nonatomic, strong) NSString *displayName;
+@property (nonatomic, readonly) BOOL connected;
 @end

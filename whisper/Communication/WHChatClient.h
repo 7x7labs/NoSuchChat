@@ -21,6 +21,7 @@
 @property (nonatomic, readonly) NSString *jid;
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, readonly) NSString *availability;
+@property (nonatomic, readonly) BOOL connected;
 
 @property (nonatomic, readonly) MCPeerID *peerID;
 @property (nonatomic, readonly) RACSignal *incomingMessages;
