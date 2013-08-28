@@ -11,4 +11,5 @@
 @interface Message : _Message
 + (RACSignal *)deleteOlderThan:(NSDate *)date;
 - (RACSignal *)delete;
+- (NSURL *)avatarURL:(NSString *)currentUserJid;
 @end
