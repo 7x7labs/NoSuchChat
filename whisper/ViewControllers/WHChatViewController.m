@@ -121,15 +121,18 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     Message *message = self.messages[indexPath.row];
     
+    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
+    NSURL *avatarURL = [message avatarURL:self.client.jid];
+    [avatarImage setImageWithURL:avatarURL];
+
     UILabel *messageLabel = (UILabel *)[cell viewWithTag:102];
     messageLabel.text = message.text;
     
     UILabel *timestampLabel = (UILabel *)[cell viewWithTag:103];
     timestampLabel.text = [self formatDate:message.sent];
 
-    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
-    NSURL *avatarURL = [message avatarURL:self.client.jid];
-    [avatarImage setImageWithURL:avatarURL];
+//    UIImageView *bubbleImage = (UIImageView *)[cell viewWithTag:104];
+//    bubbleImage.image = [[UIImage imageNamed:@"CKBubbleLeft"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
     
     cell.editing = YES;
     return cell;
