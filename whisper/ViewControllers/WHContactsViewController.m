@@ -69,14 +69,8 @@
     UILabel *statusLabel     = (UILabel *)[cell viewWithTag:103];
 
     [avatarImage setImageWithURL:[contact avatarURL]];
-
-    [RACAbleWithStart(contact, name) subscribeNext:^(NSString *newName) {
-        nameLabel.text = newName;
-    }];
-
-    [RACAbleWithStart(contact, friendlyStatus) subscribeNext:^(NSString *newStatus) {
-        statusLabel.text = [newStatus uppercaseString];
-    }];
+    RACBind(nameLabel, text) = RACBind(contact, name);
+    RACBind(statusLabel, text) = RACBind(contact, friendlyStatus);
     
     cell.editing = YES;
     return cell;

@@ -176,6 +176,9 @@ static NSManagedObjectContext *moc() {
 }
 
 - (NSString *)friendlyStatus {
-    return ([self.state length] == 0) ? @"online" : self.state;
+    NSString *status;
+    status = [self.state length] == 0 ? @"online" : self.state;
+    status = [status uppercaseString];
+    return status;
 }
 @end
