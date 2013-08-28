@@ -12,6 +12,7 @@
 #import "WHChatClient.h"
 #import "WHCoreData.h"
 #import "WHCrypto.h"
+#import "WHError.h"
 #import "WHKeyPair.h"
 #import "WHXMPPRoster.h"
 #import "WHXMPPWrapper.h"
@@ -287,17 +288,31 @@ describe(@"WHChatClient", ^{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wincompatible-pointer-types"
         it(@"should send the message to the stream", ^{
-            [[xmppStream expect] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
+            [[[xmppStream expect] andReturn:[RACSignal empty]] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
             [client sendMessage:@"body" to:contact];
             [xmppStream verify];
         });
 
         it(@"should add an outgoing message to the contact", ^AsyncBlock{
-            [[xmppStream expect] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
+            [[[xmppStream expect] andReturn:[RACSignal empty]] sendMessage:OCMOCK_ANY to:@"jid@localhost"];
             [[client sendMessage:@"body" to:contact]
              subscribeCompleted:^{
                  expect(contact.messages).to.haveCountOf(1);
                  expect([[contact.messages anyObject] incoming]).to.beFalsy();
+                 done();
+             }];
+        });
+
+        it(@"should report XMPP errors", ^AsyncBlock {
+            [[[xmppStream expect]
+              andReturn:[RACSignal error:[WHError errorWithDescription:@"error"]]]
+             sendMessage:OCMOCK_ANY to:@"jid@localhost"];
+
+            [[client sendMessage:@"body" to:contact]
+             subscribeError:^(NSError *error) {
+                 done();
+             } completed:^{
+                 expect(NO).to.beTruthy();
                  done();
              }];
         });

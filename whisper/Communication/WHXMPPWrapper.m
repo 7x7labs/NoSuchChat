@@ -37,6 +37,7 @@
 @interface WHXMPPWrapper ()
 @property (nonatomic, strong) RACSubject *messages;
 @property (nonatomic, strong) RACSubject *connectSignal;
+@property (nonatomic, strong) NSMutableDictionary *pendingMessages;
 
 @property (nonatomic, strong) XMPPStream *stream;
 @property (nonatomic, strong) NSString *password;
@@ -57,6 +58,7 @@
     if (!(self = [super init])) return self;
     self.messages = [RACReplaySubject subject];
     self.connectSignal = [RACReplaySubject subject];
+    self.pendingMessages = [NSMutableDictionary dictionary];
     self.reach = [Reachability reachabilityWithHostname:kXmppServerHost];
     self.stream = [XMPPStream new];
     self.roster = [[WHXMPPRoster alloc] initWithXmppStream:self.stream];
@@ -103,7 +105,7 @@
     [message addAttributeWithName:@"to" stringValue:recipient];
     [message addChild:[NSXMLElement elementWithName:@"body" stringValue:body]];
     [self.stream sendElement:message];
-    return nil;
+    return self.pendingMessages[body] = [RACReplaySubject subject];
 }
 
 - (void)setDisplayName:(NSString *)displayName {
@@ -199,6 +201,18 @@
 
 - (void)xmppStream:(XMPPStream *)sender didNotRegister:(NSXMLElement *)error {
     [self.connectSignal sendError:[WHError errorWithDescription:[error description]]];
+}
+
+- (void)xmppStream:(XMPPStream *)sender didSendMessage:(XMPPMessage *)message {
+    NSString *body = [message body];
+    [self.pendingMessages[body] sendCompleted];
+    [self.pendingMessages removeObjectForKey:body];
+}
+
+- (void)xmppStream:(XMPPStream *)sender didFailToSendMessage:(XMPPMessage *)message error:(NSError *)error {
+    NSString *body = [message body];
+    [self.pendingMessages[body] sendError:error];
+    [self.pendingMessages removeObjectForKey:body];
 }
 
 @end

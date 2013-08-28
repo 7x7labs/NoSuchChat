@@ -143,8 +143,8 @@
 
 - (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact {
     RACSignal *saveSignal = [contact addSentMessage:body date:[NSDate date]];
-    [self.xmpp sendMessage:[contact encrypt:body] to:contact.jid];
-    return saveSignal;
+    RACSignal *sendSignal = [self.xmpp sendMessage:[contact encrypt:body] to:contact.jid];
+    return [RACSignal merge:@[saveSignal, sendSignal]];
 }
 
 - (void)dealloc {
