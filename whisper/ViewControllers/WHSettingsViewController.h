@@ -8,6 +8,6 @@
 
 @class WHChatClient;
 
-@interface WHSettingsViewController : UIViewController
+@interface WHSettingsViewController : UITableViewController
 @property (nonatomic, strong) WHChatClient *client;
 @end

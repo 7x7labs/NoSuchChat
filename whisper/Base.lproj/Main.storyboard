@@ -27,9 +27,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Contacts" id="4UT-ug-wl9">
                         <barButtonItem key="backBarButtonItem" title=" " id="EYW-4Y-On9"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="bmz-Mo-Jse">
+                        <barButtonItem key="leftBarButtonItem" title="Settings" id="bmz-Mo-Jse">
                             <connections>
-                                <segue destination="Dcp-CM-oay" kind="push" id="6e4-nW-SOP"/>
+                                <segue destination="Zcm-cM-eCu" kind="push" id="n19-Ps-kky"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="de5-Mu-SNB">
@@ -157,44 +157,67 @@
             <point key="canvasLocation" x="1351" y="155"/>
         </scene>
         <!--Settings View Controller - Settings-->
-        <scene sceneID="ICa-5f-C30">
+        <scene sceneID="dAP-ho-cOf">
             <objects>
-                <viewController id="Dcp-CM-oay" customClass="WHSettingsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="juK-T2-9Ja"/>
-                        <viewControllerLayoutGuide type="bottom" id="tSK-nA-WBx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="DQ7-di-8G1">
+                <tableViewController id="Zcm-cM-eCu" customClass="WHSettingsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="vMB-b7-s8L">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yyq-k1-JAY">
-                                <rect key="frame" x="20" y="84" width="108" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="t0Z-rt-3We">
-                                <rect key="frame" x="117" y="80" width="183" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Settings" id="qf6-mh-KxV">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="MME-5j-EnX"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection id="TZM-dO-Ba0">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ar3-hy-ss1">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ar3-hy-ss1" id="RzJ-tM-sKE">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nickname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yyq-k1-JAY">
+                                                    <rect key="frame" x="20" y="11" width="108" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Jabber nickname" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="t0Z-rt-3We">
+                                                    <rect key="frame" x="136" y="7" width="164" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="Zcm-cM-eCu" id="GgS-I9-3Kq"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="Zcm-cM-eCu" id="sDU-Sc-vcY"/>
+                            <outlet property="delegate" destination="Zcm-cM-eCu" id="m83-M6-qnL"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="yum-sx-bgm">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Wlf-yz-e1y">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="Zcm-cM-eCu" id="nxK-lj-UCe"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="AqK-SE-AgX"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="displayName" destination="t0Z-rt-3We" id="E1i-B3-rH6"/>
-                        <outlet property="saveButton" destination="MME-5j-EnX" id="d9O-w9-n5B"/>
+                        <outlet property="cancelButton" destination="Wlf-yz-e1y" id="vfz-57-df8"/>
+                        <outlet property="displayName" destination="t0Z-rt-3We" id="QAw-sr-QaC"/>
+                        <outlet property="saveButton" destination="AqK-SE-AgX" id="550-Je-Ab2"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="t63-Z0-nyQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YCT-QH-apJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1439" y="-556"/>
+            <point key="canvasLocation" x="1400" y="-544"/>
         </scene>
         <!--Add Contact View Controller - Add Contact-->
         <scene sceneID="5yf-l2-Jeb">

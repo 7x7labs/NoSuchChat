@@ -13,12 +13,19 @@
 
 @interface WHSettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *displayName;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
 @property (nonatomic, strong) WHSettingsViewModel *viewModel;
+
+
+
+- (IBAction)cancelButtonTapped:(id)sender;
+
 @end
 
 @implementation WHSettingsViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -30,7 +37,17 @@
     self.saveButton.rac_command = [RACCommand commandWithCanExecuteSignal:RACAbleWithStart(self.viewModel.valid)];
     [self.saveButton.rac_command subscribeNext:^(id _) {
         [self.viewModel save];
+        [self.navigationController popViewControllerAnimated:YES];
     }];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (IBAction)cancelButtonTapped:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

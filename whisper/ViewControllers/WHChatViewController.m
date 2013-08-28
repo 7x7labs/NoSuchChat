@@ -58,8 +58,6 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-
-    [super viewDidLoad];
 }
 
 - (IBAction)sendMessage {
