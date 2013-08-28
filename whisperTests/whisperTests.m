@@ -255,6 +255,7 @@ describe(@"WHChatClient", ^{
     beforeEach(^{
         messages = [RACSubject subject];
         xmppStream = [OCMockObject niceMockForClass:[WHXMPPWrapper class]];
+        [[[xmppStream stub] andReturn:@YES] valueForKeyPath:@"connected"];
         [[[xmppStream expect] andReturn:messages] messages];
         [[[xmppStream expect] andReturn:[RACSignal new]] connectToServer:@"localhost"
                                                                     port:5222
@@ -396,40 +397,6 @@ describe(@"WHXMPPRoster", ^{
 
             [roster addContact:contact];
             expect(roster.contactJids).to.haveCountOf(1);
-        });
-    });
-
-    describe(@"xmppStream:didReceiveMessage:", ^{
-        __block WHKeyPair *kp;
-        beforeEach(^{
-            kp = [WHKeyPair createOwnGlobalKeyPair];
-            [WHKeyPair addGlobalKey:kp.publicKeyBits fromJid:contact.jid];
-            [WHKeyPair addSymmetricKey:kp.symmetricKey fromJid:contact.jid];
-        });
-
-        it(@"should set the nickname of known users", ^AsyncBlock{
-            NSString *xml = [NSString stringWithFormat:
-                             @"<message from='jid@localhost/location'>"
-                             @"  <event xmlns='http://jabber.org/protocol/pubsub#event'>"
-                             @"    <items node='841f3c8955c4c41a0cf99620d78a33b996659ded'>"
-                             @"      <item>"
-                             @"        <nick xmlns='http://jabber.org/protocol/nick'>%@</nick>"
-                             @"      </item>"
-                             @"    </items>"
-                             @"  </event>"
-                             @"</message>", [[WHCrypto encrypt:@"New Nick" key:kp]
-                                             xmpp_base64Encoded]];
-
-            [RACAble(contact, name) subscribeNext:^(id x) {
-                expect(x).to.equal(@"New Nick");
-                done();
-            }];
-
-            [(id)roster xmppStream:nil
-                 didReceiveMessage:[XMPPMessage messageFromElement:[[NSXMLElement alloc]
-                                                                    initWithXMLString:xml
-                                                                    error:nil]]];
-            [[xmppStream stub] removeDelegate:OCMOCK_ANY];
         });
     });
 });

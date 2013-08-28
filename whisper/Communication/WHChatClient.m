@@ -59,7 +59,7 @@
                                                      forKey:@"displayName"];
     RACBind(self.advertiser.displayName) = RACBind(self.displayName);
     RACBind(self.xmpp.displayName) = RACBind(self.displayName);
-    RACBind(self.connected) = RACBind(self.xmpp.connected);
+    RACBind(self.connected) = RACBind(self.xmpp, connected);
 
     @weakify(self)
     [[[self.advertiser.invitations

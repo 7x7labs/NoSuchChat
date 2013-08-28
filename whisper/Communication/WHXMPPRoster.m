@@ -192,22 +192,13 @@
         Contact *contact = (Contact *)obj;
         @try {
             contact.state = [presence show];
+            NSArray *nick = [presence nodesForXPath:@"//*[namespace-uri()='http://jabber.org/protocol/nick' and local-name()='nick']" error:nil];
+            if ([nick count])
+                contact.name = [contact decryptGlobal:[nick[0] stringValue]];
         }
         @catch (NSException *exception) {
             NSLog(@"Error updating presence for jid %@: %@", jid, exception);
         }
-    }];
-}
-
-- (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
-    NSArray *nick = [message nodesForXPath:@"//*[namespace-uri()='http://jabber.org/protocol/nick' and local-name()='nick']" error:nil];
-    if (![nick count]) return;
-    Contact *c = [Contact contactForJid:[[message from] bare] managedObjectContext:self.objectContext];
-    if (!c) return;
-
-    NSString *name = [c decryptGlobal:[nick[0] stringValue]];
-    [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
-        ((Contact *)obj).name = name;
     }];
 }
 

@@ -12,7 +12,6 @@
 #import "WHCrypto.h"
 #import "WHError.h"
 #import "WHKeyPair.h"
-#import "WHXMPPCapabilities.h"
 #import "WHXMPPRoster.h"
 
 #import <EXTScope.h>
@@ -46,7 +45,6 @@
 
 @property (nonatomic, strong) XMPPReconnect *reconnect;
 @property (nonatomic, strong) WHXMPPRoster *roster;
-@property (nonatomic, strong) WHXMPPCapabilities *capabilities;
 @property (nonatomic, strong) dispatch_source_t offlineMessagesTimer;
 @end
 
@@ -63,7 +61,6 @@
     self.reach = [Reachability reachabilityWithHostname:kXmppServerHost];
     self.stream = [XMPPStream new];
     self.roster = [[WHXMPPRoster alloc] initWithXmppStream:self.stream];
-    self.capabilities = [[WHXMPPCapabilities alloc] initWithStream:self.stream];
 
     @weakify(self)
     self.reach.reachableBlock = ^(Reachability *_) {
@@ -111,22 +108,7 @@
 
 - (void)setDisplayName:(NSString *)displayName {
     _displayName = displayName;
-
-    NSString *tmpl =
-    @"<iq type='set'>"
-    @"   <pubsub xmlns='http://jabber.org/protocol/pubsub'>"
-    @"       <publish node='http://jabber.org/protocol/nick'>"
-    @"           <item><nick xmlns='http://jabber.org/protocol/nick'>%@</nick></item>"
-    @"       </publish>"
-    @"   </pubsub>"
-    @"</iq>";
-
-    NSString *encrypted = [[WHCrypto encrypt:displayName key:[WHKeyPair getOwnGlobalKeyPair]] xmpp_base64Encoded];
-    NSError *error;
-    NSXMLElement *iq = [[NSXMLElement alloc] initWithXMLString:[NSString stringWithFormat:tmpl, encrypted]
-                                                         error:&error];
-    NSAssert(iq && !error, @"Error encoding nickname iq: %@", error);
-    [self.stream sendElement:iq];
+    [self.stream sendElement:[XMPPPresence presence]];
 }
 
 - (void)resetOfflineMessagesTimer {
@@ -218,4 +200,14 @@
     [self.pendingMessages removeObjectForKey:body];
 }
 
+- (XMPPPresence *)xmppStream:(XMPPStream *)sender willSendPresence:(XMPPPresence *)presence {
+    if (![[presence type] isEqualToString:@"available"]) return presence;
+
+    // XEP-0172 explicitly says not to do this. Oh well.
+    NSXMLElement *nick = [NSXMLElement elementWithName:@"nick" xmlns:@"http://jabber.org/protocol/nick"];
+    nick.stringValue = [[WHCrypto encrypt:self.displayName key:[WHKeyPair getOwnGlobalKeyPair]] xmpp_base64Encoded];
+    [presence addChild:nick];
+
+	return presence;
+}
 @end
