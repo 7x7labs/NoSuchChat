@@ -18,8 +18,6 @@
 
 @property (nonatomic, strong) WHSettingsViewModel *viewModel;
 
-
-
 - (IBAction)cancelButtonTapped:(id)sender;
 
 @end

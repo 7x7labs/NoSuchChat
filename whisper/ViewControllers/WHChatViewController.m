@@ -121,10 +121,13 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     Message *message = self.messages[indexPath.row];
     
-    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
-    NSURL *avatarURL = [message avatarURL:self.client.jid];
-    [avatarImage setImageWithURL:avatarURL];
+    // TODO: Better way to lookup the jid?
+    NSString *jid = ([message.incoming boolValue] ? message.contact.jid : self.client.jid);
+    NSURL *avatarURL = [Contact avatarURLForEmail:jid];
 
+    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
+    [avatarImage setImageWithURL:avatarURL];
+    
     UILabel *messageLabel = (UILabel *)[cell viewWithTag:102];
     messageLabel.text = message.text;
     

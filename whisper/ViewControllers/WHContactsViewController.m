@@ -15,6 +15,7 @@
 
 #import <EXTScope.h>
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface WHContactsViewController ()
 @property (nonatomic, strong) NSArray *contacts;
@@ -60,7 +61,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = [self.contacts[indexPath.row] name];
+    
+    Contact *contact = self.contacts[indexPath.row];
+    
+    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
+    [avatarImage setImageWithURL:[contact avatarURL]];
+    
+    UILabel *nameLabel = (UILabel *)[cell viewWithTag:102];
+    nameLabel.text = contact.name;
+    
     cell.editing = YES;
     return cell;
 }
