@@ -31,6 +31,8 @@ extern NSString * const WHContactRemovedNotification;
 - (NSURL *)avatarURL;
 + (NSURL *)avatarURLForEmail:(NSString *)emailAddress;
 
+- (NSString *)friendlyStatus;
+
 @property (nonatomic, readonly) WHKeyPair *ownKey;
 @property (nonatomic, readonly) WHKeyPair *contactKey;
 @property (nonatomic, readonly) WHKeyPair *globalKey;

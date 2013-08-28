@@ -17,9 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
 @property (nonatomic, strong) WHSettingsViewModel *viewModel;
-
-- (IBAction)cancelButtonTapped:(id)sender;
-
 @end
 
 @implementation WHSettingsViewController
@@ -37,15 +34,16 @@
         [self.viewModel save];
         [self.navigationController popViewControllerAnimated:YES];
     }];
+    
+    self.cancelButton.rac_command = [RACCommand command];
+    [self.cancelButton.rac_command subscribeNext:^(id _) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
-}
-
-- (IBAction)cancelButtonTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

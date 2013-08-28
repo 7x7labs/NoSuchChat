@@ -65,10 +65,18 @@
     Contact *contact = self.contacts[indexPath.row];
     
     UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
+    UILabel *nameLabel       = (UILabel *)[cell viewWithTag:102];
+    UILabel *statusLabel     = (UILabel *)[cell viewWithTag:103];
+
     [avatarImage setImageWithURL:[contact avatarURL]];
-    
-    UILabel *nameLabel = (UILabel *)[cell viewWithTag:102];
-    nameLabel.text = contact.name;
+
+    [RACAbleWithStart(contact, name) subscribeNext:^(NSString *newName) {
+        nameLabel.text = newName;
+    }];
+
+    [RACAbleWithStart(contact, friendlyStatus) subscribeNext:^(NSString *newStatus) {
+        statusLabel.text = [newStatus uppercaseString];
+    }];
     
     cell.editing = YES;
     return cell;
