@@ -10,6 +10,7 @@
 
 #import "Contact.h"
 #import "Message.h"
+#import "WHAlert.h"
 #import "WHChatClient.h"
 
 #import <EXTScope.h>
@@ -63,7 +64,10 @@
     if ([self.message.text length] == 0)
         return;
     
-    [self.client sendMessage:self.message.text to:self.contact];
+    [[self.client sendMessage:self.message.text to:self.contact]
+     subscribeError:^(NSError *error) {
+         [WHAlert alertWithMessage:[error description]];
+     }];
     self.message.text = @"";
 }
 
