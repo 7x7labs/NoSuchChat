@@ -102,6 +102,8 @@
 		3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA8D01179CD6D20059E61B /* cryptoTests.m */; };
 		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
+		A955092017CE97C60088780D /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = A955091F17CE97C60088780D /* UIView+Position.m */; };
+		A955092117CE97C60088780D /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = A955091F17CE97C60088780D /* UIView+Position.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -200,6 +202,8 @@
 		3FBA8D01179CD6D20059E61B /* cryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cryptoTests.m; sourceTree = "<group>"; };
 		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
 		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
+		A955091E17CE97C60088780D /* UIView+Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Position.h"; path = "Vendor/UIView+Position.h"; sourceTree = "<group>"; };
+		A955091F17CE97C60088780D /* UIView+Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Position.m"; path = "Vendor/UIView+Position.m"; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFED660267384000B03310C3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -402,6 +406,7 @@
 				3F8EB19517983EDE009F938D /* Crypto */,
 				3F8D1B7D1794949F0089B129 /* Models */,
 				3FA0C5FF178CFDA1007E6ECC /* Supporting Files */,
+				A955091D17CE97850088780D /* Vendor */,
 				3F8D1B901794DC810089B129 /* ViewControllers */,
 				3F50C5ED17A4331D00DC76C1 /* ViewModels */,
 				3FE4839117A8288500E7938E /* Views */,
@@ -459,6 +464,15 @@
 				3FE4839317A828D600E7938E /* WHCheckList.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		A955091D17CE97850088780D /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				A955091E17CE97C60088780D /* UIView+Position.h */,
+				A955091F17CE97C60088780D /* UIView+Position.m */,
+			);
+			name = Vendor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -725,6 +739,7 @@
 				3F77025117BA9F3F00EF5C50 /* Message.m in Sources */,
 				3F77025217BA9F3F00EF5C50 /* Models.xcdatamodeld in Sources */,
 				3F77025317BA9F3F00EF5C50 /* NSData+Compression.m in Sources */,
+				A955092117CE97C60088780D /* UIView+Position.m in Sources */,
 				3F77025417BA9F3F00EF5C50 /* NSData+Encryption.m in Sources */,
 				3F77025517BA9F3F00EF5C50 /* NSData+SHA.m in Sources */,
 				3F77025617BA9F3F00EF5C50 /* NSData+Signature.m in Sources */,
@@ -765,6 +780,7 @@
 				3F8D1B9C179597FC0089B129 /* Message.m in Sources */,
 				3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */,
 				3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */,
+				A955092017CE97C60088780D /* UIView+Position.m in Sources */,
 				3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */,
 				3F8EB1A11798C040009F938D /* NSData+SHA.m in Sources */,
 				3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */,
