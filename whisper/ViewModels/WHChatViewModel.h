@@ -10,7 +10,7 @@
 @class WHChatClient;
 
 @interface WHChatViewModel : NSObject
-@property (nonatomic, readonly) BOOL valid;
+@property (nonatomic, readonly) BOOL canSend;
 @property (nonatomic, readonly) NSArray *messages;
 @property (nonatomic, strong) NSString *message;
 

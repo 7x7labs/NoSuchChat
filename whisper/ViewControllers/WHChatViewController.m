@@ -43,7 +43,7 @@
         [self scrollToBottom:self.chatLog animated:YES];
     }];
     
-    RACBind(self.send, enabled) = RACBind(self.viewModel, valid);
+    RACBind(self.send, enabled) = RACBind(self.viewModel, canSend);
     RACBind(self.message, text) = RACBind(self.viewModel, message);
     RAC(self.viewModel, message) = self.message.rac_textSignal;
     

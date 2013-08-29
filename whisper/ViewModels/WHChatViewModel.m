@@ -13,7 +13,7 @@
 #import "WHChatClient.h"
 
 @interface WHChatViewModel ()
-@property (nonatomic) BOOL valid;
+@property (nonatomic) BOOL canSend;
 @property (nonatomic, strong) NSArray *messages;
 
 @property (nonatomic, strong) Contact *contact;
@@ -27,12 +27,12 @@
     self.client = client;
     self.contact = contact;
 
-    RAC(self, valid) = [RACSignal
-                        combineLatest:@[RACAbleWithStart(self, message),
-                                        RACAbleWithStart(self, client.connected)]
-                        reduce:^(NSString *text, NSNumber *connected) {
-                            return @([connected boolValue] && [text length] > 0);
-                        }];
+    RAC(self, canSend) = [RACSignal
+                          combineLatest:@[RACAbleWithStart(self, message),
+                                          RACAbleWithStart(self, client.connected)]
+                          reduce:^(NSString *text, NSNumber *connected) {
+                              return @([connected boolValue] && [text length] > 0);
+                          }];
 
     RAC(self, messages) = [RACAbleWithStart(contact, messages)
                           map:^id(id value) {
@@ -44,7 +44,7 @@
 }
 
 - (void)send {
-    if (!self.valid) return;
+    if (!self.canSend) return;
 
     [[self.client sendMessage:self.message to:self.contact]
      subscribeError:^(NSError *error) {
