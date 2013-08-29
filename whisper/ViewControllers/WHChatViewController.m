@@ -12,6 +12,7 @@
 #import "Message.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
+#import "WHChatViewModel.h"
 
 #import <EXTScope.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -21,7 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *send;
 @property (weak, nonatomic) IBOutlet UITableView *chatLog;
 @property (weak, nonatomic) IBOutlet UITextField *message;
-@property (nonatomic, strong) NSArray *messages;
+
+@property (nonatomic, strong) WHChatViewModel *viewModel;
 @end
 
 @implementation WHChatViewController
@@ -31,24 +33,18 @@
     @weakify(self);
 
     self.title = self.contact.name;
+    self.viewModel = [[WHChatViewModel alloc] initWithClient:self.client
+                                                     contact:self.contact];
 
-    RAC(self.messages) = [RACAbleWithStart(self.contact, messages)
-                          map:^id(id value) {
-                            return [value sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc]
-                                                                         initWithKey:@"sent" ascending:YES]]];
-                          }];
-    [RACAble(self.messages) subscribeNext:^(id _) {
+    [RACAble(self.viewModel, messages) subscribeNext:^(id _) {
         @strongify(self)
         [self.chatLog reloadData];
         [self scrollToEnd:self.chatLog];
     }];
 
-    RAC(self.send, enabled) = [RACSignal
-                               combineLatest:@[self.message.rac_textSignal,
-                                               RACAbleWithStart(self, client.connected)]
-                               reduce:^(NSString *text, NSNumber *connected) {
-                                   return @([connected boolValue] && [text length] > 0);
-                               }];
+    RACBind(self.send, enabled) = RACBind(self.viewModel, valid);
+    RACBind(self.message, text) = RACBind(self.viewModel, message);
+    RAC(self.viewModel, message) = self.message.rac_textSignal;
 
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;
@@ -65,18 +61,11 @@
 }
 
 - (IBAction)sendMessage {
-    if ([self.message.text length] == 0)
-        return;
-    
-    [[self.client sendMessage:self.message.text to:self.contact]
-     subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error description]];
-     }];
-    self.message.text = @"";
+    [self.viewModel send];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self sendMessage];
+    [self.viewModel send];
     return NO;
 }
 
@@ -109,7 +98,7 @@
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.messages[indexPath.row] delete];
+    [self.viewModel.messages[indexPath.row] delete];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -122,12 +111,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.messages count];
+    return [self.viewModel.messages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    Message *message = self.messages[indexPath.row];
+    Message *message = self.viewModel.messages[indexPath.row];
     
     // TODO: Better way to lookup the jid?
     NSString *jid = ([message.incoming boolValue] ? message.contact.jid : self.client.jid);
