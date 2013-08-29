@@ -12,6 +12,7 @@
 #import "Message.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
+#import "WHChatViewModel.h"
 
 #import <EXTScope.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -22,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *chatLog;
 @property (weak, nonatomic) IBOutlet UITextField *message;
 @property (weak, nonatomic) IBOutlet UIView *inputView;
-@property (nonatomic, strong) NSArray *messages;
+
+@property (nonatomic, strong) WHChatViewModel *viewModel;
 @end
 
 @implementation WHChatViewController
@@ -30,27 +32,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     @weakify(self);
-
-    RACBind(self.title) = RACBind(self.contact.name);
     
-    RAC(self.messages) = [RACAbleWithStart(self.contact, messages)
-                          map:^id(id value) {
-                            return [value sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc]
-                                                                         initWithKey:@"sent" ascending:YES]]];
-                          }];
-    [RACAble(self.messages) subscribeNext:^(id _) {
+    RACBind(self.title) = RACBind(self.contact.name);
+    self.viewModel = [[WHChatViewModel alloc] initWithClient:self.client
+                                                     contact:self.contact];
+    
+    [RACAble(self.viewModel, messages) subscribeNext:^(id _) {
         @strongify(self)
         [self.chatLog reloadData];
         [self scrollToBottom:self.chatLog animated:YES];
     }];
-
-    RAC(self.send, enabled) = [RACSignal
-                               combineLatest:@[self.message.rac_textSignal,
-                                               RACAbleWithStart(self, client.connected)]
-                               reduce:^(NSString *text, NSNumber *connected) {
-                                   return @([connected boolValue] && [text length] > 0);
-                               }];
-
+    
+    RACBind(self.send, enabled) = RACBind(self.viewModel, valid);
+    RACBind(self.message, text) = RACBind(self.viewModel, message);
+    RAC(self.viewModel, message) = self.message.rac_textSignal;
+    
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;
     
@@ -70,18 +66,11 @@
 }
 
 - (IBAction)sendMessage {
-    if ([self.message.text length] == 0)
-        return;
-    
-    [[self.client sendMessage:self.message.text to:self.contact]
-     subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error description]];
-     }];
-    self.message.text = @"";
+    [self.viewModel send];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self sendMessage];
+    [self.viewModel send];
     return NO;
 }
 
@@ -120,7 +109,7 @@
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.messages[indexPath.row] delete];
+    [self.viewModel.messages[indexPath.row] delete];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -133,7 +122,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.messages count];
+    return [self.viewModel.messages count];
 }
 
 // TODO: Refactor this .. it makes me cringe so much I don't even know where to begin.
@@ -141,7 +130,7 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Message *message = self.messages[indexPath.row];
+    Message *message = self.viewModel.messages[indexPath.row];
     UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15.0];
 
     // iOS7 deprecated NSString sizeWithFont in favor of NSAttributedString boundingRectWithSize, however that method seems to
@@ -155,7 +144,7 @@
 #pragma clang diagnostic pop
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Message *message = self.messages[indexPath.row];
+    Message *message = self.viewModel.messages[indexPath.row];
     NSString *cellIdentifier = [message.incoming boolValue] ? @"IncomingChatCell" : @"OutgoingChatCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
