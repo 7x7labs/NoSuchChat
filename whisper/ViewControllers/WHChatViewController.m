@@ -46,7 +46,13 @@
     RACBind(self.send, enabled) = RACBind(self.viewModel, canSend);
     RACBind(self.message, text) = RACBind(self.viewModel, message);
     RAC(self.viewModel, message) = self.message.rac_textSignal;
-    
+
+    [[self.send rac_signalForControlEvents:UIControlEventTouchUpInside]
+     subscribeNext:^(id _) {
+         @strongify(self);
+         [self sendMessage];
+     }];
+
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;
     
@@ -65,12 +71,15 @@
                                                object:nil];
 }
 
-- (IBAction)sendMessage {
-    [self.viewModel send];
+- (void)sendMessage {
+    [[self.viewModel send]
+     subscribeError:^(NSError *error) {
+         [WHAlert alertWithMessage:[error description]];
+     }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self.viewModel send];
+    [self sendMessage];
     return NO;
 }
 

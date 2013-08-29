@@ -15,5 +15,5 @@
 @property (nonatomic, strong) NSString *message;
 
 - (instancetype)initWithClient:(WHChatClient *)client contact:(Contact *)contact;
-- (void)send;
+- (RACSignal *)send;
 @end

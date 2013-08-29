@@ -9,7 +9,6 @@
 #import "WHChatViewModel.h"
 
 #import "Contact.h"
-#import "WHAlert.h"
 #import "WHChatClient.h"
 
 @interface WHChatViewModel ()
@@ -43,14 +42,12 @@
     return self;
 }
 
-- (void)send {
-    if (!self.canSend) return;
+- (RACSignal *)send {
+    if (!self.canSend) return [RACSignal empty];
 
-    [[self.client sendMessage:self.message to:self.contact]
-     subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error description]];
-     }];
+    RACSignal *result = [self.client sendMessage:self.message to:self.contact];
     self.message = @"";
+    return result;
 }
 
 @end
