@@ -8,18 +8,17 @@
 
 #import "WHContactsViewController.h"
 
-#import "Contact.h"
-#import "WHCoreData.h"
-#import "WHChatViewController.h"
+#import "WHAddContactViewController.h"
 #import "WHChatClient.h"
+#import "WHChatViewController.h"
+#import "WHContactListViewModel.h"
+#import "WHContactTableViewCell.h"
 
 #import <EXTScope.h>
-#import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
-#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface WHContactsViewController ()
-@property (nonatomic, strong) NSArray *contacts;
 @property (nonatomic, strong) WHChatClient *client;
+@property (nonatomic, strong) WHContactListViewModel *viewModel;
 
 @property (nonatomic, weak) Contact *sequeContact;
 @end
@@ -30,10 +29,10 @@
     [super viewDidLoad];
 
     self.client = [WHChatClient clientForServer:kXmppServerHost port:5222];
+    self.viewModel = [[WHContactListViewModel alloc] initWithClient:self.client];
 
     @weakify(self)
-    RAC(self.contacts) = RACAbleWithStart(self.client, contacts);
-    [RACAble(self.contacts) subscribeNext:^(id _) {
+    [RACAble(self.viewModel, count) subscribeNext:^(id _) {
         @strongify(self)
         [self.tableView reloadData];
     }];
@@ -46,7 +45,7 @@
     if ([dest respondsToSelector:@selector(setClient:)])
         [dest setClient:self.client];
     if ([dest respondsToSelector:@selector(setContacts:)])
-        [dest setContacts:self.contacts];
+        [dest setContacts:self.client.contacts];
 }
 
 #pragma mark - Table view data source
@@ -55,34 +54,24 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.contacts count];
+    return self.viewModel.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    Contact *contact = self.contacts[indexPath.row];
-    
-    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
-    UILabel *nameLabel       = (UILabel *)[cell viewWithTag:102];
-    UILabel *statusLabel     = (UILabel *)[cell viewWithTag:103];
-
-    [avatarImage setImageWithURL:[contact avatarURL]];
-    RACBind(nameLabel, text) = RACBind(contact, name);
-    RACBind(statusLabel, text) = RACBind(contact, friendlyStatus);
-    
+    WHContactTableViewCell *cell = (WHContactTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    [cell switchToViewModel:self.viewModel[indexPath.row]];
     cell.editing = YES;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.contacts[indexPath.row] delete];
+    [self.viewModel deleteContactAtIndex:indexPath.row];
 }
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.sequeContact = self.contacts[indexPath.row];
+    self.sequeContact = [self.viewModel rawContactAtIndex:indexPath.row];
     [self performSegueWithIdentifier:@"show chat" sender:self];
 }
 
