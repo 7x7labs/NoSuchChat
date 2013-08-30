@@ -67,11 +67,14 @@ static NSMutableDictionary *activeSessions() {
     NSAssert(!!self.browser != !!self.invitation,
              @"WHKeyExchangePeer needs a service browser or invitation handler to connect");
 
+    NSLog(@"%p: Beginning key exchange with %@", self, jid);
+
     WHKeyPair *newKP;
     WHMultipeerSession *session;
     @synchronized (activeSessions()) {
         WHMultipeerSession *existingSession = activeSessions()[self.peerJid];
         if (existingSession) {
+            NSLog(@"%p: session already exists", self);
             // We can't just always use the existing session, because the
             // sessions may have been created in different order on each device,
             // so we could end up with both sessions being cancelled.
@@ -81,14 +84,20 @@ static NSMutableDictionary *activeSessions() {
             NSComparisonResult order = [self.peerJid compare:jid];
             if (self.invitation) {
                 if (order == NSOrderedDescending) {
+                    NSLog(@"%p: Rejecting invitation from greater jid", self);
                     self.invitation(NO, nil);
                     return [RACSignal empty];
                 }
             }
-            else if (order == NSOrderedAscending)
+            else if (order == NSOrderedAscending) {
+                NSLog(@"%p: Not initiating outgoing connection", self);
                 return [RACSignal empty];
+            }
 
             [existingSession cancel];
+        }
+        else {
+            NSLog(@"%p: no existing connection", self);
         }
 
         if (self.browser)
@@ -99,12 +108,14 @@ static NSMutableDictionary *activeSessions() {
                                                     invitation:self.invitation];
 
         activeSessions()[self.peerJid] = session;
+        NSLog(@"%p: created session", self);
 
         // Create the keypair within the synchronized block to avoid a crazy
         // race condition where a session is cancelled immediately before the
         // keypair is created, and then that thread doesn't run until after the
         // surviving session has created its keypair.
         newKP = [WHKeyPair createKeyPairForJid:self.peerJid];
+        NSLog(@"%p: created key", self);
     }
 
     return [[[session.connected
@@ -113,10 +124,14 @@ static NSMutableDictionary *activeSessions() {
         flattenMap:^RACStream *(NSNumber *didConnect) {
             if (![didConnect boolValue]) {
                 [self endSession:session];
-                if (session.cancelled)
+                if (session.cancelled) {
+                    NSLog(@"%p: connection was cancelled", self);
                     return [RACSignal empty];
-                else
+                }
+                else {
+                    NSLog(@"%p: failed to connect", self);
                     return [WHError errorSignalWithDescription:@"Peer refused connection"];
+                }
             }
 
             WHDiffieHellman *dh = [WHDiffieHellman new];
@@ -143,26 +158,32 @@ static NSMutableDictionary *activeSessions() {
                     expr; \
                 } while (0)
 
+            NSLog(@"%p: Exchanging D-H keys", self);
             SEND(dh.publicKey);
             RECV([dh setOtherPublic:data]);
 
+            NSLog(@"%p: Exchanging global public", self);
             SEND([WHKeyPair getOwnGlobalKeyPair].publicKeyBits);
             RECV([WHKeyPair addGlobalKey:data fromJid:self.peerJid]);
 
+            NSLog(@"%p: Exchanging global symmetric keys", self);
             SEND([WHKeyPair getOwnGlobalKeyPair].symmetricKey);
             RECV([WHKeyPair addSymmetricKey:data fromJid:self.peerJid]);
 
+            NSLog(@"%p: Exchanging per-peer public keys", self);
             SEND(newKP.publicKeyBits);
             RECV([WHKeyPair addKey:data fromJid:self.peerJid]);
 
             [self endSession:session];
 
+            NSLog(@"%p: Creating contact", self);
             return [Contact createWithName:self.name jid:self.peerJid];
         }]
         replayLast];
 }
 
 - (void)endSession:(WHMultipeerSession *)session {
+    NSLog(@"%p: Disconnecting from multipeer session", self);
     [session disconnect];
     @synchronized(activeSessions()) {
         [activeSessions() removeObjectForKey:self.peerJid];
