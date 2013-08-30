@@ -7,7 +7,9 @@
 //
 
 #import "WHChatViewTableCell.h"
+
 #import "Contact.h"
+#import "Message.h"
 #import "UIView+Position.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>

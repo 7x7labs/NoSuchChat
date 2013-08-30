@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import "Message.h"
-
 #import <UIKit/UIKit.h>
+
+@class Message;
 
 @interface WHChatViewTableCell : UITableViewCell
 

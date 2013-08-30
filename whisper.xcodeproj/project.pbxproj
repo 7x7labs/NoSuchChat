@@ -108,6 +108,8 @@
 		A955092117CE97C60088780D /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = A955091F17CE97C60088780D /* UIView+Position.m */; };
 		A9789FF417CFBB6F00B55CFC /* WHChatViewTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatViewTableCell.m */; };
 		A9789FF517CFBB6F00B55CFC /* WHChatViewTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatViewTableCell.m */; };
+		A9E0827817D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
+		A9E0827917D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +214,8 @@
 		A955091F17CE97C60088780D /* UIView+Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Position.m"; path = "Vendor/UIView+Position.m"; sourceTree = "<group>"; };
 		A9789FF217CFBB6F00B55CFC /* WHChatViewTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatViewTableCell.h; path = ViewControllers/WHChatViewTableCell.h; sourceTree = "<group>"; };
 		A9789FF317CFBB6F00B55CFC /* WHChatViewTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatViewTableCell.m; path = ViewControllers/WHChatViewTableCell.m; sourceTree = "<group>"; };
+		A9E0827617D03B2D002409E6 /* WHWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHWelcomeViewController.h; path = ViewControllers/WHWelcomeViewController.h; sourceTree = "<group>"; };
+		A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHWelcomeViewController.m; path = ViewControllers/WHWelcomeViewController.m; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFED660267384000B03310C3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -321,6 +325,8 @@
 				3F8D1B921794DD200089B129 /* WHContactsViewController.m */,
 				3F50C5EA17A42CAF00DC76C1 /* WHSettingsViewController.h */,
 				3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */,
+				A9E0827617D03B2D002409E6 /* WHWelcomeViewController.h */,
+				A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -748,6 +754,7 @@
 				3F77024B17BA9F3F00EF5C50 /* Contact.m in Sources */,
 				3F77024F17BA9F3F00EF5C50 /* hostname.m in Sources */,
 				3F77025017BA9F3F00EF5C50 /* main.m in Sources */,
+				A9E0827917D03B2D002409E6 /* WHWelcomeViewController.m in Sources */,
 				3F77025117BA9F3F00EF5C50 /* Message.m in Sources */,
 				3F77025217BA9F3F00EF5C50 /* Models.xcdatamodeld in Sources */,
 				3F77025317BA9F3F00EF5C50 /* NSData+Compression.m in Sources */,
@@ -791,6 +798,7 @@
 				3F8D1B871794957B0089B129 /* Contact.m in Sources */,
 				3F94B76617B07BA600B1B3B9 /* hostname.m in Sources */,
 				3FA0C605178CFDA1007E6ECC /* main.m in Sources */,
+				A9E0827817D03B2D002409E6 /* WHWelcomeViewController.m in Sources */,
 				3F8D1B9C179597FC0089B129 /* Message.m in Sources */,
 				3F8D1B81179494B80089B129 /* Models.xcdatamodeld in Sources */,
 				3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */,
