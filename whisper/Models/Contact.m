@@ -170,7 +170,7 @@ static NSManagedObjectContext *moc() {
                           result[8], result[9], result[10], result[11],
                           result[12], result[13], result[14], result[15]
                           ];
-	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=80&d=identicon", md5email];
+	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=68&d=identicon", md5email];
     
 	return [NSURL URLWithString:gravatarEndPoint];
 }

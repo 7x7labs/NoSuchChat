@@ -10,13 +10,13 @@
 
 #import "Contact.h"
 #import "Message.h"
+#import "UIView+Position.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
 #import "WHChatViewModel.h"
+#import "WHChatViewTableCell.h"
 
 #import <EXTScope.h>
-#import <SDWebImage/UIImageView+WebCache.h>
-#import "UIView+Position.h"
 
 @interface WHChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *send;
@@ -134,61 +134,22 @@
     return [self.viewModel.messages count];
 }
 
-// TODO: Refactor this .. it makes me cringe so much I don't even know where to begin.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Message *message = self.viewModel.messages[indexPath.row];
-    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15.0];
-
-    // iOS7 deprecated NSString sizeWithFont in favor of NSAttributedString boundingRectWithSize, however that method seems to
-    // ignore width contstraints.
-    CGSize size = [message.text sizeWithFont:font constrainedToSize:CGSizeMake(265, FLT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    int height = size.height + 25;
-    if (height < 44) height = 44;
+    CGFloat height = [WHChatViewTableCell calculateHeight:message];
 
     return height;
 }
-#pragma clang diagnostic pop
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = self.viewModel.messages[indexPath.row];
     NSString *cellIdentifier = [message.incoming boolValue] ? @"IncomingChatCell" : @"OutgoingChatCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    
-    // TODO: Better way to lookup the jid?
-    NSString *jid = [message.incoming boolValue] ? message.contact.jid : self.client.jid;
-    NSURL *avatarURL = [Contact avatarURLForEmail:jid];
 
-    UIImageView *avatarImage = (UIImageView *)[cell viewWithTag:101];
-    [avatarImage setImageWithURL:avatarURL];
+    WHChatViewTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    [cell setupWithMessage:message userJid:self.client.jid];
     
-    UILabel *messageLabel = (UILabel *)[cell viewWithTag:102];
-    messageLabel.text = message.text;
-    messageLabel.frameWidth = 265;
-    
-    UILabel *timestampLabel = (UILabel *)[cell viewWithTag:103];
-    timestampLabel.text = [self formatDate:message.sent];
-    timestampLabel.frameY = cell.frameHeight - 18;
-
-//    UIImageView *bubbleImage = (UIImageView *)[cell viewWithTag:104];
-//    bubbleImage.image = [[UIImage imageNamed:@"CKBubbleLeft"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
-    
-    cell.editing = YES;
-
     return cell;
-}
-
-- (NSString *)formatDate:(NSDate *)date {
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"h:mma MMM d"];
-    
-    NSString *dateString;
-    dateString = [dateFormat stringFromDate:date];
-    dateString = [dateString lowercaseString];
-    
-    return dateString;
 }
 
 @end
