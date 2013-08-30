@@ -59,7 +59,7 @@
         
         int defaultBubbleX = 272;
         self.bubbleImage.frameX = defaultBubbleX - self.bubbleImage.frameWidth;
-        self.messageLabel.frameX = defaultBubbleX - self.messageLabel.frameWidth - 20;
+        self.messageLabel.frameX = defaultBubbleX - self.messageLabel.frameWidth - 21;
     }
 }
 
