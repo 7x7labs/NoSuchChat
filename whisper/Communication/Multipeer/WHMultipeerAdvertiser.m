@@ -38,7 +38,16 @@
                                                         discoveryInfo:@{@"jid": self.jid}
                                                           serviceType:@"7x7-whisper"];
     self.advertiser.delegate = self;
-    [self.advertiser startAdvertisingPeer];
+    if (self.advertising)
+        [self.advertiser startAdvertisingPeer];
+}
+
+- (void)setAdvertising:(BOOL)advertising {
+    _advertising = advertising;
+    if (advertising)
+        [self.advertiser startAdvertisingPeer];
+    else
+        [self.advertiser stopAdvertisingPeer];
 }
 
 - (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error {

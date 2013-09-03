@@ -17,9 +17,11 @@
 - (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact;
 - (void)setStatus:(NSString *)status;
 
+@property (nonatomic, strong) NSString *displayName;
+@property (nonatomic) BOOL advertising;
+
 @property (nonatomic, readonly) NSArray *contacts;
 @property (nonatomic, readonly) NSString *jid;
-@property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, readonly) NSString *availability;
 @property (nonatomic, readonly) BOOL connected;
 

@@ -37,6 +37,12 @@
         @strongify(self)
         [self.possibleContacts reloadData];
     }];
+
+    self.client.advertising = YES;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    self.client.advertising = NO;
 }
 
 #pragma mark - UITableViewDataSource
