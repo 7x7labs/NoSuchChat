@@ -14,7 +14,7 @@
 #import "WHAlert.h"
 #import "WHChatClient.h"
 #import "WHChatViewModel.h"
-#import "WHChatViewTableCell.h"
+#import "WHChatTableViewCell.h"
 
 #import <EXTScope.h>
 
@@ -137,7 +137,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Message *message = self.viewModel.messages[indexPath.row];
-    CGFloat height = [WHChatViewTableCell calculateHeight:message];
+    CGFloat height = [WHChatTableViewCell calculateHeight:message];
 
     return height;
 }
@@ -146,7 +146,7 @@
     Message *message = self.viewModel.messages[indexPath.row];
     NSString *cellIdentifier = [message.incoming boolValue] ? @"IncomingChatCell" : @"OutgoingChatCell";
 
-    WHChatViewTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    WHChatTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     [cell setupWithMessage:message userJid:self.client.jid];
     
     return cell;

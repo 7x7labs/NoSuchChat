@@ -1,12 +1,12 @@
 //
-//  WHChatViewTableCell.m
+//  WHChatTableViewCell.m
 //  whisper
 //
 //  Created by Bill Mers on 8/29/13.
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import "WHChatViewTableCell.h"
+#import "WHChatTableViewCell.h"
 
 #import "Contact.h"
 #import "Message.h"
@@ -14,7 +14,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface WHChatViewTableCell ()
+@interface WHChatTableViewCell ()
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (weak, nonatomic) IBOutlet UIImageView *bubbleImage;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
@@ -25,7 +25,7 @@
 @property (strong, nonatomic) NSString *text;
 @end
 
-@implementation WHChatViewTableCell
+@implementation WHChatTableViewCell
 
 - (void)setupWithMessage:(Message *)message userJid:(NSString *)userJid
 {

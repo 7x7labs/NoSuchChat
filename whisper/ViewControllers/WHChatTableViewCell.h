@@ -1,5 +1,5 @@
 //
-//  WHChatViewTableCell.h
+//  WHChatTableViewCell.h
 //  whisper
 //
 //  Created by Bill Mers on 8/29/13.
@@ -10,7 +10,7 @@
 
 @class Message;
 
-@interface WHChatViewTableCell : UITableViewCell
+@interface WHChatTableViewCell : UITableViewCell
 
 - (void)setupWithMessage:(Message *)message userJid:(NSString *)userJid;
 + (CGFloat)calculateHeight:(Message *)message;
