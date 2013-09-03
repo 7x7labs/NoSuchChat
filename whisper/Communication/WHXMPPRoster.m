@@ -30,9 +30,31 @@
 
     self.stream = stream;
     self.queue = dispatch_queue_create("WHXMPPRoster", 0);
+
+    dispatch_async(self.queue, ^{
+        self.objectContext = [NSManagedObjectContext new];
+        self.objectContext.parentContext = [WHCoreData managedObjectContext];
+
+        NSError *error;
+        NSArray *contacts = [self.objectContext
+                             executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Contact"]
+                             error:&error];
+        if (error)
+            return NSLog(@"Error fetching contacts for offline setting: %@", error);
+
+        for (Contact *contact in contacts)
+            contact.onlineValue = NO;
+
+        [self.objectContext save:&error];
+        if (error)
+            return NSLog(@"Error saving contacts after setting offline: %@", error);
+
+        [[WHCoreData save] subscribeError:^(NSError *err) {
+            NSLog(@"Error propagating saving after setting offline: %@", error);
+        }];
+    });
+
     [stream addDelegate:self delegateQueue:self.queue];
-    self.objectContext = [NSManagedObjectContext new];
-    self.objectContext.parentContext = [WHCoreData managedObjectContext];
     self.subscriptionsRequested = [NSMutableSet set];
 
     return self;
