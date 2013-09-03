@@ -176,10 +176,4 @@ static NSManagedObjectContext *moc() {
 	return [NSURL URLWithString:gravatarEndPoint];
 }
 
-- (NSString *)friendlyStatus {
-    NSString *status;
-    status = [self.state length] == 0 ? @"online" : self.state;
-    status = [status uppercaseString];
-    return status;
-}
 @end

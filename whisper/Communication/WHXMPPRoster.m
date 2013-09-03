@@ -181,7 +181,10 @@
         return;
     }
 
+    BOOL online = YES;
     if ([[presence type] isEqualToString:@"unavailable"])
+        online = NO;
+    else if (![[presence type] isEqualToString:@"available"])
         return;
 
     XMPPJID *jid = [presence from];
@@ -191,7 +194,7 @@
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         Contact *contact = (Contact *)obj;
         @try {
-            contact.state = [presence show];
+            contact.onlineValue = online;
             NSArray *nick = [presence nodesForXPath:@"//*[namespace-uri()='http://jabber.org/protocol/nick' and local-name()='nick']" error:nil];
             if ([nick count])
                 contact.name = [contact decryptGlobal:[nick[0] stringValue]];

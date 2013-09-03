@@ -127,6 +127,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
 		3F3BEC6817CBE59700F4D41A /* WHDiffieHellman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHDiffieHellman.h; path = Crypto/WHDiffieHellman.h; sourceTree = "<group>"; };
 		3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHDiffieHellman.m; path = Crypto/WHDiffieHellman.m; sourceTree = "<group>"; };
@@ -668,7 +669,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\nif command -v /usr/local/bin/mogenerator; then\n  /usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models\nelse\n  echo 'mogenerator is required to build whisper. It can be installed with Homebrew or downloaded from http://rentzsch.github.io/mogenerator/'\n  exit 1\nfi";
+			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\nif command -v /usr/local/bin/mogenerator; then\n  /usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld -M CoreData -H Models\nelse\n  echo 'mogenerator is required to build whisper. It can be installed with Homebrew or downloaded from http://rentzsch.github.io/mogenerator/'\n  exit 1\nfi";
 		};
 		3F77024717BA9F3F00EF5C50 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -709,7 +710,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\nif command -v /usr/local/bin/mogenerator; then\n  /usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld/Model.xcdatamodel -M CoreData -H Models\nelse\n  echo 'mogenerator is required to build whisper. It can be installed with Homebrew or downloaded from http://rentzsch.github.io/mogenerator/'\n  exit 1\nfi";
+			shellScript = "cd ${SOURCE_ROOT}/${PROJECT_NAME}\nif command -v /usr/local/bin/mogenerator; then\n  /usr/local/bin/mogenerator --template-var arc=true -m Models.xcdatamodeld -M CoreData -H Models\nelse\n  echo 'mogenerator is required to build whisper. It can be installed with Homebrew or downloaded from http://rentzsch.github.io/mogenerator/'\n  exit 1\nfi";
 		};
 		3F94B76717B07C3A00B1B3B9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1161,9 +1162,10 @@
 		3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */,
 				3F8D1B80179494B10089B129 /* Model.xcdatamodel */,
 			);
-			currentVersion = 3F8D1B80179494B10089B129 /* Model.xcdatamodel */;
+			currentVersion = 3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */;
 			path = Models.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
