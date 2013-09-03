@@ -22,6 +22,7 @@
 
 @property (strong, nonatomic) Message *message;
 @property (strong, nonatomic) NSString *jid;
+@property (strong, nonatomic) NSString *text;
 @end
 
 @implementation WHChatViewTableCell
@@ -31,7 +32,8 @@
     self.editing = YES;
     self.jid     = [message incomingValue] ? message.contact.jid : userJid;
     self.message = message;
-    
+    self.text    = message.text ?: @"<failed to decrypt message>";
+
     [self populateControls];
 }
 
@@ -45,7 +47,7 @@
     NSURL *avatarURL = [Contact avatarURLForEmail:self.jid];
     [self.avatarImage setImageWithURL:avatarURL];
 
-    self.messageLabel.text = self.message.text;
+    self.messageLabel.text = self.text;
     self.timestampLabel.text = [self formatDate:self.message.sent];
 
     self.messageLabel.frameWidth = 240;
@@ -83,8 +85,9 @@
 // ignore width contstraints.
 + (CGFloat)calculateHeight:(Message *)message
 {
+    NSString *text = message.text ?: @"";
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:15.0];
-    CGSize size = [message.text sizeWithFont:font constrainedToSize:CGSizeMake(240, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(240, 1000) lineBreakMode:NSLineBreakByWordWrapping];
     
     int padding = 28;
     int height = size.height + padding;
