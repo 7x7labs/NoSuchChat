@@ -44,7 +44,13 @@
     }];
     
     RACBind(self.send, enabled) = RACBind(self.viewModel, canSend);
-    RACBind(self.message, text) = RACBind(self.viewModel, message);
+    RAC(self.message, text) = [RACAbleWithStart(self.viewModel, message)
+                               filter:^BOOL(NSString *text) {
+                                   // The dictation stuff inserts a placeholder character while it's
+                                   // processing, and doing stuff while it's there seems to do bad things
+                                   // (like crash).
+                                   return [text rangeOfString:@"\uFFFC"].location == NSNotFound;
+                               }];
     RAC(self.viewModel, message) = self.message.rac_textSignal;
 
     [[self.send rac_signalForControlEvents:UIControlEventTouchUpInside]

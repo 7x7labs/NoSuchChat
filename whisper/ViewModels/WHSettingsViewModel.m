@@ -25,7 +25,8 @@
     RAC(self.valid) = [RACSignal
                        combineLatest:@[RACAbleWithStart(self, displayName)]
                        reduce:^(NSString *displayName) {
-                           return @([displayName length] > 0);
+                           return @([displayName length] > 0 &&
+                                    [displayName rangeOfString:@"\uFFFC"].location == NSNotFound);
                        }];
 
     return self;

@@ -30,7 +30,9 @@
                           combineLatest:@[RACAbleWithStart(self, message),
                                           RACAbleWithStart(self, client.connected)]
                           reduce:^(NSString *text, NSNumber *connected) {
-                              return @([connected boolValue] && [text length] > 0);
+                              return @([connected boolValue] &&
+                                       [text length] > 0 &&
+                                       [text rangeOfString:@"\uFFFC"].location == NSNotFound);
                           }];
 
     RAC(self, messages) = [RACAbleWithStart(contact, messages)

@@ -26,7 +26,10 @@
 
     self.viewModel = [[WHSettingsViewModel alloc] initWithClient:self.client];
 
-    RACBind(self.displayName.text) = RACBind(self.viewModel.displayName);
+    RAC(self.displayName, text) = [RACAbleWithStart(self.viewModel, displayName)
+                                   filter:^BOOL(NSString *text) {
+                                       return [text rangeOfString:@"\uFFFC"].location == NSNotFound;
+                                   }];
     RAC(self.viewModel.displayName) = self.displayName.rac_textSignal;
 
     self.saveButton.rac_command = [RACCommand commandWithCanExecuteSignal:RACAbleWithStart(self.viewModel.valid)];
