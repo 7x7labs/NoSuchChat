@@ -174,6 +174,11 @@ static NSMutableDictionary *activeSessions() {
             SEND(newKP.publicKeyBits);
             RECV([WHKeyPair addKey:data fromJid:self.peerJid]);
 
+            // Send a dummy packet to ensure that we don't close the socket
+            // before our last data actually gets sent
+            SEND([NSData data]);
+            (void)[session read];
+
             [self endSession:session];
 
             NSLog(@"%p: Creating contact", self);
