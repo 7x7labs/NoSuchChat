@@ -50,6 +50,7 @@ static NSManagedObjectContext *moc() {
         if (contact) {
             [subject sendNext:contact];
             [subject sendCompleted];
+            return;
         }
 
         [[WHCoreData insertObjectOfType:@"Contact" withBlock:^(NSManagedObject *obj) {
