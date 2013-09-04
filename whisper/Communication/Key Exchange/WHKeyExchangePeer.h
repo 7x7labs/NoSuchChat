@@ -12,6 +12,7 @@ typedef void (^invitationHandler)(BOOL accept, MCSession *session);
 
 @interface WHKeyExchangePeer : NSObject
 @property (nonatomic, readonly) NSString *name;
+@property (nonatomic, readonly) NSString *peerJid;
 
 - (RACSignal *)connectWithJid:(NSString *)jid;
 - (void)reject;

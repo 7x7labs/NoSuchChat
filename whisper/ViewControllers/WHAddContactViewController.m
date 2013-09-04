@@ -8,6 +8,8 @@
 
 #import "WHAddContactViewController.h"
 
+#import "Contact.h"
+#import "WHAddContactTableViewCell.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
 #import "WHKeyExchangePeer.h"
@@ -18,8 +20,8 @@
 
 @interface WHAddContactViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *possibleContacts;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UILabel *statusMessage;
+@property (weak, nonatomic) IBOutlet UIView *browsingPanel;
+@property (weak, nonatomic) IBOutlet UIView *disableWifiPanel;
 
 @property (nonatomic, strong) WHPeerList *peerList;
 @property (nonatomic, strong) Reachability *reach;
@@ -41,6 +43,13 @@
         [self.possibleContacts reloadData];
     }];
 
+    [RACAbleWithStart(self.peerList, peers) subscribeNext:^(NSArray *peers) {
+        @strongify(self)
+        
+        self.possibleContacts.hidden = peers.count == 0;
+        self.browsingPanel.hidden = peers.count != 0;
+    }];
+    
     self.reach = [Reachability reachabilityForLocalWiFi];
     self.reach.reachableOnWWAN = NO;
 
@@ -70,12 +79,8 @@
     BOOL enabled = [self shouldAdvertise];
     self.client.advertising = enabled;
     
-    NSString *message = enabled ? @"Looking for Whisper contacts ..." : @"Please disable Wifi and enable Bluetooth.";
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.statusMessage.text = message;
-        self.activityIndicator.hidden = !enabled;
-        self.possibleContacts.hidden = !enabled;
+        self.disableWifiPanel.hidden = enabled;
     });
 }
 
@@ -102,23 +107,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = [self.peerList.peers[indexPath.row] name];
+    WHAddContactTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    WHKeyExchangePeer *peer = self.peerList.peers[indexPath.row];
+    [cell setupWithPeer:peer];
+    
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.statusMessage.text = @"Connecting to contact ...";
 
+    WHAddContactTableViewCell *cell = (WHAddContactTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    cell.connecting = YES;
+    
     [[[self.peerList.peers[indexPath.row] connectWithJid:self.client.jid]
      deliverOn:[RACScheduler mainThreadScheduler]]
-     
      subscribeError:^(NSError *error) {
+         cell.connecting = false;
          [WHAlert alertWithMessage:[error localizedDescription]];
-         self.activityIndicator.hidden = false;
-         self.statusMessage.text = @"Looking for Whisper contacts ...";
      } completed:^{
+         cell.connecting = false;
          [self.navigationController popViewControllerAnimated:YES];
      }];
 }
