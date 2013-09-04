@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *gravatarURL;
+@property (nonatomic, strong) NSString *unreadCount;
 @end
 
 @implementation WHContactRowViewModel
@@ -28,6 +29,9 @@
     }];
     RAC(self, gravatarURL) = [RACAbleWithStart(contact, jid) map:^id(NSString *jid) {
         return jid ? [Contact avatarURLForEmail:jid] : nil;
+    }];
+    RAC(self, unreadCount) = [RACAbleWithStart(contact, unreadCount) map:^id(NSNumber *value) {
+        return [value intValue] > 0 ? [value stringValue] : @"";
     }];
 
     return self;

@@ -13,6 +13,7 @@
 @property (nonatomic, readonly) NSString *displayName;
 @property (nonatomic, readonly) NSString *status;
 @property (nonatomic, readonly) NSString *gravatarURL;
+@property (nonatomic, readonly) NSString *unreadCount;
 @end
 
 @interface WHContactListViewModel : NSObject

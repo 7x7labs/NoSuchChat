@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *avatar;
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *status;
+@property (weak, nonatomic) IBOutlet UILabel *unreadCount;
 @end
 
 @implementation WHContactTableViewCell
@@ -32,6 +33,7 @@
                           withObjects:RACAbleWithStart(self, viewModel.gravatarURL)];
         RACBind(self.name, text) = RACBind(self, viewModel.displayName);
         RACBind(self.status, text) = RACBind(self, viewModel.status);
+        RACBind(self.unreadCount, text) = RACBind(self, viewModel.unreadCount);
     }
 }
 @end
