@@ -34,11 +34,15 @@
     self.possibleContacts.dataSource = self;
     self.possibleContacts.delegate = self;
 
-    self.peerList = [[WHPeerList alloc] initWithOwnPeerID:self.client.peerID
-                                              contactJids:[NSSet setWithArray:[self.contacts valueForKey:@"jid"]]];
-
     @weakify(self)
-    [RACAble(self.peerList, peers) subscribeNext:^(id _) {
+    RAC(self, peerList) = [RACAble(self.client, peerID) map:^id(MCPeerID *peerID) {
+        if (!peerID) return nil;
+        @strongify(self)
+        return [[WHPeerList alloc] initWithOwnPeerID:peerID
+                                         contactJids:[NSSet setWithArray:[self.contacts valueForKey:@"jid"]]];
+    }];
+
+    [RACAble(self, peerList.peers) subscribeNext:^(id _) {
         @strongify(self)
         [self.possibleContacts reloadData];
     }];
@@ -77,9 +81,9 @@
 
 - (void)toggleAdvertising {
     BOOL enabled = [self shouldAdvertise];
-    self.client.advertising = enabled;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
+        self.client.advertising = enabled;
         self.disableWifiPanel.hidden = enabled;
     });
 }

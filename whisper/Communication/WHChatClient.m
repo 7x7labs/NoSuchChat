@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic) BOOL connected;
 @property (nonatomic, strong) RACSubject *cancelSignal;
+@property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) RACSignal *incomingMessages;
 @property (nonatomic, strong) WHMultipeerAdvertiser *advertiser;
 @end
@@ -53,6 +54,7 @@
     self.jid = account.jid;
     self.xmpp = xmpp;
     self.advertiser = [[WHMultipeerAdvertiser alloc] initWithJid:self.jid];
+    RAC(self.peerID) = RACAbleWithStart(self.advertiser.peerID);
 
     self.displayName = [[NSUserDefaults standardUserDefaults] stringForKey:@"displayName"];
     [NSUserDefaults.standardUserDefaults.rac_lift setObject:RACAble(self, displayName)
@@ -160,9 +162,5 @@
 
 - (NSString *)availability {
     return self.xmpp.roster.show;
-}
-
-- (MCPeerID *)peerID {
-    return self.advertiser.peerID;
 }
 @end
