@@ -78,11 +78,14 @@ static WHCoreData *instance;
 + (RACSignal *)modifyObject:(NSManagedObject *)object
                   withBlock:(void (^)(NSManagedObject *))block
 {
-    block(object);
+    return [self modifyObjectWithID:object.objectID withBlock:block];
+}
 
-    NSManagedObjectID *objectId = object.objectID;
++ (RACSignal *)modifyObjectWithID:(NSManagedObjectID *)objectID
+                        withBlock:(void (^)(NSManagedObject *))block
+{
     return [instance runWithContext:^(NSManagedObjectContext *context) {
-        NSManagedObject *localObject = [context objectWithID:objectId];
+        NSManagedObject *localObject = [context objectWithID:objectID];
         block(localObject);
         return localObject;
     }];

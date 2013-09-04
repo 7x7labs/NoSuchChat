@@ -127,6 +127,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
 		3F3BEC6817CBE59700F4D41A /* WHDiffieHellman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHDiffieHellman.h; path = Crypto/WHDiffieHellman.h; sourceTree = "<group>"; };
@@ -1162,10 +1163,11 @@
 		3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */,
 				3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */,
 				3F8D1B80179494B10089B129 /* Model.xcdatamodel */,
 			);
-			currentVersion = 3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */;
+			currentVersion = 3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */;
 			path = Models.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

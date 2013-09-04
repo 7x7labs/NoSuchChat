@@ -12,6 +12,8 @@
 
 + (RACSignal *)modifyObject:(NSManagedObject *)object
                   withBlock:(void (^)(NSManagedObject *))block;
++ (RACSignal *)modifyObjectWithID:(NSManagedObjectID *)objectID
+                        withBlock:(void (^)(NSManagedObject *))block;
 
 + (RACSignal *)insertObjectOfType:(NSString *)type
                         withBlock:(void (^)(NSManagedObject *))block;

@@ -9,6 +9,8 @@
 #import "WHChatViewModel.h"
 
 #import "Contact.h"
+#import "Message.h"
+#import "WHCoreData.h"
 #import "WHChatClient.h"
 
 @interface WHChatViewModel ()
@@ -34,13 +36,19 @@
                                        [text length] > 0 &&
                                        [text rangeOfString:@"\uFFFC"].location == NSNotFound);
                           }];
-
-    RAC(self, messages) = [RACAbleWithStart(contact, messages)
-                          map:^id(id value) {
-                            return [value sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc]
-                                                                         initWithKey:@"sent" ascending:YES]]];
+    NSArray *sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"sent"
+                                                             ascending:YES]];
+    NSManagedObjectID *contactID = contact.objectID;
+    RAC(self, messages) = [[RACAbleWithStart(contact, messages)
+                          map:^id(NSArray *value) {
+                            return [value sortedArrayUsingDescriptors:sortDescriptors];
+                          }]
+                          doNext:^(NSArray *messages) {
+                              [WHCoreData modifyObjectWithID:contactID
+                                                   withBlock:^(NSManagedObject *obj) {
+                                                       [(Contact *)obj setUnreadCount:@0];
+                                                   }];
                           }];
-
     return self;
 }
 
