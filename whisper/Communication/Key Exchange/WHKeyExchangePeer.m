@@ -130,7 +130,8 @@ static NSMutableDictionary *activeSessions() {
                 }
                 else {
                     NSLog(@"%p: failed to connect", self);
-                    return [WHError errorSignalWithDescription:@"Peer refused connection"];
+                    NSString *message = [NSString stringWithFormat:@"\"%@\" canceled the connection.", self.remotePeerID.displayName];
+                    return [WHError errorSignalWithDescription:message];
                 }
             }
 

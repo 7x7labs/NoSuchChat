@@ -14,12 +14,15 @@
 #import "WHPeerList.h"
 
 #import <EXTScope.h>
+#import <Reachability/Reachability.h>
 
 @interface WHAddContactViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *possibleContacts;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *statusMessage;
 
 @property (nonatomic, strong) WHPeerList *peerList;
+@property (nonatomic, strong) Reachability *reach;
 @end
 
 @implementation WHAddContactViewController
@@ -38,11 +41,54 @@
         [self.possibleContacts reloadData];
     }];
 
-    self.client.advertising = YES;
+    self.reach = [Reachability reachabilityForLocalWiFi];
+    self.reach.reachableOnWWAN = NO;
+
+    self.reach.reachableBlock = ^(Reachability *reach) {
+        @strongify(self)
+        [self toggleAdvertising];
+    };
+    
+    self.reach.unreachableBlock = ^(Reachability *reach) {
+        @strongify(self)
+        [self toggleAdvertising];
+    };
+    
+    [self.reach startNotifier];
+    [self toggleAdvertising];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     self.client.advertising = NO;
+}
+
+- (void)viewDidUnload {
+    self.reach = nil;
+}
+
+- (void)toggleAdvertising {
+    BOOL enabled = [self shouldAdvertise];
+    self.client.advertising = enabled;
+    
+    NSString *message = enabled ? @"Looking for Whisper contacts ..." : @"Please disable Wifi and enable Bluetooth.";
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.statusMessage.text = message;
+        self.activityIndicator.hidden = !enabled;
+        self.possibleContacts.hidden = !enabled;
+    });
+}
+
+- (BOOL)shouldAdvertise {
+#if DEBUG
+    return YES;
+#endif
+    
+    // AFAIK, there's no public API that reliably detects bluetooth.
+    BOOL bluetoothEnabled = YES;
+    BOOL wifiEnabled = [self.reach isReachableViaWiFi];
+    
+    return bluetoothEnabled && !wifiEnabled;
 }
 
 #pragma mark - UITableViewDataSource
@@ -63,15 +109,18 @@
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.activityIndicator startAnimating];
-    self.activityIndicator.hidden = NO;
+    self.statusMessage.text = @"Connecting to contact ...";
 
     [[[self.peerList.peers[indexPath.row] connectWithJid:self.client.jid]
      deliverOn:[RACScheduler mainThreadScheduler]]
+     
      subscribeError:^(NSError *error) {
          [WHAlert alertWithMessage:[error localizedDescription]];
+         self.activityIndicator.hidden = false;
+         self.statusMessage.text = @"Looking for Whisper contacts ...";
      } completed:^{
          [self.navigationController popViewControllerAnimated:YES];
      }];
 }
+
 @end
