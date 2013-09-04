@@ -92,15 +92,19 @@
                                 <state key="normal" title="Get Started">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <state key="disabled" title="Connecting..."/>
                                 <connections>
                                     <segue destination="Haa-Hh-1CT" kind="push" identifier="LoadMainNavigation" id="3YY-v9-WJz"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="BET-1t-AG4">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" clearsOnBeginEditing="YES" minimumFontSize="17" id="BET-1t-AG4">
                                 <rect key="frame" x="127" y="215" width="162" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="textFieldDidEndOnExit:" destination="ZCu-7b-jkX" eventType="editingDidEndOnExit" id="nMH-ta-pCk"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nickname" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PYP-fG-mm2">
                                 <rect key="frame" x="21" y="219" width="91" height="21"/>
@@ -119,7 +123,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="0a1-fW-PQq"/>
                     <connections>
-                        <outlet property="username" destination="BET-1t-AG4" id="OnQ-XQ-Ydq"/>
+                        <outlet property="displayName" destination="BET-1t-AG4" id="17n-uc-YdN"/>
+                        <outlet property="getStarted" destination="byF-22-foG" id="4mk-Zi-YOT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pPZ-C0-I1U" userLabel="First Responder" sceneMemberID="firstResponder"/>

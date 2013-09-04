@@ -28,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.client = [WHChatClient clientForServer:kXmppServerHost port:5222];
     self.viewModel = [[WHContactListViewModel alloc] initWithClient:self.client];
 
     @weakify(self)
