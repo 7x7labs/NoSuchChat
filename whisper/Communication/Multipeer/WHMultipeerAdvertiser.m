@@ -25,29 +25,27 @@
     return self;
 }
 
-- (NSString *)displayName {
-    return self.peerID.displayName;
-}
-
 - (void)setDisplayName:(NSString *)displayName {
-    if (self.advertiser)
-        [self.advertiser stopAdvertisingPeer];
-
-    self.peerID = [[MCPeerID alloc] initWithDisplayName:displayName];
-    self.advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
-                                                        discoveryInfo:@{@"jid": self.jid}
-                                                          serviceType:@"7x7-whisper"];
-    self.advertiser.delegate = self;
-    if (self.advertising)
-        [self.advertiser startAdvertisingPeer];
+    _displayName = displayName;
+    [self setupAdvertiser];
 }
 
 - (void)setAdvertising:(BOOL)advertising {
     _advertising = advertising;
-    if (advertising)
-        [self.advertiser startAdvertisingPeer];
-    else
-        [self.advertiser stopAdvertisingPeer];
+    [self setupAdvertiser];
+}
+
+- (void)setupAdvertiser {
+    [self.advertiser stopAdvertisingPeer];
+    self.advertiser = nil;
+    if (!self.advertising) return;
+
+    self.peerID = [[MCPeerID alloc] initWithDisplayName:self.displayName];
+    self.advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
+                                                        discoveryInfo:@{@"jid": self.jid}
+                                                          serviceType:@"7x7-whisper"];
+    self.advertiser.delegate = self;
+    [self.advertiser startAdvertisingPeer];
 }
 
 - (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error {
