@@ -274,12 +274,14 @@ describe(@"WHKeyExchangePeer", ^{
                 [[[session expect] andReturn:[dh encrypt:globalKeyBits]] read];
                 [[[session expect] andReturn:[dh encrypt:globalSymmetricKey]] read];
                 [[[session expect] andReturn:[dh encrypt:keyBits]] read];
+                [[[session expect] andReturn:[NSNull null]] read];
                 [[session expect] disconnect];
             }] sendData:isKindOfClass([NSData class])]; // dh public key
 
             [[session expect] sendData:isKindOfClass([NSData class])]; // global sign key
             [[session expect] sendData:isKindOfClass([NSData class])]; // global encryption key
             [[session expect] sendData:isKindOfClass([NSData class])]; // pair key
+            [[session expect] sendData:isKindOfClass([NSData class])]; // terminator
 
             id browser = [OCMockObject mockForClass:[WHMultipeerBrowser class]];
             [[[browser expect] andReturn:session] connectToPeer:otherPeerID ownJid:ownJid];

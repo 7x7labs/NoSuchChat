@@ -19,8 +19,10 @@ static int stderrWrite(void *inFD, const char *buffer, int size) {
 }
 
 int main(int argc, char *argv[]) {
-    oldStderrWrite = stderr->_write;
-    stderr->_write = stderrWrite;
+    if (!getenv("runningTests")) {
+        oldStderrWrite = stderr->_write;
+        stderr->_write = stderrWrite;
+    }
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([WHAppDelegate class]));
     }
