@@ -23,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *send;
 @property (weak, nonatomic) IBOutlet UITableView *chatLog;
 @property (weak, nonatomic) IBOutlet UITextField *message;
-@property (weak, nonatomic) IBOutlet UIView *inputView;
+@property (weak, nonatomic) IBOutlet UIView *messagePanel;
+@property (weak, nonatomic) IBOutlet UIView *statusPanel;
 
 @property (nonatomic, strong) WHChatViewModel *viewModel;
 @end
@@ -59,6 +60,8 @@
          @strongify(self);
          [self sendMessage];
      }];
+    
+    RACBind(self.statusPanel, hidden) = RACBind(self.contact, online);
 
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;
@@ -105,7 +108,7 @@
     if (showing) height *= -1;
     
     [UIView animateWithDuration:animationDuration animations:^{
-        self.inputView.frameY += height;
+        self.messagePanel.frameY += height;
         self.chatLog.frameHeight += height;
     }];
     
