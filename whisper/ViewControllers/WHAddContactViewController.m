@@ -15,12 +15,14 @@
 #import "WHChatClient.h"
 
 #import <libextobjc/EXTScope.h>
+#import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
 @interface WHAddContactViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *possibleContacts;
 @property (weak, nonatomic) IBOutlet UIView *browsingPanel;
 @property (weak, nonatomic) IBOutlet UIView *disableWifiPanel;
 
+@property (nonatomic, strong) RACSubject *cancelSignal;
 @property (nonatomic, strong) WHAddContactViewModel *viewModel;
 @end
 
@@ -43,6 +45,21 @@
         @strongify(self)
         [self.possibleContacts reloadData];
     }];
+
+    self.cancelSignal = [RACSubject subject];
+    [self rac_liftSelector:@selector(showChatWithJid:)
+               withObjects:[[[[[NSNotificationCenter.defaultCenter
+                                rac_addObserverForName:WHContactAddedNotification object:nil]
+                            takeUntil:self.cancelSignal]
+                            deliverOn:[RACScheduler mainThreadScheduler]]
+                            map:^(NSNotification *notification) {
+                                return [notification.userInfo[@"created"] jid];
+                            }]
+                            filter:^BOOL(id value) { return !!value; }]];
+}
+
+- (void)dealloc {
+    [self.cancelSignal sendCompleted];
 }
 
 - (void)showChatWithJid:(NSString *)jid {
@@ -75,8 +92,6 @@
      deliverOn:[RACScheduler mainThreadScheduler]]
      subscribeError:^(NSError *error) {
          [WHAlert alertWithMessage:[error localizedDescription]];
-     } completed:^{
-         [self.navigationController popViewControllerAnimated:YES];
      }];
 }
 
