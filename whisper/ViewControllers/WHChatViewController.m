@@ -18,6 +18,7 @@
 #import "WHChatTableViewCell.h"
 
 #import <libextobjc/EXTScope.h>
+#import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
 @interface WHChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *send;
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIView *statusPanel;
 
 @property (nonatomic, strong) WHChatViewModel *viewModel;
+@property (nonatomic, strong) RACSubject *cancelSignal;
 @end
 
 @implementation WHChatViewController
@@ -69,16 +71,20 @@
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     gestureRecognizer.cancelsTouchesInView = NO;
     [self.chatLog addGestureRecognizer:gestureRecognizer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(repositionForKeyboard:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(repositionForKeyboard:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+
+    self.cancelSignal = [RACSubject subject];
+    [self rac_liftSelector:@selector(repositionForKeyboard:)
+               withObjects:[[[RACSignal
+                            merge:@[[NSNotificationCenter.defaultCenter
+                                     rac_addObserverForName:UIKeyboardWillShowNotification object:nil],
+                                    [NSNotificationCenter.defaultCenter
+                                     rac_addObserverForName:UIKeyboardWillHideNotification object:nil]]]
+                            takeUntil:self.cancelSignal]
+                            deliverOn:[RACScheduler mainThreadScheduler]]];
+}
+
+- (void)dealloc {
+    [self.cancelSignal sendCompleted];
 }
 
 - (void)sendMessage {
