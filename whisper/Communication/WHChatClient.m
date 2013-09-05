@@ -119,6 +119,7 @@
               if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
                   UILocalNotification *localNotification = [UILocalNotification new];
                   localNotification.alertBody = [NSString stringWithFormat:@"New message from %@", contact.name];;
+                  localNotification.userInfo = @{@"jid": contact.jid};
                   [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
               }
 

@@ -13,10 +13,11 @@
 #import "UIView+Position.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
+#import "WHCoreData.h"
 #import "WHChatViewModel.h"
 #import "WHChatTableViewCell.h"
 
-#import <EXTScope.h>
+#import <libextobjc/EXTScope.h>
 
 @interface WHChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *send;
@@ -33,25 +34,25 @@
     [super viewDidLoad];
     @weakify(self);
     
-    RACBind(self.title) = RACBind(self.contact.name);
+    RACBind(self, title) = RACBind(self, contact.name);
     self.viewModel = [[WHChatViewModel alloc] initWithClient:self.client
                                                      contact:self.contact];
     
-    [RACAble(self.viewModel, messages) subscribeNext:^(id _) {
+    [RACAble(self, viewModel.messages) subscribeNext:^(id _) {
         @strongify(self)
         [self.chatLog reloadData];
         [self scrollToBottom:self.chatLog animated:YES];
     }];
     
-    RACBind(self.send, enabled) = RACBind(self.viewModel, canSend);
-    RAC(self.message, text) = [RACAbleWithStart(self.viewModel, message)
+    RACBind(self.send, enabled) = RACBind(self, viewModel.canSend);
+    RAC(self.message, text) = [RACAbleWithStart(self, viewModel.message)
                                filter:^BOOL(NSString *text) {
                                    // The dictation stuff inserts a placeholder character while it's
                                    // processing, and doing stuff while it's there seems to do bad things
                                    // (like crash).
                                    return [text rangeOfString:@"\uFFFC"].location == NSNotFound;
                                }];
-    RAC(self.viewModel, message) = self.message.rac_textSignal;
+    RAC(self, viewModel.message) = self.message.rac_textSignal;
 
     [[self.send rac_signalForControlEvents:UIControlEventTouchUpInside]
      subscribeNext:^(id _) {
@@ -101,7 +102,7 @@
     CGFloat height = keyboardFrame.size.height;
 
     bool showing = [notification.name isEqualToString:@"UIKeyboardWillShowNotification"];
-    if (showing) height = -1 * height;
+    if (showing) height *= -1;
     
     [UIView animateWithDuration:animationDuration animations:^{
         self.inputView.frameY += height;
@@ -122,6 +123,15 @@
     [table scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
+- (void)showChatWithJid:(NSString *)jid {
+    Contact *newContact = [Contact contactForJid:jid managedObjectContext:[WHCoreData managedObjectContext]];
+    if (newContact) {
+        self.contact = newContact;
+        self.viewModel = [[WHChatViewModel alloc] initWithClient:self.client
+                                                         contact:self.contact];
+    }
+}
+
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.viewModel.messages[indexPath.row] delete];
@@ -140,12 +150,9 @@
     return [self.viewModel.messages count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = self.viewModel.messages[indexPath.row];
-    CGFloat height = [WHChatTableViewCell calculateHeight:message];
-
-    return height;
+    return [WHChatTableViewCell calculateHeight:message];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

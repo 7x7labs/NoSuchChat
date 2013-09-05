@@ -45,6 +45,12 @@
     }];
 }
 
+- (void)showChatWithJid:(NSString *)jid {
+    NSArray *vcs = [self.navigationController viewControllers];
+    [self.navigationController popViewControllerAnimated:NO];
+    [vcs[[vcs count] - 2] showChatWithJid:jid];
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

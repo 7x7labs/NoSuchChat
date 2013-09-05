@@ -49,4 +49,10 @@
     return YES;
 }
 
+- (void)showChatWithJid:(NSString *)jid {
+    NSArray *vcs = [self.navigationController viewControllers];
+    [self.navigationController popViewControllerAnimated:NO];
+    [vcs[[vcs count] - 2] showChatWithJid:jid];
+}
+
 @end

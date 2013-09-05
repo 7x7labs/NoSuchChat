@@ -17,14 +17,13 @@
 
 @property (nonatomic, strong) WHChatClient *client;
 @property (nonatomic, strong) WHSettingsViewModel *viewModel;
+@property (nonatomic, strong) NSString *contactJid;
 @end
 
 @implementation WHWelcomeViewController
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.client = [WHChatClient clientForServer:kXmppServerHost port:5222];
     self.viewModel = [[WHSettingsViewModel alloc] initWithClient:self.client];
     
@@ -49,14 +48,12 @@
      }];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO];
 }
@@ -65,8 +62,13 @@
     id dest = segue.destinationViewController;
     if ([dest respondsToSelector:@selector(setClient:)])
         [dest setClient:self.client];
+    if ([dest respondsToSelector:@selector(setContactJid:)])
+        [dest setContactJid:self.contactJid];
 }
 
-- (IBAction)textFieldDidEndOnExit:(UITextField *)sender {;}
+- (IBAction)textFieldDidEndOnExit:(UITextField *)sender {}
 
+- (void)showChatWithJid:(NSString *)jid {
+    self.contactJid = jid;
+}
 @end

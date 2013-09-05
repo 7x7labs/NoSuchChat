@@ -282,6 +282,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F1753E417D8CB5F004999DB /* Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A978068D17D7F71400DB12B3 /* WHAddContactTableViewCell.h */,
+				A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */,
+				A9789FF217CFBB6F00B55CFC /* WHChatTableViewCell.h */,
+				A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */,
+				3F8707CA17D03D01001D70F0 /* WHContactTableViewCell.h */,
+				3F8707CB17D03D01001D70F0 /* WHContactTableViewCell.m */,
+			);
+			name = "Table Cells";
+			sourceTree = "<group>";
+		};
 		3F50C5ED17A4331D00DC76C1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,18 +350,13 @@
 		3F8D1B901794DC810089B129 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A978068D17D7F71400DB12B3 /* WHAddContactTableViewCell.h */,
-				A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */,
+				3F1753E417D8CB5F004999DB /* Table Cells */,
 				3F8D1B971794E6A10089B129 /* WHAddContactViewController.h */,
 				3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */,
-				A9789FF217CFBB6F00B55CFC /* WHChatTableViewCell.h */,
-				A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */,
 				3F8D1BA21795CBCF0089B129 /* WHChatViewController.h */,
 				3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */,
 				3F8D1B911794DD200089B129 /* WHContactsViewController.h */,
 				3F8D1B921794DD200089B129 /* WHContactsViewController.m */,
-				3F8707CA17D03D01001D70F0 /* WHContactTableViewCell.h */,
-				3F8707CB17D03D01001D70F0 /* WHContactTableViewCell.m */,
 				3F50C5EA17A42CAF00DC76C1 /* WHSettingsViewController.h */,
 				3F50C5EB17A42CAF00DC76C1 /* WHSettingsViewController.m */,
 				A9E0827617D03B2D002409E6 /* WHWelcomeViewController.h */,

@@ -8,11 +8,13 @@
 
 #import "WHContactsViewController.h"
 
+#import "Contact.h"
 #import "WHAddContactViewController.h"
 #import "WHChatClient.h"
 #import "WHChatViewController.h"
 #import "WHContactListViewModel.h"
 #import "WHContactTableViewCell.h"
+#import "WHCoreData.h"
 
 #import <EXTScope.h>
 
@@ -35,6 +37,11 @@
         @strongify(self)
         [self.tableView reloadData];
     }];
+
+    if (self.contactJid) {
+        [self showChatWithJid:self.contactJid];
+        self.contactJid = nil;
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -45,6 +52,12 @@
         [dest setClient:self.client];
     if ([dest respondsToSelector:@selector(setContacts:)])
         [dest setContacts:self.client.contacts];
+}
+
+- (void)showChatWithJid:(NSString *)jid {
+    self.sequeContact = [Contact contactForJid:jid managedObjectContext:[WHCoreData managedObjectContext]];
+    if (self.sequeContact)
+        [self performSegueWithIdentifier:@"show chat" sender:self];
 }
 
 #pragma mark - Table view data source

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface WHContactsViewController : UITableViewController
-
+@property (nonatomic, strong) NSString *contactJid;
 @end
