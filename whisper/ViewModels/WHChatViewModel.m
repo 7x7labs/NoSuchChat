@@ -15,6 +15,8 @@
 
 @interface WHChatViewModel ()
 @property (nonatomic) BOOL canSend;
+@property (nonatomic) BOOL online;
+@property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSArray *messages;
 
 @property (nonatomic, strong) Contact *contact;
@@ -27,6 +29,8 @@
 
     self.client = client;
     self.contact = contact;
+    RAC(self, online) = RACAbleWithStart(contact, online);
+    RAC(self, title) = RACAbleWithStart(contact, name);
 
     RAC(self, canSend) = [RACSignal
                           combineLatest:@[RACAbleWithStart(self, message),

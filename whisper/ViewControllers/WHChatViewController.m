@@ -37,17 +37,20 @@
     [super viewDidLoad];
     @weakify(self);
     
-    RACBind(self, title) = RACBind(self, contact.name);
     self.viewModel = [[WHChatViewModel alloc] initWithClient:self.client
                                                      contact:self.contact];
+    self.client = nil;
     
+    RACBind(self, title) = RACBind(self, viewModel.title);
+    RACBind(self.send, enabled) = RACBind(self, viewModel.canSend);
+    RACBind(self.statusPanel, hidden) = RACBind(self, viewModel.online);
+
     [RACAble(self, viewModel.messages) subscribeNext:^(id _) {
         @strongify(self)
         [self.chatLog reloadData];
         [self scrollToBottom:self.chatLog animated:YES];
     }];
-    
-    RACBind(self.send, enabled) = RACBind(self, viewModel.canSend);
+
     RAC(self.message, text) = [RACAbleWithStart(self, viewModel.message)
                                filter:^BOOL(NSString *text) {
                                    // The dictation stuff inserts a placeholder character while it's
@@ -62,8 +65,6 @@
          @strongify(self);
          [self sendMessage];
      }];
-    
-    RACBind(self.statusPanel, hidden) = RACBind(self.contact, online);
 
     self.chatLog.dataSource = self;
     self.chatLog.delegate = self;
@@ -134,11 +135,9 @@
 
 - (void)showChatWithJid:(NSString *)jid {
     Contact *newContact = [Contact contactForJid:jid managedObjectContext:[WHCoreData managedObjectContext]];
-    if (newContact) {
-        self.contact = newContact;
+    if (newContact)
         self.viewModel = [[WHChatViewModel alloc] initWithClient:self.client
                                                          contact:self.contact];
-    }
 }
 
 #pragma mark UITableViewDelegate
