@@ -6,14 +6,9 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-@class WHKeyExchangePeer;
+@class WHPotentialContactViewModel;
 
 @interface WHAddContactTableViewCell : UITableViewCell
-
-- (void)setupWithPeer:(WHKeyExchangePeer *)peer;
-
-@property (nonatomic) BOOL connecting;
-
+- (void)setupWithPeer:(WHPotentialContactViewModel *)peer;
+- (RACSignal *)connect;
 @end

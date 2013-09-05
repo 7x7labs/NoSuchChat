@@ -10,21 +10,18 @@
 
 #import "Contact.h"
 #import "WHAddContactTableViewCell.h"
+#import "WHAddContactViewModel.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
-#import "WHKeyExchangePeer.h"
-#import "WHPeerList.h"
 
-#import <EXTScope.h>
-#import <Reachability/Reachability.h>
+#import <libextobjc/EXTScope.h>
 
 @interface WHAddContactViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *possibleContacts;
 @property (weak, nonatomic) IBOutlet UIView *browsingPanel;
 @property (weak, nonatomic) IBOutlet UIView *disableWifiPanel;
 
-@property (nonatomic, strong) WHPeerList *peerList;
-@property (nonatomic, strong) Reachability *reach;
+@property (nonatomic, strong) WHAddContactViewModel *viewModel;
 @end
 
 @implementation WHAddContactViewController
@@ -34,70 +31,18 @@
     self.possibleContacts.dataSource = self;
     self.possibleContacts.delegate = self;
 
-    @weakify(self)
-    RAC(self, peerList) = [RACAble(self.client, peerID) map:^id(MCPeerID *peerID) {
-        if (!peerID) return nil;
-        @strongify(self)
-        return [[WHPeerList alloc] initWithOwnPeerID:peerID
-                                         contactJids:[NSSet setWithArray:[self.contacts valueForKey:@"jid"]]];
-    }];
+    self.viewModel = [[WHAddContactViewModel alloc]
+                      initWithClient:self.client contacts:self.contacts];
 
-    [RACAble(self, peerList.peers) subscribeNext:^(id _) {
+    RAC(self.possibleContacts, hidden) = [RACAbleWithStart(self.viewModel, count) not];
+    RAC(self.browsingPanel, hidden) = RACAbleWithStart(self.viewModel, count);
+    RAC(self.disableWifiPanel, hidden) = RACAbleWithStart(self.viewModel, advertising);
+
+    @weakify(self)
+    [RACAble(self.viewModel, count) subscribeNext:^(id _) {
         @strongify(self)
         [self.possibleContacts reloadData];
     }];
-
-    [RACAbleWithStart(self.peerList, peers) subscribeNext:^(NSArray *peers) {
-        @strongify(self)
-        
-        self.possibleContacts.hidden = peers.count == 0;
-        self.browsingPanel.hidden = peers.count != 0;
-    }];
-    
-    self.reach = [Reachability reachabilityForLocalWiFi];
-    self.reach.reachableOnWWAN = NO;
-
-    self.reach.reachableBlock = ^(Reachability *reach) {
-        @strongify(self)
-        [self toggleAdvertising];
-    };
-    
-    self.reach.unreachableBlock = ^(Reachability *reach) {
-        @strongify(self)
-        [self toggleAdvertising];
-    };
-    
-    [self.reach startNotifier];
-    [self toggleAdvertising];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    self.client.advertising = NO;
-}
-
-- (void)viewDidUnload {
-    self.reach = nil;
-}
-
-- (void)toggleAdvertising {
-    BOOL enabled = [self shouldAdvertise];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.client.advertising = enabled;
-        self.disableWifiPanel.hidden = enabled;
-    });
-}
-
-- (BOOL)shouldAdvertise {
-#if DEBUG
-    return YES;
-#endif
-    
-    // AFAIK, there's no public API that reliably detects bluetooth.
-    BOOL bluetoothEnabled = YES;
-    BOOL wifiEnabled = [self.reach isReachableViaWiFi];
-    
-    return bluetoothEnabled && !wifiEnabled;
 }
 
 #pragma mark - UITableViewDataSource
@@ -106,32 +51,25 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.peerList.peers count];
+    return self.viewModel.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     WHAddContactTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    WHKeyExchangePeer *peer = self.peerList.peers[indexPath.row];
-    [cell setupWithPeer:peer];
+    [cell setupWithPeer:self.viewModel[indexPath.row]];
     
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    WHAddContactTableViewCell *cell = (WHAddContactTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.connecting = YES;
-    
-    [[[self.peerList.peers[indexPath.row] connectWithJid:self.client.jid]
+    [[[(WHAddContactTableViewCell *)[tableView cellForRowAtIndexPath:indexPath] connect]
      deliverOn:[RACScheduler mainThreadScheduler]]
      subscribeError:^(NSError *error) {
-         cell.connecting = false;
          [WHAlert alertWithMessage:[error localizedDescription]];
      } completed:^{
-         cell.connecting = false;
          [self.navigationController popViewControllerAnimated:YES];
      }];
 }

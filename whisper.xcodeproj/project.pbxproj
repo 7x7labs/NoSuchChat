@@ -19,6 +19,8 @@
 		3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
 		3F5FEAE4179DB60D00C6BF62 /* WHPeerList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */; };
 		3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */; };
+		3F63EF4317D7FD52009898E1 /* WHAddContactViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F63EF4217D7FD52009898E1 /* WHAddContactViewModel.m */; };
+		3F63EF4417D7FD52009898E1 /* WHAddContactViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F63EF4217D7FD52009898E1 /* WHAddContactViewModel.m */; };
 		3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7127D3178F0D6F00835DD2 /* libresolv.dylib */; };
 		3F77024917BA9F3F00EF5C50 /* _Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B83179495430089B129 /* _Contact.m */; };
 		3F77024A17BA9F3F00EF5C50 /* _Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B9F179598090089B129 /* _Message.m */; };
@@ -151,6 +153,8 @@
 		3F5FEAE3179DB60D00C6BF62 /* WHPeerList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHPeerList.m; path = Communication/WHPeerList.m; sourceTree = "<group>"; };
 		3F5FEAF9179F4D3000C6BF62 /* WHKeyExchangePeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyExchangePeer.h; path = "Communication/Key Exchange/WHKeyExchangePeer.h"; sourceTree = "<group>"; };
 		3F5FEAFA179F4D3000C6BF62 /* WHKeyExchangePeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyExchangePeer.m; path = "Communication/Key Exchange/WHKeyExchangePeer.m"; sourceTree = "<group>"; };
+		3F63EF4117D7FD52009898E1 /* WHAddContactViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAddContactViewModel.h; path = ViewModels/WHAddContactViewModel.h; sourceTree = "<group>"; };
+		3F63EF4217D7FD52009898E1 /* WHAddContactViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAddContactViewModel.m; path = ViewModels/WHAddContactViewModel.m; sourceTree = "<group>"; };
 		3F7127D3178F0D6F00835DD2 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		3F77029517BA9F3F00EF5C50 /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F81033317A9C5EE006FBFBE /* WHMultipeerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerAdvertiser.h; path = Communication/Multipeer/WHMultipeerAdvertiser.h; sourceTree = "<group>"; };
@@ -281,6 +285,8 @@
 		3F50C5ED17A4331D00DC76C1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				3F63EF4117D7FD52009898E1 /* WHAddContactViewModel.h */,
+				3F63EF4217D7FD52009898E1 /* WHAddContactViewModel.m */,
 				3FBCCD8A17CEF65200731107 /* WHChatViewModel.h */,
 				3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */,
 				3F8707C617D01AA1001D70F0 /* WHContactListViewModel.h */,
@@ -335,10 +341,10 @@
 				A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */,
 				3F8D1B971794E6A10089B129 /* WHAddContactViewController.h */,
 				3F8D1B981794E6A10089B129 /* WHAddContactViewController.m */,
-				3F8D1BA21795CBCF0089B129 /* WHChatViewController.h */,
-				3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */,
 				A9789FF217CFBB6F00B55CFC /* WHChatTableViewCell.h */,
 				A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */,
+				3F8D1BA21795CBCF0089B129 /* WHChatViewController.h */,
+				3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */,
 				3F8D1B911794DD200089B129 /* WHContactsViewController.h */,
 				3F8D1B921794DD200089B129 /* WHContactsViewController.m */,
 				3F8707CA17D03D01001D70F0 /* WHContactTableViewCell.h */,
@@ -782,15 +788,16 @@
 				3F77025617BA9F3F00EF5C50 /* NSData+Signature.m in Sources */,
 				A955092117CE97C60088780D /* UIView+Position.m in Sources */,
 				3F77025B17BA9F3F00EF5C50 /* WHAccount.m in Sources */,
+				A978069017D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */,
 				3F77025C17BA9F3F00EF5C50 /* WHAddContactViewController.m in Sources */,
+				3F63EF4417D7FD52009898E1 /* WHAddContactViewModel.m in Sources */,
 				3F77025D17BA9F3F00EF5C50 /* WHAlert.m in Sources */,
 				3F77025E17BA9F3F00EF5C50 /* WHAppDelegate.m in Sources */,
 				3F77025F17BA9F3F00EF5C50 /* WHChatClient.m in Sources */,
+				A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F77026017BA9F3F00EF5C50 /* WHChatViewController.m in Sources */,
 				3FBCCD8D17CEF65200731107 /* WHChatViewModel.m in Sources */,
-				A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F77026117BA9F3F00EF5C50 /* WHCheckList.m in Sources */,
-				A978069017D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */,
 				3F8707C917D01AA1001D70F0 /* WHContactListViewModel.m in Sources */,
 				3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */,
 				3F8707CD17D03D01001D70F0 /* WHContactTableViewCell.m in Sources */,
@@ -829,15 +836,16 @@
 				3F8EB19E1798BF96009F938D /* NSData+Signature.m in Sources */,
 				A955092017CE97C60088780D /* UIView+Position.m in Sources */,
 				3F8EB18C1796E639009F938D /* WHAccount.m in Sources */,
+				A978068F17D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */,
 				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
+				3F63EF4317D7FD52009898E1 /* WHAddContactViewModel.m in Sources */,
 				3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */,
 				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
 				3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */,
+				A9789FF417CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3FBCCD8C17CEF65200731107 /* WHChatViewModel.m in Sources */,
-				A9789FF417CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3FE4839417A828D600E7938E /* WHCheckList.m in Sources */,
-				A978068F17D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */,
 				3F8707C817D01AA1001D70F0 /* WHContactListViewModel.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8707CC17D03D01001D70F0 /* WHContactTableViewCell.m in Sources */,
@@ -1171,8 +1179,8 @@
 		3F8D1B7F179494B10089B129 /* Models.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */,
 				3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */,
+				3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */,
 				3F8D1B80179494B10089B129 /* Model.xcdatamodel */,
 			);
 			currentVersion = 3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */;
