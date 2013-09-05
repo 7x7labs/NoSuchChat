@@ -28,7 +28,7 @@
     }
 #endif
 
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+//    [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [WHCoreData initSqliteContext];
     [Message deleteOlderThan:[NSDate dateWithTimeIntervalSinceNow:-(60 * 60 * 24 * 7)]];
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];

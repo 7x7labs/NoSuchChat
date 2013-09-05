@@ -13,6 +13,7 @@
 #import "WHAddContactViewModel.h"
 #import "WHAlert.h"
 #import "WHChatClient.h"
+#import "WHKeyExchangePeer.h"
 
 #import <libextobjc/EXTScope.h>
 #import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
@@ -33,8 +34,7 @@
     self.possibleContacts.dataSource = self;
     self.possibleContacts.delegate = self;
 
-    self.viewModel = [[WHAddContactViewModel alloc]
-                      initWithClient:self.client contacts:self.contacts];
+    self.viewModel = [[WHAddContactViewModel alloc] initWithClient:self.client];
 
     RAC(self.possibleContacts, hidden) = [RACAbleWithStart(self.viewModel, count) not];
     RAC(self.browsingPanel, hidden) = RACAbleWithStart(self.viewModel, count);
@@ -45,6 +45,28 @@
         @strongify(self)
         [self.possibleContacts reloadData];
     }];
+
+    [[[[self.viewModel.invitations
+     deliverOn:[RACScheduler mainThreadScheduler]]
+     flattenMap:^(WHKeyExchangePeer *peer) {
+         return [RACSignal zip:@[[RACSignal return:peer],
+                                 [WHAlert alertWithMessage:@"Add this user to your contacts?"
+                                                     title:peer.name
+                                                   buttons:@[@"No", @"Yes"]]]];
+     }]
+     flattenMap:^(RACTuple *result) {
+         RACTupleUnpack(WHKeyExchangePeer *peer, NSNumber *button) = result;
+         if ([button integerValue] == 0) {
+             [peer reject];
+             return [RACSignal empty];
+         }
+         else {
+             return [peer connect];
+         }
+     }]
+     subscribeError:^(NSError *error) {
+         [WHAlert alertWithError:error];
+     }];
 
     self.cancelSignal = [RACSubject subject];
     [self rac_liftSelector:@selector(showChatWithJid:)

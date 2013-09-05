@@ -7,23 +7,26 @@
 //
 
 @class RACSignal;
+@class WHMultipeerConnection;
 
 typedef void (^invitationHandler)(BOOL accept, MCSession *session);
+typedef enum WHPacketMessage : int32_t WHPacketMessage;
 
 @interface WHMultipeerSession : NSObject
+@property (nonatomic, readonly) NSString *peerJid;
+@property (nonatomic, readonly) MCPeerID *peerID;
+@property (nonatomic, readonly) BOOL connected;
+@property (nonatomic, readonly) RACSignal *incomingData;
+
 - (instancetype)initWithRemotePeerID:(MCPeerID *)remotePeer
+                             peerJid:(NSString *)peerJid
                               ownJid:(NSString *)ownJid
                       serviceBrowser:(MCNearbyServiceBrowser *)browser;
+
 - (instancetype)initWithSelf:(MCPeerID *)ownPeer
                       remote:(MCPeerID *)remotePeer
+                     peerJid:(NSString *)ownJid
                   invitation:(invitationHandler)invitation;
 
 - (NSError *)sendData:(NSData *)data;
-- (NSData *)read;
-
-- (void)disconnect;
-- (void)cancel;
-
-@property (nonatomic, readonly) RACSignal *connected;
-@property (nonatomic, readonly) BOOL cancelled;
 @end

@@ -8,39 +8,33 @@
 
 #import "WHMultipeerAdvertiser.h"
 
-#import "WHKeyExchangePeer.h"
+#import "WHMultipeerSession.h"
 
 @interface WHMultipeerAdvertiser () <MCNearbyServiceAdvertiserDelegate>
+@property (nonatomic, strong) NSString *jid;
+@property (nonatomic, strong) NSString *displayName;
+
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCNearbyServiceAdvertiser *advertiser;
-@property (nonatomic, strong) RACSubject *invitations;
-@property (nonatomic, strong) NSString *jid;
+@property (nonatomic, strong) RACSubject *incoming;
 @end
 
 @implementation WHMultipeerAdvertiser
-- (instancetype)initWithJid:(NSString *)jid {
+- (instancetype)initWithJid:(NSString *)jid displayName:(NSString *)displayName {
     if (!(self = [super init])) return self;
-    self.invitations = [RACSubject subject];
+    self.incoming = [RACSubject subject];
     self.jid = jid;
+    self.displayName = displayName;
+    self.peerID = [[MCPeerID alloc] initWithDisplayName:displayName];
     return self;
-}
-
-- (void)setDisplayName:(NSString *)displayName {
-    _displayName = displayName;
-    [self setupAdvertiser];
 }
 
 - (void)setAdvertising:(BOOL)advertising {
     _advertising = advertising;
-    [self setupAdvertiser];
-}
-
-- (void)setupAdvertiser {
     [self.advertiser stopAdvertisingPeer];
     self.advertiser = nil;
     if (!self.advertising) return;
 
-    self.peerID = [[MCPeerID alloc] initWithDisplayName:self.displayName];
     self.advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerID
                                                         discoveryInfo:@{@"jid": self.jid}
                                                           serviceType:@"7x7-whisper"];
@@ -49,7 +43,7 @@
 }
 
 - (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error {
-    [(RACSubject *)self.invitations sendError:error];
+    [(RACSubject *)self.incoming sendError:error];
 }
 
 - (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser
@@ -58,10 +52,10 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
  invitationHandler:(void (^)(BOOL accept, MCSession *session))invitationHandler
 {
     NSString *jid = [[NSString alloc] initWithData:context encoding:NSUTF8StringEncoding];
-    [(RACSubject *)self.invitations sendNext:[[WHKeyExchangePeer alloc] initWithOwnPeerID:self.peerID
-                                                                             remotePeerID:peerID
-                                                                                  peerJid:jid
-                                                                               invitation:invitationHandler]];
+    [(RACSubject *)self.incoming sendNext:[[WHMultipeerSession alloc] initWithSelf:self.peerID
+                                                                            remote:peerID
+                                                                           peerJid:jid
+                                                                        invitation:invitationHandler]];
 }
 
 @end

@@ -16,6 +16,56 @@
 #define kKeyBits @4096
 #endif
 
+static void listKeys(NSString *message) {
+#if 0
+    NSLog(message);
+    NSLog(@"------- Keychain Items ----------");
+    NSMutableDictionary *query = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  (__bridge id)kCFBooleanTrue, (__bridge id)kSecReturnAttributes,
+                                  (__bridge id)kSecMatchLimitAll, (__bridge id)kSecMatchLimit,
+                                  nil];
+
+    NSArray *secItemClasses = [NSArray arrayWithObjects:(__bridge id)kSecClassKey, nil];
+
+    for (id secItemClass in secItemClasses) {
+        NSLog(@"Class: %@", secItemClass);
+        [query setObject:secItemClass forKey:(__bridge id)kSecClass];
+
+        CFTypeRef result = NULL;
+        SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+        NSArray *items = (__bridge_transfer id)result;
+        for (NSDictionary *key in items) {
+            NSString *tag = [[NSString alloc] initWithData:key[@"atag"] encoding:NSUTF8StringEncoding];
+
+            NSMutableDictionary *opt = [NSMutableDictionary dictionary];
+            opt[(__bridge id)kSecClass] = (__bridge id)kSecClassKey;
+            opt[(__bridge id)kSecAttrApplicationTag] = key[@"atag"];
+            opt[(__bridge id)kSecReturnData] = @YES;
+            CFDataRef bits = NULL;
+            OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
+            if (err != errSecSuccess)
+                NSLog(@"Failed getting bits: %d", (int)err);
+            NSData *data = (__bridge_transfer NSData *)bits;
+            NSUInteger bitLength = [data length];
+
+            opt[(__bridge id)kSecReturnData] = @NO;
+            opt[(__bridge id)kSecReturnRef] = @YES;
+
+            SecKeyRef keyRef = NULL;
+            err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyRef);
+            if (err != errSecSuccess)
+                NSLog(@"Failed getting key: %d", (int)err);
+
+            NSLog(@"%@:%@%@",
+                  tag,
+                  bitLength ? [NSString stringWithFormat:@" bits (%d)", (int)bitLength] : @"",
+                  keyRef ? @" key" : @"");
+        }
+    }
+    NSLog(@"------- End Keychain Items ----------");
+#endif
+}
+
 static NSData *tag(NSString *jid, NSString *type) {
     return [[jid stringByAppendingString:type] dataUsingEncoding:NSUTF8StringEncoding];
 }
@@ -58,13 +108,20 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
     if (err != errSecSuccess)
         NSLog(@"Failed getting bits: %d", (int)err);
-    return (__bridge_transfer NSData *)bits;
+    NSData *data = (__bridge_transfer NSData *)bits;
+    NSLog(@"getBits: %@", data);
+    return data;
 }
 
 + (void)deleteKey:(NSDictionary *)opt {
+    listKeys(@"Pre-delete");
+    [(NSMutableDictionary *)opt removeObjectForKey:(__bridge id)kSecAttrAccessible];
+
     OSStatus err = SecItemDelete((__bridge CFDictionaryRef)opt);
     NSAssert(err == errSecSuccess || err == errSecItemNotFound,
              @"Failed to delete existing key: %d", (int)err);
+
+    listKeys(@"Post-delete");
 }
 
 - (void)getKey:(SecKeyRef *)key forJid:(NSString *)jid ofType:(NSString *)type {
@@ -73,6 +130,9 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
     if (err != errSecSuccess) {
         NSLog(@"Failed getting key: %d", (int)err);
         *key = NULL;
+    }
+    else if (!*key) {
+        NSLog(@"Did not get %@ for %@", type, jid);
     }
 }
 
@@ -89,8 +149,8 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 }
 
 + (WHKeyPair *)createKeyPairForJid:(NSString *)jid {
-    [self deleteKeyForJid:jid ofType:@"_public"];
-    [self deleteKeyForJid:jid ofType:@"_private"];
+    WHKeyPair *keyPair = [WHKeyPair getOwnKeyPairForJid:jid];
+    if (keyPair) return keyPair;
 
     NSDictionary *opt = @{
         (__bridge id)kSecAttrIsPermanent: @YES,
@@ -101,7 +161,7 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
         (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAlwaysThisDeviceOnly
     };
 
-    WHKeyPair *keyPair = [WHKeyPair new];
+    keyPair = [WHKeyPair new];
     OSStatus err = SecKeyGeneratePair((__bridge CFDictionaryRef)opt, &keyPair->_publicKey, &keyPair->_privateKey);
     NSAssert(err == errSecSuccess, @"SecKeyGeneratePair failed: %d", (int)err);
     [keyPair getKeyBitsForJid:jid ofType:@"_public"];
@@ -138,11 +198,18 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 + (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid ofType:(NSString *)type {
     [self deleteKeyForJid:jid ofType:type];
 
+    listKeys([NSString stringWithFormat:@"Adding key %@%@", jid, type]);
+
     NSDictionary *opt = rsaDictionary(jid, type, kSecValueData, key);
+    ((NSMutableDictionary *)opt)[(__bridge id)kSecAttrKeyClass] = (__bridge id)kSecAttrKeyClassPublic;
+    NSLog(@"%@", opt);
     WHKeyPair *keyPair = [WHKeyPair new];
-    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyPair->_publicKey);
+    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, NULL);
     NSAssert(err == errSecSuccess, @"Failed to add key to keychain: %d", (int)err);
     keyPair.publicKeyBits = key;
+
+    listKeys(@"Added");
+
     return keyPair;
 }
 
@@ -169,6 +236,7 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 }
 
 + (WHKeyPair *)getGlobalKeyFromJid:(NSString *)jid {
+    listKeys(@"Get global key");
     WHKeyPair *kp = [self getKeyFromJid:jid ofType:@"_global"];
     [kp getSymmetricKeyForJid:jid];
     return kp;

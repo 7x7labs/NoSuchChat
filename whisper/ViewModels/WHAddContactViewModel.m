@@ -10,8 +10,8 @@
 
 #import "Contact.h"
 #import "WHChatClient.h"
-#import "WHPeerList.h"
 #import "WHKeyExchangePeer.h"
+#import "WHMultipeerManager.h"
 
 #import <libextobjc/EXTScope.h>
 #import <net/if.h>
@@ -28,20 +28,20 @@
 @end
 
 @implementation WHPotentialContactViewModel
-- (instancetype)initWithPeer:(WHKeyExchangePeer *)peer jid:(NSString *)jid {
+- (instancetype)initWithPeer:(WHKeyExchangePeer *)peer {
     if (!(self = [super init])) return self;
 
     self.name = peer.name;
-    self.avatarURL = [Contact avatarURLForEmail:peer.peerJid];
+    self.avatarURL = [Contact avatarURLForEmail:peer.jid];
     self.peer = peer;
-    self.jid = jid;
+    self.jid = peer.jid;
 
     return self;
 }
 
 - (RACSignal *)connect {
     self.connecting = YES;
-    return [[[self.peer connectWithJid:self.jid]
+    return [[[self.peer connect]
             deliverOn:[RACScheduler mainThreadScheduler]]
             finally:^{
                 self.connecting = NO;
@@ -51,32 +51,45 @@
 
 @interface WHAddContactViewModel ()
 @property (nonatomic, strong) WHChatClient *client;
-@property (nonatomic, strong) NSArray *contacts;
+@property (nonatomic, strong) NSSet *contactJids;
 
-@property (nonatomic, strong) WHPeerList *peerList;
+@property (nonatomic) NSInteger count;
 @property (nonatomic) BOOL advertising;
+
+@property (nonatomic, strong) WHMultipeerManager *manager;
+@property (nonatomic, strong) NSMutableDictionary *viewModels;
+@property (nonatomic, strong) NSArray *peers;
 @end
 
 @implementation WHAddContactViewModel
-- (instancetype)initWithClient:(WHChatClient *)client contacts:(NSArray *)contacts {
+- (instancetype)initWithClient:(WHChatClient *)client {
     if (!(self = [super init])) return self;
 
     self.client = client;
-    self.contacts = contacts;
+    self.manager = [[WHMultipeerManager alloc] initWithJid:self.client.jid
+                                                      name:self.client.displayName];
+    self.viewModels = [NSMutableDictionary new];
 
-    RAC(self, count) = [RACAble(self, peerList.peers) map:^id(NSArray *peers) {
-        return @([peers count]);
+    RAC(self, contactJids) = [RACAbleWithStart(self.client, contacts) map:^(NSArray *contacts) {
+        return [NSSet setWithArray:[contacts valueForKey:@"jid"]];
     }];
 
     @weakify(self)
-    RAC(self, peerList) = [RACAble(self.client, peerID) map:^id(MCPeerID *peerID) {
-        if (!peerID) return nil;
-        @strongify(self)
-        return [[WHPeerList alloc] initWithOwnPeerID:peerID
-                                         contactJids:[NSSet setWithArray:[self.contacts valueForKey:@"jid"]]];
-    }];
+    RAC(self, peers) = [RACAble(self, manager.peers)
+                        map:^(NSArray *peers) {
+                            return [[peers.rac_sequence
+                                    filter:^BOOL(WHKeyExchangePeer *peer) {
+                                        @strongify(self)
+                                        return ![peer.jid isEqualToString:client.jid] &&
+                                        ![self.contactJids containsObject:peer.jid];
+                                    }]
+                                    array];
+                        }];
+    RAC(self, count) = [[RACAble(self, peers)
+                        map:^id(NSArray *peers) { return @([peers count]); }]
+                        deliverOn:[RACScheduler mainThreadScheduler]];
 
-    RACBind(self.client, advertising) = RACBind(self, advertising);
+    RACBind(self.manager, advertising) = RACBind(self, advertising);
 
 #ifdef DEBUG
     self.advertising = YES;
@@ -107,12 +120,18 @@
 }
 
 - (WHPotentialContactViewModel *)objectAtIndexedSubscript:(NSUInteger)index {
-    return [[WHPotentialContactViewModel alloc] initWithPeer:self.peerList.peers[index]
-                                                         jid:self.client.jid];
+    WHKeyExchangePeer *peer = self.peers[index];
+    if (!self.viewModels[peer.jid])
+        self.viewModels[peer.jid] = [[WHPotentialContactViewModel alloc] initWithPeer:peer];
+    return self.viewModels[peer.jid];
+}
+
+- (RACSignal *)invitations {
+    return self.manager.invitations;
 }
 
 - (void)dealloc {
-    self.client.advertising = NO;
+    self.manager.advertising = NO;
 }
 
 @end

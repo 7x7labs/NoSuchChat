@@ -1,5 +1,6 @@
 platform :ios, '7.0'
 pod 'Expecta', :inhibit_warnings => true
+pod 'Mantle'
 pod 'OCMock'
 pod 'Reachability'
 pod 'ReactiveCocoa'

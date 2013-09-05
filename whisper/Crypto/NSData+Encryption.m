@@ -18,7 +18,7 @@
     return data;
 }
 
-- (NSData *)wh_DoEnryptOrDecrypt:(CCOperation)operation withKey:(NSData *)key iv:(NSData *)iv {
+- (NSData *)wh_DoEnryptOrDecrypt:(CCOperation)operation withKey:(NSData *)key {
     if ([key length] != kCCKeySizeAES256) {
         NSLog(@"Bad key length for AES-256: %u", (unsigned)[key length]);
         return nil;
@@ -29,7 +29,7 @@
     size_t bytesEncrypted = 0;
     CCCryptorStatus err = CCCrypt(operation, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
                                   [key bytes], kCCKeySizeAES256,
-                                  [iv bytes],
+                                  NULL,
                                   [self bytes], [self length],
                                   [encrypted mutableBytes], [encrypted length],
                                   &bytesEncrypted);
@@ -41,19 +41,11 @@
 }
 
 - (NSData *)wh_AES256EncryptWithKey:(NSData *)key {
-    return [self wh_DoEnryptOrDecrypt:kCCEncrypt withKey:key iv:nil];
+    return [self wh_DoEnryptOrDecrypt:kCCEncrypt withKey:key];
 }
 
 - (NSData *)wh_AES256DecryptWithKey:(NSData *)key {
-    return [self wh_DoEnryptOrDecrypt:kCCDecrypt withKey:key iv:nil];
-}
-
-- (NSData *)wh_AES256EncryptWithKey:(NSData *)key iv:(NSData *)iv {
-    return [self wh_DoEnryptOrDecrypt:kCCEncrypt withKey:key iv:iv];
-}
-
-- (NSData *)wh_AES256DecryptWithKey:(NSData *)key iv:(NSData *)iv {
-    return [self wh_DoEnryptOrDecrypt:kCCDecrypt withKey:key iv:iv];
+    return [self wh_DoEnryptOrDecrypt:kCCDecrypt withKey:key];
 }
 
 - (NSData *)wh_encryptWithKey:(SecKeyRef)key {

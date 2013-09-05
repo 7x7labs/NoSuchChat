@@ -18,13 +18,11 @@
 - (void)setStatus:(NSString *)status;
 
 @property (nonatomic, strong) NSString *displayName;
-@property (nonatomic) BOOL advertising;
 
 @property (nonatomic, readonly) NSArray *contacts;
 @property (nonatomic, readonly) NSString *jid;
 @property (nonatomic, readonly) NSString *availability;
 @property (nonatomic, readonly) BOOL connected;
 
-@property (nonatomic, readonly) MCPeerID *peerID;
 @property (nonatomic, readonly) RACSignal *incomingMessages;
 @end
