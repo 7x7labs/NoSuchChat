@@ -17,6 +17,7 @@
 @property (nonatomic) BOOL canSend;
 @property (nonatomic) BOOL online;
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) NSArray *messages;
 
 @property (nonatomic, strong) Contact *contact;
@@ -31,6 +32,7 @@
     self.contact = contact;
     RAC(self, online) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
     RAC(self, title) = RACAbleWithStart(contact, name);
+    RAC(self, jid) = RACAbleWithStart(contact, jid);
 
     RAC(self, canSend) = [RACSignal
                           combineLatest:@[RACAbleWithStart(self, message),

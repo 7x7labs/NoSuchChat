@@ -168,7 +168,7 @@
     NSString *cellIdentifier = [message.incoming boolValue] ? @"IncomingChatCell" : @"OutgoingChatCell";
 
     WHChatTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    [cell setupWithMessage:message userJid:self.client.jid];
+    [cell setupWithMessage:message userJid:self.viewModel.jid];
     
     return cell;
 }
