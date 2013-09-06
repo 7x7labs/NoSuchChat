@@ -29,7 +29,7 @@
 
     self.client = client;
     self.contact = contact;
-    RAC(self, online) = RACAbleWithStart(contact, online);
+    RAC(self, online) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
     RAC(self, title) = RACAbleWithStart(contact, name);
 
     RAC(self, canSend) = [RACSignal

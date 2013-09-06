@@ -86,7 +86,15 @@ static WHCoreData *instance;
 {
     return [instance runWithContext:^(NSManagedObjectContext *context) {
         NSManagedObject *localObject = [context objectWithID:objectID];
-        block(localObject);
+        @try {
+            block(localObject);
+        }
+        @catch (NSException *exception) {
+            if ([exception.name isEqualToString:NSObjectInaccessibleException])
+                NSLog(@"Failed to fufil fault: %@", exception);
+            else
+                @throw;
+        }
         return localObject;
     }];
 }

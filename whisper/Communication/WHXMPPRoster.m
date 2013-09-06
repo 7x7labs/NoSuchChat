@@ -215,15 +215,10 @@
 
     [WHCoreData modifyObject:c withBlock:^(NSManagedObject *obj) {
         Contact *contact = (Contact *)obj;
-        @try {
-            contact.onlineValue = online;
-            NSArray *nick = [presence nodesForXPath:@"//*[namespace-uri()='http://jabber.org/protocol/nick' and local-name()='nick']" error:nil];
-            if ([nick count])
-                contact.name = [contact decryptGlobal:[nick[0] stringValue]];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"Error updating presence for jid %@: %@", jid, exception);
-        }
+        contact.onlineValue = online;
+        NSArray *nick = [presence nodesForXPath:@"//*[namespace-uri()='http://jabber.org/protocol/nick' and local-name()='nick']" error:nil];
+        if ([nick count])
+            contact.name = [contact decryptGlobal:[nick[0] stringValue]];
     }];
 }
 
