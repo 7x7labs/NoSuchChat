@@ -91,7 +91,7 @@
 - (void)sendMessage {
     [[self.viewModel send]
      subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error description]];
+         [WHAlert alertWithError:error];
      }];
 }
 

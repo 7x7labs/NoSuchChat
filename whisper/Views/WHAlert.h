@@ -7,6 +7,6 @@
 //
 
 @interface WHAlert : NSObject
-+ (void)alertWithMessage:(NSString *)message;
-+ (RACSignal *)alertWithMessage:(NSString *)message buttons:(NSArray *)buttons;
++ (void)alertWithError:(NSError *)error;
++ (RACSignal *)alertWithMessage:(NSString *)message title:(NSString *)title buttons:(NSArray *)buttons;
 @end

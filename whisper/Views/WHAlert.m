@@ -13,20 +13,20 @@
 @end
 
 @implementation WHAlert
-+ (void)alertWithMessage:(NSString *)message {
++ (void)alertWithError:(NSError *)error {
      [[[UIAlertView alloc] initWithTitle:nil
-                                 message:message
+                                 message:[error localizedDescription]
                                 delegate:nil
                        cancelButtonTitle:@"OK"
                        otherButtonTitles:nil] show];
 }
 
-+ (RACSignal *)alertWithMessage:(NSString *)message buttons:(NSArray *)buttons {
++ (RACSignal *)alertWithMessage:(NSString *)message title:(NSString *)title buttons:(NSArray *)buttons {
     // ReactiveCocoa 2.0 adds support for UIAlertView, so this dumb code can
     // go away once that's done.
     WHAlert *delegate = [self new];
     delegate.result = [RACSubject new];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:delegate
                                           cancelButtonTitle:nil

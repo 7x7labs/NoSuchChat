@@ -91,7 +91,7 @@
     [[[(WHAddContactTableViewCell *)[tableView cellForRowAtIndexPath:indexPath] connect]
      deliverOn:[RACScheduler mainThreadScheduler]]
      subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error localizedDescription]];
+         [WHAlert alertWithError:error];
      }];
 }
 

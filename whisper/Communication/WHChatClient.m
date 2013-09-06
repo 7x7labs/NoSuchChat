@@ -67,10 +67,10 @@
     @weakify(self)
     [[[self.advertiser.invitations
        flattenMap:^(WHKeyExchangePeer *peer) {
-           NSString *message = [NSString stringWithFormat:@"Connect to user \"%@\"?", peer.name];
            return [RACSignal zip:@[[RACSignal return:peer],
-                                   [WHAlert alertWithMessage:message
-                                                     buttons:@[@"Yes", @"No"]]]];
+                                   [WHAlert alertWithMessage:@"Add this user to your contacts?"
+                                                       title:peer.name
+                                                     buttons:@[@"No", @"Yes"]]]];
        }]
        flattenMap:^(RACTuple *result) {
            RACTupleUnpack(WHKeyExchangePeer *peer, NSNumber *button) = result;
@@ -84,7 +84,7 @@
            }
        }]
        subscribeError:^(NSError *error) {
-           [WHAlert alertWithMessage:[error localizedDescription]];
+           [WHAlert alertWithError:error];
        }];
 
     self.cancelSignal = [RACSubject subject];
@@ -140,7 +140,7 @@
                                                  username:account.jid
                                                  password:account.password];
     [connectSignal subscribeError:^(NSError *error) {
-         [WHAlert alertWithMessage:[error localizedDescription]];
+         [WHAlert alertWithError:error];
     }];
 
     [self.xmpp.roster setShow:@""];
