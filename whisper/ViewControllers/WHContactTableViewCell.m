@@ -17,7 +17,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatar;
 @property (weak, nonatomic) IBOutlet UILabel *name;
-@property (weak, nonatomic) IBOutlet UILabel *status;
+@property (weak, nonatomic) IBOutlet UIImageView *status;
 @property (weak, nonatomic) IBOutlet UILabel *unreadCount;
 @end
 
@@ -31,9 +31,11 @@
     if (bind) {
         [self.avatar rac_liftSelector:@selector(setImageWithURL:)
                           withObjects:RACAbleWithStart(self, viewModel.gravatarURL)];
-        RACBind(self.name, text) = RACBind(self, viewModel.displayName);
-        RACBind(self.status, text) = RACBind(self, viewModel.status);
-        RACBind(self.unreadCount, text) = RACBind(self, viewModel.unreadCount);
+
+        RACBind(self.name, text)          = RACBind(self, viewModel.displayName);
+        RACBind(self.name, highlighted)   = RACBind(self, viewModel.status);
+        RACBind(self.status, highlighted) = RACBind(self, viewModel.status);
+        RACBind(self.unreadCount, text)   = RACBind(self, viewModel.unreadCount);
     }
 }
 @end

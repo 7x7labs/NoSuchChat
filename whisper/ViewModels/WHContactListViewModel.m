@@ -13,7 +13,7 @@
 
 @interface WHContactRowViewModel ()
 @property (nonatomic, strong) NSString *displayName;
-@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSNumber *status;
 @property (nonatomic, strong) NSString *gravatarURL;
 @property (nonatomic, strong) NSString *unreadCount;
 @end
@@ -24,9 +24,7 @@
 
     // Note: one-way bindings since that's all that makes sense at the moment
     RAC(self, displayName) = RACAbleWithStart(contact, name);
-    RAC(self, status)      = [RACAbleWithStart(contact, online) map:^id(NSNumber *value) {
-        return [value boolValue] ? @"ONLINE" : @"OFFLINE";
-    }];
+    RAC(self, status) = RACAbleWithStart(contact, online);
     RAC(self, gravatarURL) = [RACAbleWithStart(contact, jid) map:^id(NSString *jid) {
         return jid ? [Contact avatarURLForEmail:jid] : nil;
     }];

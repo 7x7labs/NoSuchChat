@@ -56,10 +56,10 @@
     self.bubbleImage.frameWidth = self.messageLabel.frameWidth + 35;
     
     if ([self incoming]) {
-        self.bubbleImage.image = [[UIImage imageNamed:@"BubbleLeft"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
+        self.bubbleImage.image = [[UIImage imageNamed:@"bubble-left"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
     }
     else {
-        self.bubbleImage.image = [[UIImage imageNamed:@"BubbleRight"] stretchableImageWithLeftCapWidth:15 topCapHeight:15];
+        self.bubbleImage.image = [[UIImage imageNamed:@"bubble-right"] stretchableImageWithLeftCapWidth:15 topCapHeight:15];
         
         int defaultBubbleX = 272;
         self.bubbleImage.frameX = defaultBubbleX - self.bubbleImage.frameWidth;
