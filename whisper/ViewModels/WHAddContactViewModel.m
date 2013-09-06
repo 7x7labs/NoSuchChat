@@ -14,13 +14,9 @@
 #import "WHKeyExchangePeer.h"
 
 #import <libextobjc/EXTScope.h>
-#import <Reachability/Reachability.h>
-
-#ifdef DEBUG
-#define ALLOW_WIFI 1
-#else
-#define ALLOW_WIFI 0
-#endif
+#import <net/if.h>
+#import <sys/ioctl.h>
+#import <sys/socket.h>
 
 @interface WHPotentialContactViewModel ()
 @property (nonatomic, strong) NSString *name;
@@ -58,7 +54,6 @@
 @property (nonatomic, strong) NSArray *contacts;
 
 @property (nonatomic, strong) WHPeerList *peerList;
-@property (nonatomic, strong) Reachability *reach;
 @property (nonatomic) BOOL advertising;
 @end
 
@@ -83,21 +78,30 @@
 
     RACBind(self.client, advertising) = RACBind(self, advertising);
 
-    self.reach = [Reachability reachabilityForLocalWiFi];
-    self.reach.reachableOnWWAN = NO;
+#ifdef DEBUG
+    self.advertising = YES;
+#else
+    RAC(self, advertising) = [[[[[RACSignal return:RACUnit.defaultUnit]
+                              concat:[RACSignal interval:1]]
+                              map:^id(id _) {
+                                  int sock = socket(PF_INET, SOCK_DGRAM, 0);
+                                  if (sock == -1) {
+                                      NSLog(@"Failed to open socket for ifflags %d: %s",
+                                            errno, strerror(errno));
+                                      return @YES;
+                                  }
 
-    self.reach.reachableBlock = ^(Reachability *_) {
-        @strongify(self);
-        self.advertising = ALLOW_WIFI;
-    };
+                                  @onExit { close(sock); };
 
-    self.reach.unreachableBlock = ^(Reachability *_) {
-        @strongify(self)
-        self.advertising = YES;
-    };
-
-    [self.reach startNotifier];
-    self.advertising = ALLOW_WIFI || ![self.reach isReachableViaWiFi];
+                                  // SIOCSIFFLAGS seems to always set IFF_RUNNING,
+                                  // but this seems to always fail iff wifi is
+                                  // disabled and updates instantly
+                                  struct ifreq ifr = { .ifr_name = "en0" };
+                                  return @(ioctl(sock, SIOCGIFADDR, &ifr) != 0);
+                              }]
+                              distinctUntilChanged]
+                              deliverOn:[RACScheduler mainThreadScheduler]];
+#endif
 
     return self;
 }
