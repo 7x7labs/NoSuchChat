@@ -15,7 +15,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface WHChatTableViewCell ()
-@property (weak, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (weak, nonatomic) IBOutlet UIImageView *bubbleImage;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
@@ -44,12 +43,9 @@
 
 - (void)populateControls
 {
-    NSURL *avatarURL = [Contact avatarURLForEmail:self.jid];
-    [self.avatarImage setImageWithURL:avatarURL];
-
     self.messageLabel.text = self.text;
-    self.timestampLabel.text = [self formatDate:self.message.sent];
-
+    self.timestampLabel.attributedText = [self formatTimestamp:self.message.sent];
+    
     self.messageLabel.frameWidth = 240;
     [self.messageLabel sizeToFit];
     
@@ -61,22 +57,32 @@
     else {
         self.bubbleImage.image = [[UIImage imageNamed:@"bubble-right"] stretchableImageWithLeftCapWidth:15 topCapHeight:15];
         
-        int defaultBubbleX = 272;
+        int defaultBubbleX = 310;
         self.bubbleImage.frameX = defaultBubbleX - self.bubbleImage.frameWidth;
         self.messageLabel.frameX = defaultBubbleX - self.messageLabel.frameWidth - 21;
     }
 }
 
-- (NSString *)formatDate:(NSDate *)date
+- (NSAttributedString *)formatTimestamp:(NSDate *)date
 {
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"h:mma MMM d"];
-    
-    NSString *dateString;
-    dateString = [dateFormat stringFromDate:date];
-    dateString = [dateString lowercaseString];
-    
-    return dateString;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+
+    [formatter setDateFormat:@"MMM d "];
+    NSString *dayString = [formatter stringFromDate:date];
+    UIFont *dayFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:11.0];
+    NSAttributedString *dayAttr = [[NSAttributedString alloc] initWithString:dayString
+                                                                  attributes:@{NSFontAttributeName : dayFont}];
+
+    [formatter setDateFormat:@"h:mma"];
+    NSString *timeString = [[formatter stringFromDate:date] lowercaseString];
+    UIFont *timeFont = [UIFont fontWithName:@"HelveticaNeue" size:11.0];
+    NSAttributedString *timeAttr = [[NSAttributedString alloc] initWithString:timeString
+                                                                   attributes:@{NSFontAttributeName : timeFont}];
+
+    NSMutableAttributedString *result = [dayAttr mutableCopy];
+    [result appendAttributedString:timeAttr];
+
+    return result;
 }
 
 #pragma clang diagnostic push
@@ -89,7 +95,7 @@
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:15.0];
     CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(240, 1000) lineBreakMode:NSLineBreakByWordWrapping];
     
-    int padding = 28;
+    int padding = 38;
     int height = size.height + padding;
     
     return height;
