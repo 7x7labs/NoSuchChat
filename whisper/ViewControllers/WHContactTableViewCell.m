@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UIImageView *status;
 @property (weak, nonatomic) IBOutlet UILabel *unreadCount;
+@property (weak, nonatomic) IBOutlet UIImageView *unreadBadge;
 @end
 
 @implementation WHContactTableViewCell
@@ -36,6 +37,11 @@
         RACBind(self.name, highlighted)   = RACBind(self, viewModel.status);
         RACBind(self.status, highlighted) = RACBind(self, viewModel.status);
         RACBind(self.unreadCount, text)   = RACBind(self, viewModel.unreadCount);
+        
+        [RACAbleWithStart(self.viewModel.unreadCount) subscribeNext:^(NSString *count) {
+            self.unreadBadge.hidden = [count length] == 0;
+            NSLog(@"count=%@", count);
+        }];
     }
 }
 @end

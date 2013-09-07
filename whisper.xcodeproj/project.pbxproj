@@ -110,6 +110,8 @@
 		3FBCCD8D17CEF65200731107 /* WHChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */; };
 		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
+		A92782FB17DBC997008A70A2 /* WHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A92782FA17DBC997008A70A2 /* WHTextField.m */; };
+		A92782FC17DBC997008A70A2 /* WHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A92782FA17DBC997008A70A2 /* WHTextField.m */; };
 		A955092017CE97C60088780D /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = A955091F17CE97C60088780D /* UIView+Position.m */; };
 		A955092117CE97C60088780D /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = A955091F17CE97C60088780D /* UIView+Position.m */; };
 		A978068F17D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */; };
@@ -226,6 +228,8 @@
 		3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatViewModel.m; path = ViewModels/WHChatViewModel.m; sourceTree = "<group>"; };
 		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
 		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
+		A92782F917DBC997008A70A2 /* WHTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHTextField.h; path = Views/WHTextField.h; sourceTree = "<group>"; };
+		A92782FA17DBC997008A70A2 /* WHTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHTextField.m; path = Views/WHTextField.m; sourceTree = "<group>"; };
 		A955091E17CE97C60088780D /* UIView+Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Position.h"; path = "Vendor/UIView+Position.h"; sourceTree = "<group>"; };
 		A955091F17CE97C60088780D /* UIView+Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Position.m"; path = "Vendor/UIView+Position.m"; sourceTree = "<group>"; };
 		A978068D17D7F71400DB12B3 /* WHAddContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAddContactTableViewCell.h; path = ViewControllers/WHAddContactTableViewCell.h; sourceTree = "<group>"; };
@@ -514,6 +518,8 @@
 				3F4709DF17AC150A007A1DF7 /* WHAlert.m */,
 				3FE4839217A828D600E7938E /* WHCheckList.h */,
 				3FE4839317A828D600E7938E /* WHCheckList.m */,
+				A92782F917DBC997008A70A2 /* WHTextField.h */,
+				A92782FA17DBC997008A70A2 /* WHTextField.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -797,6 +803,7 @@
 				A955092117CE97C60088780D /* UIView+Position.m in Sources */,
 				3F77025B17BA9F3F00EF5C50 /* WHAccount.m in Sources */,
 				A978069017D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */,
+				A92782FC17DBC997008A70A2 /* WHTextField.m in Sources */,
 				3F77025C17BA9F3F00EF5C50 /* WHAddContactViewController.m in Sources */,
 				3F63EF4417D7FD52009898E1 /* WHAddContactViewModel.m in Sources */,
 				3F77025D17BA9F3F00EF5C50 /* WHAlert.m in Sources */,
@@ -845,6 +852,7 @@
 				A955092017CE97C60088780D /* UIView+Position.m in Sources */,
 				3F8EB18C1796E639009F938D /* WHAccount.m in Sources */,
 				A978068F17D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */,
+				A92782FB17DBC997008A70A2 /* WHTextField.m in Sources */,
 				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
 				3F63EF4317D7FD52009898E1 /* WHAddContactViewModel.m in Sources */,
 				3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */,
@@ -1011,7 +1019,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = whisper;
+				PRODUCT_NAME = "NS Chat";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;

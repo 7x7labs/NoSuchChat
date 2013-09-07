@@ -69,13 +69,13 @@
 
     [formatter setDateFormat:@"MMM d "];
     NSString *dayString = [formatter stringFromDate:date];
-    UIFont *dayFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:11.0];
+    UIFont *dayFont = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11.0];
     NSAttributedString *dayAttr = [[NSAttributedString alloc] initWithString:dayString
                                                                   attributes:@{NSFontAttributeName : dayFont}];
 
     [formatter setDateFormat:@"h:mma"];
     NSString *timeString = [[formatter stringFromDate:date] lowercaseString];
-    UIFont *timeFont = [UIFont fontWithName:@"HelveticaNeue" size:11.0];
+    UIFont *timeFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:11.0];
     NSAttributedString *timeAttr = [[NSAttributedString alloc] initWithString:timeString
                                                                    attributes:@{NSFontAttributeName : timeFont}];
 
@@ -92,7 +92,7 @@
 + (CGFloat)calculateHeight:(Message *)message
 {
     NSString *text = message.text ?: @"";
-    UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:15.0];
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0];
     CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(240, 1000) lineBreakMode:NSLineBreakByWordWrapping];
     
     int padding = 38;
