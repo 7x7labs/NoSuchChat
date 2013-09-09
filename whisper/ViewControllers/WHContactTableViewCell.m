@@ -38,10 +38,11 @@
         RACBind(self.status, highlighted) = RACBind(self, viewModel.status);
         RACBind(self.unreadCount, text)   = RACBind(self, viewModel.unreadCount);
         
-        [RACAbleWithStart(self.viewModel.unreadCount) subscribeNext:^(NSString *count) {
-            self.unreadBadge.hidden = [count length] == 0;
-            NSLog(@"count=%@", count);
-        }];
+        RAC(self.unreadBadge, hidden) = [[RACAbleWithStart(self, viewModel.unreadCount)
+                                         doNext:^(NSString *count) {
+                                             NSLog(@"count=%@", count);
+                                         }]
+                                         not];
     }
 }
 @end
