@@ -38,7 +38,7 @@
         NSLog(@"Unsupported packet version %@", packet);
         return nil;
     }
-    if (![[packet.data sha256] isEqualToData:packet.checksum]) {
+    if ((packet.data || packet.checksum) && ![[packet.data sha256] isEqualToData:packet.checksum]) {
         NSAssert(NO, @"WHPacket checksum failed");
         return nil;
     }

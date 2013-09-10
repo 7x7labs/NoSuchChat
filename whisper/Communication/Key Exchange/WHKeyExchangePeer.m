@@ -178,7 +178,14 @@
 
 - (void)send:(NSData *)data message:(WHPacketMessage)message {
     ++self.keyIterations;
-    if (message != WHPMSendDhKey) {
+    if (message == WHPMSendDhKey) {
+        data = [WHMultipeerPacket serialize:data
+                                    message:message
+                                senderKeyId:[[self.outgoingKeys lastObject] ourKeyId]
+                              receiverKeyId:[[self.incomingKeys lastObject] theirKeyId]
+                              keyIterations:self.keyIterations];
+    }
+    else if (data) {
         int32_t ourKeyId = [[self.outgoingKeys firstObject] ourKeyId];
         int32_t theirKeyId = [[self.incomingKeys lastObject] theirKeyId];
         WHDiffieHellman *dh = [self combinedForOurId:ourKeyId theirId:theirKeyId];
@@ -189,11 +196,7 @@
                               keyIterations:self.keyIterations];
     }
     else {
-        data = [WHMultipeerPacket serialize:data
-                                    message:message
-                                senderKeyId:[[self.outgoingKeys lastObject] ourKeyId]
-                              receiverKeyId:[[self.incomingKeys lastObject] theirKeyId]
-                              keyIterations:self.keyIterations];
+        data = [WHMultipeerPacket serialize:data message:message senderKeyId:0 receiverKeyId:0 keyIterations:0];
     }
 
     @weakify(self)
@@ -243,15 +246,15 @@
 
 - (void)maybeConnect {
     if ([self.incomingKeys count] && [self.outgoingKeys count]) {
-        [self send:[NSData data] message:WHPMRequestGlobalPublicKey];
-        [self send:[NSData data] message:WHPMRequestPublicKey];
-        [self send:[NSData data] message:WHPMRequestSymmetricKey];
+        [self send:nil message:WHPMRequestGlobalPublicKey];
+        [self send:nil message:WHPMRequestPublicKey];
+        [self send:nil message:WHPMRequestSymmetricKey];
     }
 }
 
 - (void)reject {
     NSLog(@"%p: Rejecting %@", self, self.jid);
-    [self send:[NSData data] message:WHPMReject];
+    [self send:nil message:WHPMReject];
     [self cleanup];
 }
 
