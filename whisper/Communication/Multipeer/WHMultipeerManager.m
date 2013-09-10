@@ -43,6 +43,7 @@
     @weakify(self)
     RAC(self, peers) = [[[RACSignal merge:@[self.advertiser.incoming, self.browser.peers]]
                         flattenMap:^RACStream *(WHMultipeerSession *session) {
+                            @strongify(self) // RACAble captures self even when observing something else
                             NSLog(@"Initiating session with %@ %@", session.peerJid, session.peerID);
                             return [RACAbleWithStart(session, connected) mapReplace:session];
                         }]
