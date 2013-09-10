@@ -36,11 +36,13 @@
 
     RAC(self, canSend) = [RACSignal
                           combineLatest:@[RACAbleWithStart(self, message),
-                                          RACAbleWithStart(self, client.connected)]
-                          reduce:^(NSString *text, NSNumber *connected) {
+                                          RACAbleWithStart(self, client.connected),
+                                          RACAbleWithStart(self, jid)]
+                          reduce:^(NSString *text, NSNumber *connected, NSString *jid) {
                               return @([connected boolValue] &&
                                        [text length] > 0 &&
-                                       [text rangeOfString:@"\uFFFC"].location == NSNotFound);
+                                       [text rangeOfString:@"\uFFFC"].location == NSNotFound &&
+                                       jid);
                           }];
     NSArray *sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"sent"
                                                              ascending:YES]];
