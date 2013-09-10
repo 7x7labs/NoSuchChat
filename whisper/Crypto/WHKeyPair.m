@@ -16,51 +16,48 @@
 #define kKeyBits @4096
 #endif
 
+#define KEY_LOGGING 0
+
 static void listKeys(NSString *message) {
-#if 0
-    NSLog(message);
+#if KEY_LOGGING
+    NSLog(@"%@", message);
     NSLog(@"------- Keychain Items ----------");
     NSMutableDictionary *query = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                   (__bridge id)kCFBooleanTrue, (__bridge id)kSecReturnAttributes,
                                   (__bridge id)kSecMatchLimitAll, (__bridge id)kSecMatchLimit,
+                                  (__bridge id)kSecClass, (__bridge id)kSecClassKey,
                                   nil];
 
-    NSArray *secItemClasses = [NSArray arrayWithObjects:(__bridge id)kSecClassKey, nil];
+    CFTypeRef result = NULL;
+    SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+    NSArray *items = (__bridge_transfer id)result;
 
-    for (id secItemClass in secItemClasses) {
-        NSLog(@"Class: %@", secItemClass);
-        [query setObject:secItemClass forKey:(__bridge id)kSecClass];
+    for (NSDictionary *key in items) {
+        NSString *tag = [[NSString alloc] initWithData:key[@"atag"] encoding:NSUTF8StringEncoding];
 
-        CFTypeRef result = NULL;
-        SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
-        NSArray *items = (__bridge_transfer id)result;
-        for (NSDictionary *key in items) {
-            NSString *tag = [[NSString alloc] initWithData:key[@"atag"] encoding:NSUTF8StringEncoding];
+        NSMutableDictionary *opt = [@{(__bridge id)kSecClass: (__bridge id)kSecClassKey,
+                                      (__bridge id)kSecAttrApplicationTag: key[@"atag"],
+                                      (__bridge id)kSecReturnData: @YES,
+                                      } mutableCopy];
+        CFDataRef bits = NULL;
+        OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
+        if (err != errSecSuccess)
+            NSLog(@"Failed getting bits: %d", (int)err);
+        NSData *data = (__bridge_transfer NSData *)bits;
+        NSUInteger bitLength = [data length];
 
-            NSMutableDictionary *opt = [NSMutableDictionary dictionary];
-            opt[(__bridge id)kSecClass] = (__bridge id)kSecClassKey;
-            opt[(__bridge id)kSecAttrApplicationTag] = key[@"atag"];
-            opt[(__bridge id)kSecReturnData] = @YES;
-            CFDataRef bits = NULL;
-            OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
-            if (err != errSecSuccess)
-                NSLog(@"Failed getting bits: %d", (int)err);
-            NSData *data = (__bridge_transfer NSData *)bits;
-            NSUInteger bitLength = [data length];
+        opt[(__bridge id)kSecReturnData] = @NO;
+        opt[(__bridge id)kSecReturnRef] = @YES;
 
-            opt[(__bridge id)kSecReturnData] = @NO;
-            opt[(__bridge id)kSecReturnRef] = @YES;
+        SecKeyRef keyRef = NULL;
+        err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyRef);
+        if (err != errSecSuccess)
+            NSLog(@"Failed getting key: %d", (int)err);
 
-            SecKeyRef keyRef = NULL;
-            err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&keyRef);
-            if (err != errSecSuccess)
-                NSLog(@"Failed getting key: %d", (int)err);
-
-            NSLog(@"%@:%@%@",
-                  tag,
-                  bitLength ? [NSString stringWithFormat:@" bits (%d)", (int)bitLength] : @"",
-                  keyRef ? @" key" : @"");
-        }
+        NSLog(@"%@:%@%@",
+              tag,
+              bitLength ? [NSString stringWithFormat:@" bits (%d)", (int)bitLength] : @"",
+              keyRef ? @" key" : @"");
     }
     NSLog(@"------- End Keychain Items ----------");
 #endif
@@ -108,9 +105,7 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)&bits);
     if (err != errSecSuccess)
         NSLog(@"Failed getting bits: %d", (int)err);
-    NSData *data = (__bridge_transfer NSData *)bits;
-    NSLog(@"getBits: %@", data);
-    return data;
+    return (__bridge_transfer NSData *)bits;
 }
 
 + (void)deleteKey:(NSDictionary *)opt {
@@ -202,7 +197,9 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 
     NSDictionary *opt = rsaDictionary(jid, type, kSecValueData, key);
     ((NSMutableDictionary *)opt)[(__bridge id)kSecAttrKeyClass] = (__bridge id)kSecAttrKeyClassPublic;
+#if KEY_LOGGING
     NSLog(@"%@", opt);
+#endif
     WHKeyPair *keyPair = [WHKeyPair new];
     OSStatus err = SecItemAdd((__bridge CFDictionaryRef)opt, NULL);
     NSAssert(err == errSecSuccess, @"Failed to add key to keychain: %d", (int)err);
