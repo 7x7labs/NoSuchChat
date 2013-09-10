@@ -126,6 +126,12 @@
     return self.viewModels[peer.jid];
 }
 
+- (WHPotentialContactViewModel *)viewModelForPeer:(WHKeyExchangePeer *)peer {
+    if (!self.viewModels[peer.jid])
+        self.viewModels[peer.jid] = [[WHPotentialContactViewModel alloc] initWithPeer:peer];
+    return self.viewModels[peer.jid];
+}
+
 - (RACSignal *)invitations {
     return self.manager.invitations;
 }

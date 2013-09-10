@@ -61,7 +61,8 @@
              return [RACSignal empty];
          }
          else {
-             return [peer connect];
+             @strongify(self)
+             return [[self.viewModel viewModelForPeer:peer] connect];
          }
      }]
      subscribeError:^(NSError *error) {

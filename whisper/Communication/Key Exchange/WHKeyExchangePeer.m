@@ -38,7 +38,6 @@
     self = [super init];
 
     self.sessions = [NSMutableDictionary new];
-    self.connection = [RACReplaySubject replaySubjectWithCapacity:1];
 
     self.incomingKeys = @[];
     self.outgoingKeys = @[];
@@ -268,6 +267,7 @@
 
 - (RACSignal *)connect {
     NSLog(@"%p: Beginning key exchange with %@", self, self.jid);
+    self.connection = [RACReplaySubject replaySubjectWithCapacity:1];
     self.outgoingKeys = [self.outgoingKeys arrayByAddingObject:[WHDiffieHellman createOutgoing]];
     [self send:[[self.outgoingKeys lastObject] publicKey] message:WHPMSendDhKey];
     [self maybeConnect];

@@ -7,6 +7,7 @@
 //
 
 @class WHChatClient;
+@class WHKeyExchangePeer;
 
 @interface WHPotentialContactViewModel : NSObject
 @property (nonatomic, readonly) NSString *name;
@@ -23,4 +24,5 @@
 
 - (instancetype)initWithClient:(WHChatClient *)client;
 - (WHPotentialContactViewModel *)objectAtIndexedSubscript:(NSUInteger)index;
+- (WHPotentialContactViewModel *)viewModelForPeer:(WHKeyExchangePeer *)peer;
 @end
