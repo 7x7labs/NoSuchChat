@@ -42,7 +42,7 @@
                                          doNext:^(NSString *count) {
                                              NSLog(@"count=%@", count);
                                          }]
-                                         not];
+                                         map:^(NSString *value) { return @([value length] == 0); }];
     }
 }
 @end

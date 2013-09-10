@@ -24,7 +24,7 @@
 
     // Note: one-way bindings since that's all that makes sense at the moment
     RAC(self, displayName) = RACAbleWithStart(contact, name);
-    RAC(self, status) = RACAbleWithStart(contact, online);
+    RAC(self, status) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
     RAC(self, gravatarURL) = [RACAbleWithStart(contact, jid) map:^id(NSString *jid) {
         return jid ? [Contact avatarURLForEmail:jid] : nil;
     }];
