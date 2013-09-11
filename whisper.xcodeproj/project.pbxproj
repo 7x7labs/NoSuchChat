@@ -11,7 +11,6 @@
 		3F09CFB917DE0DD40024EC1A /* WHMultipeerPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CFB717DE0DD40024EC1A /* WHMultipeerPacket.m */; };
 		3F09CFBC17DE10FD0024EC1A /* WHMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CFBB17DE10FD0024EC1A /* WHMultipeerManager.m */; };
 		3F09CFBD17DE10FD0024EC1A /* WHMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CFBB17DE10FD0024EC1A /* WHMultipeerManager.m */; };
-		3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F26B4AA17A023460075E1DB /* keyExchangeTests.m */; };
 		3F3BEC6A17CBE59700F4D41A /* WHDiffieHellman.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */; };
 		3F3BEC6B17CBE59700F4D41A /* WHDiffieHellman.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */; };
 		3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4709DF17AC150A007A1DF7 /* WHAlert.m */; };
@@ -143,7 +142,6 @@
 		3F09CFBB17DE10FD0024EC1A /* WHMultipeerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHMultipeerManager.m; path = Communication/Multipeer/WHMultipeerManager.m; sourceTree = "<group>"; };
 		3F0E9A2A17D7AC3F003D13E0 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		3F1CFB2C17D66C96005F5300 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
-		3F26B4AA17A023460075E1DB /* keyExchangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyExchangeTests.m; sourceTree = "<group>"; };
 		3F3BEC6817CBE59700F4D41A /* WHDiffieHellman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHDiffieHellman.h; path = Crypto/WHDiffieHellman.h; sourceTree = "<group>"; };
 		3F3BEC6917CBE59700F4D41A /* WHDiffieHellman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHDiffieHellman.m; path = Crypto/WHDiffieHellman.m; sourceTree = "<group>"; };
 		3F4709DE17AC150A007A1DF7 /* WHAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAlert.h; path = Views/WHAlert.h; sourceTree = "<group>"; };
@@ -506,7 +504,6 @@
 			children = (
 				3FA0C61E178CFDA1007E6ECC /* Supporting Files */,
 				3FBA8D01179CD6D20059E61B /* cryptoTests.m */,
-				3F26B4AA17A023460075E1DB /* keyExchangeTests.m */,
 				3FA0C623178CFDA1007E6ECC /* whisperTests.m */,
 			);
 			path = whisperTests;
@@ -904,7 +901,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */,
-				3F26B4AB17A023460075E1DB /* keyExchangeTests.m in Sources */,
 				3FA0C624178CFDA1007E6ECC /* whisperTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
