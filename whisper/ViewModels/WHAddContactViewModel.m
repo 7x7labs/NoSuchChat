@@ -80,8 +80,8 @@
                             return [[peers.rac_sequence
                                     filter:^BOOL(WHKeyExchangePeer *peer) {
                                         @strongify(self)
-                                        return ![peer.jid isEqualToString:client.jid] &&
-                                        ![self.contactJids containsObject:peer.jid];
+                                        return ![peer.jid isEqualToString:client.jid]
+                                            && ![self.contactJids containsObject:peer.jid];
                                     }]
                                     array];
                         }];
