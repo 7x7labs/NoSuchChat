@@ -11,7 +11,7 @@
 @class WHMultipeerSession;
 
 @interface WHMultipeerBrowser : NSObject
-- (instancetype)initWithPeer:(MCPeerID *)peerID jid:(NSString *)ownJid;
+- (instancetype)initWithDisplayName:(NSString *)displayName jid:(NSString *)ownJid;
 - (void)startBrowsing;
 
 @property (nonatomic, readonly) RACSignal *peers;

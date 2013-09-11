@@ -34,7 +34,7 @@
     self.jid = jid;
     self.displayName = displayName;
     self.advertiser = [[WHMultipeerAdvertiser alloc] initWithJid:jid displayName:displayName];
-    self.browser = [[WHMultipeerBrowser alloc] initWithPeer:self.advertiser.peerID jid:jid];
+    self.browser = [[WHMultipeerBrowser alloc] initWithDisplayName:displayName jid:jid];
     self.keyexPeers = [NSMutableDictionary new];
 
     RACSubject *invitations = [RACSubject subject];

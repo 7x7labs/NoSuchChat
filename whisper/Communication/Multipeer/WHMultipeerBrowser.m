@@ -21,12 +21,12 @@
     [self.browser stopBrowsingForPeers];
 }
 
-- (instancetype)initWithPeer:(MCPeerID *)peerID jid:(NSString *)ownJid {
+- (instancetype)initWithDisplayName:(NSString *)displayName jid:(NSString *)ownJid {
     if (!(self = [super init])) return self;
 
     self.ownJid = ownJid;
     self.peers = [RACSubject subject];
-    self.browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peerID
+    self.browser = [[MCNearbyServiceBrowser alloc] initWithPeer:[[MCPeerID alloc] initWithDisplayName:displayName]
                                                     serviceType:@"7x7-whisper"];
     self.browser.delegate = self;
 
