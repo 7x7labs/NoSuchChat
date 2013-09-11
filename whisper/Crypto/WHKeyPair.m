@@ -25,7 +25,7 @@ static void listKeys(NSString *message) {
     NSMutableDictionary *query = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                   (__bridge id)kCFBooleanTrue, (__bridge id)kSecReturnAttributes,
                                   (__bridge id)kSecMatchLimitAll, (__bridge id)kSecMatchLimit,
-                                  (__bridge id)kSecClass, (__bridge id)kSecClassKey,
+                                  (__bridge id)kSecClassKey, (__bridge id)kSecClass,
                                   nil];
 
     CFTypeRef result = NULL;
