@@ -44,9 +44,7 @@
             }];
         }];
         
-        RAC(self.unreadBadge, hidden) = [[RACAbleWithStart(self, viewModel.unreadCount)
-                                         doNext:^(NSString *count) {
-                                         }]
+        RAC(self.unreadBadge, hidden) = [RACAbleWithStart(self, viewModel.unreadCount)
                                          map:^(NSString *value) { return @([value length] == 0); }];
     }
 }
