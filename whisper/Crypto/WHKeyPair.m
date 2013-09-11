@@ -45,6 +45,10 @@ static void listKeys(NSString *message) {
             NSLog(@"Failed getting bits: %d", (int)err);
         NSData *data = (__bridge_transfer NSData *)bits;
         NSUInteger bitLength = [data length];
+        if (!bitLength) {
+            NSLog(@"%@: could not read bits", tag);
+            continue;
+        }
 
         opt[(__bridge id)kSecReturnData] = @NO;
         opt[(__bridge id)kSecReturnRef] = @YES;
@@ -120,10 +124,15 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 }
 
 - (void)getKey:(SecKeyRef *)key forJid:(NSString *)jid ofType:(NSString *)type {
+    if (![[self getBits:rsaDictionary(jid, type, kSecReturnData, @YES)] length]) {
+        NSLog(@"Got no data when reading key %@%@", jid, type);
+        return;
+    }
+
     NSDictionary *opt = rsaDictionary(jid, type, kSecReturnRef, @YES);
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)opt, (CFTypeRef *)key);
     if (err != errSecSuccess) {
-        NSLog(@"Failed getting key: %d", (int)err);
+        NSLog(@"Failed getting key %@%@: %d", jid, type, (int)err);
         *key = NULL;
     }
     else if (!*key) {
