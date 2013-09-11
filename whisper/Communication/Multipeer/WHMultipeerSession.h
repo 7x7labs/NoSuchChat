@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-@class RACSignal;
-@class WHMultipeerConnection;
+@class WHMultipeerAdvertiser;
 
 typedef void (^invitationHandler)(BOOL accept, MCSession *session);
 typedef enum WHPacketMessage : int32_t WHPacketMessage;
@@ -26,7 +25,8 @@ typedef enum WHPacketMessage : int32_t WHPacketMessage;
 - (instancetype)initWithSelf:(MCPeerID *)ownPeer
                       remote:(MCPeerID *)remotePeer
                      peerJid:(NSString *)ownJid
-                  invitation:(invitationHandler)invitation;
+                  invitation:(invitationHandler)invitation
+                  advertiser:(WHMultipeerAdvertiser *)advertiser;
 
 - (NSError *)sendData:(NSData *)data;
 @end

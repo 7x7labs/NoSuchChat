@@ -8,12 +8,14 @@
 
 #import "WHMultipeerSession.h"
 
+#import "WHMultipeerAdvertiser.h"
 #import "WHMultipeerPacket.h"
 
 @interface WHMultipeerSession () <MCSessionDelegate>
 @property (nonatomic, strong) NSString *peerJid;
 @property (nonatomic) BOOL connected;
 @property (nonatomic, strong) RACReplaySubject *incomingData;
+@property (nonatomic, weak) WHMultipeerAdvertiser *advertiser;
 
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCSession *session;
@@ -51,10 +53,12 @@
 
 - (instancetype)initWithSelf:(MCPeerID *)ownPeer
                       remote:(MCPeerID *)remotePeer
-                      peerJid:(NSString *)peerJid
+                     peerJid:(NSString *)peerJid
                   invitation:(invitationHandler)invitation
+                  advertiser:(WHMultipeerAdvertiser *)advertiser
 {
     if (!(self = [self initWithSelf:ownPeer remote:remotePeer jid:peerJid])) return self;
+    self.advertiser = advertiser;
     invitation(YES, self.session);
     return self;
 }
@@ -77,6 +81,8 @@
         case MCSessionStateConnecting:
             break;
         case MCSessionStateNotConnected:
+            if (self.connected)
+                self.advertiser.advertising = self.advertiser.advertising;
             self.connected = NO;
             break;
     }

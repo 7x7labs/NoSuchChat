@@ -55,7 +55,8 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
     [(RACSubject *)self.incoming sendNext:[[WHMultipeerSession alloc] initWithSelf:self.peerID
                                                                             remote:peerID
                                                                            peerJid:jid
-                                                                        invitation:invitationHandler]];
+                                                                        invitation:invitationHandler
+                                                                        advertiser:self]];
 }
 
 @end
