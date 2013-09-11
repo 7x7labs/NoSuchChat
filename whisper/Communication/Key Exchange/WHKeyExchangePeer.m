@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSData *symmetricKey;
 
 @property (nonatomic, strong) NSMutableArray *bufferedPackets;
+@property (nonatomic) BOOL complete;
 @end
 
 @implementation WHKeyExchangePeer
@@ -249,8 +250,10 @@
     if (!self.publicKey) return;
     if (!self.globalPublicKey) return;
     if (!self.symmetricKey) return;
+    if (self.complete) return;
 
     NSLog(@"%p: Got all keys", self);
+    self.complete = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"%p: Adding keys", self);
         [WHKeyPair addGlobalKey:self.globalPublicKey fromJid:self.jid];
@@ -266,7 +269,7 @@
 }
 
 - (void)maybeConnect {
-    if ([self.incomingKeys count] && [self.outgoingKeys count]) {
+    if (!self.complete && [self.incomingKeys count] && [self.outgoingKeys count]) {
         [self send:nil message:WHPMRequestGlobalPublicKey];
         [self send:nil message:WHPMRequestPublicKey];
         [self send:nil message:WHPMRequestSymmetricKey];
