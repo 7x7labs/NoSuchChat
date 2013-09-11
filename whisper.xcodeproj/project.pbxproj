@@ -118,8 +118,8 @@
 		A978069017D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */; };
 		A9789FF417CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */; };
 		A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */; };
-		A9CD953217DBFD5A00D01F9C /* UIImage+Inversion.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CD953117DBFD5A00D01F9C /* UIImage+Inversion.m */; };
-		A9CD953317DBFD5A00D01F9C /* UIImage+Inversion.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CD953117DBFD5A00D01F9C /* UIImage+Inversion.m */; };
+		A98834EC17E0D72400426BF9 /* UIImage+Inversion.m in Sources */ = {isa = PBXBuildFile; fileRef = A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */; };
+		A98834ED17E0D72400426BF9 /* UIImage+Inversion.m in Sources */ = {isa = PBXBuildFile; fileRef = A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */; };
 		A9E0827817D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
 		A9E0827917D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
 /* End PBXBuildFile section */
@@ -205,7 +205,7 @@
 		3F8EB1A21798DC8C009F938D /* WHKeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyPair.h; path = Crypto/WHKeyPair.h; sourceTree = "<group>"; };
 		3F8EB1A31798DC8C009F938D /* WHKeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyPair.m; path = Crypto/WHKeyPair.m; sourceTree = "<group>"; };
 		3F94B76517B07BA600B1B3B9 /* hostname.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hostname.m; sourceTree = "<group>"; };
-		3FA0C5F5178CFDA1007E6ECC /* whisper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whisper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NS Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -217,7 +217,7 @@
 		3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHAppDelegate.m; sourceTree = "<group>"; };
 		3FA0C60B178CFDA1007E6ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3FA0C610178CFDA1007E6ECC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3FA0C616178CFDA1007E6ECC /* whisper.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = whisper.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C616178CFDA1007E6ECC /* NS Chat.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NS Chat.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C617178CFDA1007E6ECC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "whisperTests-Info.plist"; sourceTree = "<group>"; };
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -238,8 +238,8 @@
 		A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAddContactTableViewCell.m; path = ViewControllers/WHAddContactTableViewCell.m; sourceTree = "<group>"; };
 		A9789FF217CFBB6F00B55CFC /* WHChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatTableViewCell.h; path = ViewControllers/WHChatTableViewCell.h; sourceTree = "<group>"; };
 		A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatTableViewCell.m; path = ViewControllers/WHChatTableViewCell.m; sourceTree = "<group>"; };
-		A9CD953017DBFD5A00D01F9C /* UIImage+Inversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Inversion.h"; path = "Vendor/UIImage+Inversion.h"; sourceTree = "<group>"; };
-		A9CD953117DBFD5A00D01F9C /* UIImage+Inversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Inversion.m"; path = "Vendor/UIImage+Inversion.m"; sourceTree = "<group>"; };
+		A98834EA17E0D72400426BF9 /* UIImage+Inversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Inversion.h"; path = "Vendor/UIImage+Inversion.h"; sourceTree = "<group>"; };
+		A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Inversion.m"; path = "Vendor/UIImage+Inversion.m"; sourceTree = "<group>"; };
 		A9E0827617D03B2D002409E6 /* WHWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHWelcomeViewController.h; path = ViewControllers/WHWelcomeViewController.h; sourceTree = "<group>"; };
 		A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHWelcomeViewController.m; path = ViewControllers/WHWelcomeViewController.m; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -435,8 +435,8 @@
 			isa = PBXGroup;
 			children = (
 				3F77029517BA9F3F00EF5C50 /* NS Chat.app */,
-				3FA0C5F5178CFDA1007E6ECC /* whisper.app */,
-				3FA0C616178CFDA1007E6ECC /* whisper.octest */,
+				3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */,
+				3FA0C616178CFDA1007E6ECC /* NS Chat.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -531,8 +531,8 @@
 		A955091D17CE97850088780D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				A9CD953017DBFD5A00D01F9C /* UIImage+Inversion.h */,
-				A9CD953117DBFD5A00D01F9C /* UIImage+Inversion.m */,
+				A98834EA17E0D72400426BF9 /* UIImage+Inversion.h */,
+				A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */,
 				A955091E17CE97C60088780D /* UIView+Position.h */,
 				A955091F17CE97C60088780D /* UIView+Position.m */,
 			);
@@ -581,7 +581,7 @@
 			);
 			name = "whisper - localhost";
 			productName = whisper;
-			productReference = 3FA0C5F5178CFDA1007E6ECC /* whisper.app */;
+			productReference = 3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3FA0C615178CFDA1007E6ECC /* whisperTests */ = {
@@ -599,7 +599,7 @@
 			);
 			name = whisperTests;
 			productName = whisperTests;
-			productReference = 3FA0C616178CFDA1007E6ECC /* whisper.octest */;
+			productReference = 3FA0C616178CFDA1007E6ECC /* NS Chat.octest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -818,7 +818,6 @@
 				A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F77026017BA9F3F00EF5C50 /* WHChatViewController.m in Sources */,
 				3FBCCD8D17CEF65200731107 /* WHChatViewModel.m in Sources */,
-				A9CD953317DBFD5A00D01F9C /* UIImage+Inversion.m in Sources */,
 				3F77026117BA9F3F00EF5C50 /* WHCheckList.m in Sources */,
 				3F8707C917D01AA1001D70F0 /* WHContactListViewModel.m in Sources */,
 				3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */,
@@ -826,6 +825,7 @@
 				3F77026317BA9F3F00EF5C50 /* WHCoreData.m in Sources */,
 				3F77026417BA9F3F00EF5C50 /* WHCrypto.m in Sources */,
 				3F3BEC6B17CBE59700F4D41A /* WHDiffieHellman.m in Sources */,
+				A98834ED17E0D72400426BF9 /* UIImage+Inversion.m in Sources */,
 				3F77026517BA9F3F00EF5C50 /* WHError.m in Sources */,
 				3F77026617BA9F3F00EF5C50 /* WHKeyExchangePeer.m in Sources */,
 				3F77026717BA9F3F00EF5C50 /* WHKeyPair.m in Sources */,
@@ -868,7 +868,6 @@
 				A9789FF417CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3FBCCD8C17CEF65200731107 /* WHChatViewModel.m in Sources */,
-				A9CD953217DBFD5A00D01F9C /* UIImage+Inversion.m in Sources */,
 				3FE4839417A828D600E7938E /* WHCheckList.m in Sources */,
 				3F8707C817D01AA1001D70F0 /* WHContactListViewModel.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
@@ -876,6 +875,7 @@
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
 				3F8EB1981798424C009F938D /* WHCrypto.m in Sources */,
 				3F3BEC6A17CBE59700F4D41A /* WHDiffieHellman.m in Sources */,
+				A98834EC17E0D72400426BF9 /* UIImage+Inversion.m in Sources */,
 				3FB2968817AC34D600D24E0D /* WHError.m in Sources */,
 				3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */,
 				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,
@@ -1058,6 +1058,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "NS Chat";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1084,7 +1085,6 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "whisper/whisper-Info.plist";
 				LLVM_LTO = NO;
-				PRODUCT_NAME = whisper;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
@@ -1111,7 +1111,6 @@
 				INFOPLIST_FILE = "whisper/whisper-Info.plist";
 				LLVM_LTO = YES;
 				LLVM_VECTORIZE_LOOPS = YES;
-				PRODUCT_NAME = whisper;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
@@ -1134,7 +1133,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
-				PRODUCT_NAME = whisper;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1152,7 +1150,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "whisper/whisper-Prefix.pch";
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
-				PRODUCT_NAME = whisper;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
