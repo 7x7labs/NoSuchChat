@@ -46,6 +46,8 @@
       foundPeer:(MCPeerID *)peerID
 withDiscoveryInfo:(NSDictionary *)info
 {
+    if ([self.ownJid isEqual:info[@"jid"]]) return;
+
     [(RACSubject *)self.peers sendNext:[[WHMultipeerSession alloc] initWithRemotePeerID:peerID
                                                                                 peerJid:info[@"jid"]
                                                                                  ownJid:self.ownJid

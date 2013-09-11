@@ -219,7 +219,7 @@
      }
      completed:^{
          @strongify(self)
-         NSLog(@"%p: Completed send", self);
+         NSLog(@"%p: Completed send of %d", self, message);
      }];
 }
 

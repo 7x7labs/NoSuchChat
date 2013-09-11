@@ -52,6 +52,7 @@ didReceiveInvitationFromPeer:(MCPeerID *)peerID
  invitationHandler:(void (^)(BOOL accept, MCSession *session))invitationHandler
 {
     NSString *jid = [[NSString alloc] initWithData:context encoding:NSUTF8StringEncoding];
+    if ([self.jid isEqualToString:jid]) return;
     [(RACSubject *)self.incoming sendNext:[[WHMultipeerSession alloc] initWithSelf:self.peerID
                                                                             remote:peerID
                                                                            peerJid:jid
