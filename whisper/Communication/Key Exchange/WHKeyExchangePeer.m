@@ -263,6 +263,9 @@
     self.incomingKeys = @[];
     self.outgoingKeys = @[];
     self.combinedKeys = @[];
+    self.publicKey = nil;
+    self.globalPublicKey = nil;
+    self.symmetricKey = nil;
 }
 
 - (RACSignal *)connect {
