@@ -31,6 +31,8 @@
 @property (nonatomic, strong) NSData *publicKey;
 @property (nonatomic, strong) NSData *globalPublicKey;
 @property (nonatomic, strong) NSData *symmetricKey;
+
+@property (nonatomic, strong) NSMutableArray *bufferedPackets;
 @end
 
 @implementation WHKeyExchangePeer
@@ -42,6 +44,8 @@
     self.incomingKeys = @[];
     self.outgoingKeys = @[];
     self.combinedKeys = @[];
+
+    self.bufferedPackets = [NSMutableArray array];
 
     return self;
 }
@@ -62,7 +66,18 @@
 
 - (void)receive:(NSData *)data {
     WHMultipeerPacket *packet = [WHMultipeerPacket deserialize:data];
-    if (!packet) return;
+    if (packet)
+        [self process:packet];
+}
+
+- (void)process:(WHMultipeerPacket *)packet {
+    // MCSessionSendDataReliable claims to guarantee in-order deliver, but that
+    // isn't actually true so we may sometimes get a packet that uses a key
+    // before we receive the key.
+    if (packet.message > WHPMReject && packet.senderKeyId > [[self.incomingKeys lastObject] theirKeyId]) {
+        [self.bufferedPackets addObject:packet];
+        return;
+    }
 
     switch (packet.message) {
         case WHPMSendDhKey:
@@ -78,6 +93,14 @@
             else {
                 self.wantsToConnect = YES;
             }
+
+            if ([self.bufferedPackets count]) {
+                NSArray *packets = self.bufferedPackets;
+                self.bufferedPackets = [NSMutableArray array];
+                for (WHMultipeerPacket *bufferedPacket in packets)
+                    [self process:bufferedPacket];
+            }
+
             break;
 
         case WHPMReject: {
