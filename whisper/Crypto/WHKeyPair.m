@@ -200,6 +200,10 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 }
 
 + (WHKeyPair *)addKey:(NSData *)key fromJid:(NSString *)jid ofType:(NSString *)type {
+    if (![key length]) {
+        NSLog(@"Trying to add invalid key for %@%@", jid, type);
+        [NSException raise:@"com.7x7labs.whisper.badkey" format:@"Cannot add empty key for %@%@", jid, type];
+    }
     [self deleteKeyForJid:jid ofType:type];
 
     listKeys([NSString stringWithFormat:@"Adding key %@%@", jid, type]);
