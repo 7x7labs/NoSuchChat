@@ -203,7 +203,7 @@
 		3F8EB1A21798DC8C009F938D /* WHKeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyPair.h; path = Crypto/WHKeyPair.h; sourceTree = "<group>"; };
 		3F8EB1A31798DC8C009F938D /* WHKeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyPair.m; path = Crypto/WHKeyPair.m; sourceTree = "<group>"; };
 		3F94B76517B07BA600B1B3B9 /* hostname.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hostname.m; sourceTree = "<group>"; };
-		3FA0C5F5178CFDA1007E6ECC /* .app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = .app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NS Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -215,7 +215,7 @@
 		3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHAppDelegate.m; sourceTree = "<group>"; };
 		3FA0C60B178CFDA1007E6ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3FA0C610178CFDA1007E6ECC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3FA0C616178CFDA1007E6ECC /* whisper.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = whisper.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C616178CFDA1007E6ECC /* NS Chat.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NS Chat.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C617178CFDA1007E6ECC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "whisperTests-Info.plist"; sourceTree = "<group>"; };
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -431,8 +431,8 @@
 			isa = PBXGroup;
 			children = (
 				3F77029517BA9F3F00EF5C50 /* NS Chat.app */,
-				3FA0C5F5178CFDA1007E6ECC /* .app */,
-				3FA0C616178CFDA1007E6ECC /* whisper.octest */,
+				3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */,
+				3FA0C616178CFDA1007E6ECC /* NS Chat.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -575,7 +575,7 @@
 			);
 			name = "whisper - localhost";
 			productName = whisper;
-			productReference = 3FA0C5F5178CFDA1007E6ECC /* .app */;
+			productReference = 3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3FA0C615178CFDA1007E6ECC /* whisperTests */ = {
@@ -593,7 +593,7 @@
 			);
 			name = whisperTests;
 			productName = whisperTests;
-			productReference = 3FA0C616178CFDA1007E6ECC /* whisper.octest */;
+			productReference = 3FA0C616178CFDA1007E6ECC /* NS Chat.octest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
