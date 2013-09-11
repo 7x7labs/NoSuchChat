@@ -49,7 +49,24 @@
     self.messageLabel.frameWidth = 240;
     [self.messageLabel sizeToFit];
     
-    self.bubbleImage.frameWidth = self.messageLabel.frameWidth + 35;
+
+    
+    
+    
+    
+    
+    int w = self.messageLabel.frameWidth + 35;
+    if (w<100) w = 100;
+    
+    
+    
+    
+    self.bubbleImage.frameWidth = w;
+    
+    
+    
+    
+    
     
     if ([self incoming]) {
         self.bubbleImage.image = [[UIImage imageNamed:@"bubble-left"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
@@ -95,7 +112,7 @@
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0];
     CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(240, 1000) lineBreakMode:NSLineBreakByWordWrapping];
     
-    int padding = 38;
+    int padding = 48;
     int height = size.height + padding;
     
     return height;

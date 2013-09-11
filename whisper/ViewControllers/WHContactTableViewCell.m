@@ -10,6 +10,8 @@
 
 #import "WHContactListViewModel.h"
 
+#import "UIImage+Inversion.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface WHContactTableViewCell ()
@@ -30,17 +32,20 @@
     // Only set up the bindings once since they continue to work as the view
     // model changes
     if (bind) {
-        [self.avatar rac_liftSelector:@selector(setImageWithURL:)
-                          withObjects:RACAbleWithStart(self, viewModel.gravatarURL)];
 
         RACBind(self.name, text)          = RACBind(self, viewModel.displayName);
         RACBind(self.name, highlighted)   = RACBind(self, viewModel.status);
         RACBind(self.status, highlighted) = RACBind(self, viewModel.status);
         RACBind(self.unreadCount, text)   = RACBind(self, viewModel.unreadCount);
+
+        [RACAbleWithStart(self.viewModel.gravatarURL) subscribeNext:^(NSURL *url) {
+            [self.avatar setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                self.avatar.image = [UIImage invert:image];
+            }];
+        }];
         
         [RACAbleWithStart(self.viewModel.unreadCount) subscribeNext:^(NSString *count) {
             self.unreadBadge.hidden = [count length] == 0;
-            NSLog(@"count=%@", count);
         }];
     }
 }
