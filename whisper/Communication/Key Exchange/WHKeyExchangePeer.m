@@ -87,8 +87,7 @@
                 // We've sent a key, but they don't have it, so resend it
                 if (packet.receiverKeyId == 0)
                     [self send:[[self.outgoingKeys lastObject] publicKey] message:WHPMSendDhKey];
-                else
-                    [self maybeConnect];
+                [self maybeConnect];
             }
             else {
                 self.wantsToConnect = YES;
