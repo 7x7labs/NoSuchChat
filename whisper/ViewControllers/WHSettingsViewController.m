@@ -8,6 +8,7 @@
 
 #import "WHSettingsViewController.h"
 
+#import "WHAlert.h"
 #import "WHSettingsViewModel.h"
 
 #import <libextobjc/EXTScope.h>
@@ -49,10 +50,14 @@
 }
 
 - (IBAction)reset {
-    [self.viewModel deleteAll];
-    UINavigationController *nc = self.navigationController;
-    [nc popViewControllerAnimated:NO];
-    [nc popViewControllerAnimated:NO];
+    [[WHAlert alertWithMessage:@"Are you sure you want to delete all stuff" title:nil buttons:@[@"Cancel", @"Nuke"]]
+     subscribeNext:^(NSNumber *button) {
+         if ([button intValue] != 1) return;
+         [self.viewModel deleteAll];
+         UINavigationController *nc = self.navigationController;
+         [nc popViewControllerAnimated:NO];
+         [nc popViewControllerAnimated:NO];
+     }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
