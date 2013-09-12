@@ -13,7 +13,7 @@
 @property (nonatomic, readonly) BOOL canSend;
 @property (nonatomic, readonly) BOOL online;
 @property (nonatomic, readonly) NSString *title;
-@property (nonatomic, readonly) NSString *jid;
+@property (nonatomic, readonly) NSString *userJid;
 @property (nonatomic, readonly) NSArray *messages;
 @property (nonatomic, strong) NSString *message;
 

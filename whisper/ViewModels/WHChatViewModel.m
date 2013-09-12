@@ -17,7 +17,7 @@
 @property (nonatomic) BOOL canSend;
 @property (nonatomic) BOOL online;
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *jid;
+@property (nonatomic, strong) NSString *userJid;
 @property (nonatomic, strong) NSArray *messages;
 
 @property (nonatomic, strong) Contact *contact;
@@ -32,17 +32,17 @@
     self.contact = contact;
     RAC(self, online) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
     RAC(self, title) = RACAbleWithStart(contact, name);
-    RAC(self, jid) = RACAbleWithStart(contact, jid);
+    RAC(self, userJid) = RACAbleWithStart(self.client, jid);
 
     RAC(self, canSend) = [RACSignal
                           combineLatest:@[RACAbleWithStart(self, message),
                                           RACAbleWithStart(self, client.connected),
-                                          RACAbleWithStart(self, jid)]
-                          reduce:^(NSString *text, NSNumber *connected, NSString *jid) {
+                                          RACAbleWithStart(self, title)]
+                          reduce:^(NSString *text, NSNumber *connected, NSString *title) {
                               return @([connected boolValue] &&
                                        [text length] > 0 &&
                                        [text rangeOfString:@"\uFFFC"].location == NSNotFound &&
-                                       jid);
+                                       title);
                           }];
     NSArray *sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"sent"
                                                              ascending:YES]];
