@@ -8,7 +8,6 @@
 
 #import "WHSettingsViewController.h"
 
-#import "WHCheckList.h"
 #import "WHSettingsViewModel.h"
 
 #import <libextobjc/EXTScope.h>

@@ -43,7 +43,6 @@
 		3F77025E17BA9F3F00EF5C50 /* WHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */; };
 		3F77025F17BA9F3F00EF5C50 /* WHChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB18F1796FB7E009F938D /* WHChatClient.m */; };
 		3F77026017BA9F3F00EF5C50 /* WHChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1BA31795CBCF0089B129 /* WHChatViewController.m */; };
-		3F77026117BA9F3F00EF5C50 /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B921794DD200089B129 /* WHContactsViewController.m */; };
 		3F77026317BA9F3F00EF5C50 /* WHCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D1B891794A12E0089B129 /* WHCoreData.m */; };
 		3F77026417BA9F3F00EF5C50 /* WHCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EB1971798424C009F938D /* WHCrypto.m */; };
@@ -111,7 +110,6 @@
 		3FBA8D02179CD6D20059E61B /* cryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA8D01179CD6D20059E61B /* cryptoTests.m */; };
 		3FBCCD8C17CEF65200731107 /* WHChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */; };
 		3FBCCD8D17CEF65200731107 /* WHChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */; };
-		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
 		A91BAF0E17E1356800701503 /* IGIdenticon.m in Sources */ = {isa = PBXBuildFile; fileRef = A91BAF0D17E1356800701503 /* IGIdenticon.m */; };
 		A91BAF0F17E1356800701503 /* IGIdenticon.m in Sources */ = {isa = PBXBuildFile; fileRef = A91BAF0D17E1356800701503 /* IGIdenticon.m */; };
@@ -236,8 +234,6 @@
 		3FBA8D01179CD6D20059E61B /* cryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cryptoTests.m; sourceTree = "<group>"; };
 		3FBCCD8A17CEF65200731107 /* WHChatViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatViewModel.h; path = ViewModels/WHChatViewModel.h; sourceTree = "<group>"; };
 		3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatViewModel.m; path = ViewModels/WHChatViewModel.m; sourceTree = "<group>"; };
-		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
-		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
 		A91BAF0C17E1356800701503 /* IGIdenticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IGIdenticon.h; path = Vendor/IGIdenticon.h; sourceTree = "<group>"; };
 		A91BAF0D17E1356800701503 /* IGIdenticon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IGIdenticon.m; path = Vendor/IGIdenticon.m; sourceTree = "<group>"; };
 		A91BAF1017E13B7F00701503 /* WHAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAvatar.h; path = Views/WHAvatar.h; sourceTree = "<group>"; };
@@ -535,8 +531,6 @@
 				3F4709DF17AC150A007A1DF7 /* WHAlert.m */,
 				A91BAF1017E13B7F00701503 /* WHAvatar.h */,
 				A91BAF1117E13B7F00701503 /* WHAvatar.m */,
-				3FE4839217A828D600E7938E /* WHCheckList.h */,
-				3FE4839317A828D600E7938E /* WHCheckList.m */,
 				A92782F917DBC997008A70A2 /* WHTextField.h */,
 				A92782FA17DBC997008A70A2 /* WHTextField.m */,
 			);
@@ -834,7 +828,6 @@
 				A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F77026017BA9F3F00EF5C50 /* WHChatViewController.m in Sources */,
 				3FBCCD8D17CEF65200731107 /* WHChatViewModel.m in Sources */,
-				3F77026117BA9F3F00EF5C50 /* WHCheckList.m in Sources */,
 				3F8707C917D01AA1001D70F0 /* WHContactListViewModel.m in Sources */,
 				3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */,
 				3F8707CD17D03D01001D70F0 /* WHContactTableViewCell.m in Sources */,
@@ -887,7 +880,6 @@
 				A9789FF417CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */,
 				3F8D1BA41795CBCF0089B129 /* WHChatViewController.m in Sources */,
 				3FBCCD8C17CEF65200731107 /* WHChatViewModel.m in Sources */,
-				3FE4839417A828D600E7938E /* WHCheckList.m in Sources */,
 				3F8707C817D01AA1001D70F0 /* WHContactListViewModel.m in Sources */,
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8707CC17D03D01001D70F0 /* WHContactTableViewCell.m in Sources */,
