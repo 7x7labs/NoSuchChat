@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSData *globalPublicKey;
 @property (nonatomic, strong) NSData *symmetricKey;
 
+@property (nonatomic, strong) dispatch_queue_t keyCreationQueue;
 @property (nonatomic, strong) NSMutableArray *bufferedPackets;
 @property (nonatomic) BOOL complete;
 @end
@@ -46,6 +47,7 @@
     self.outgoingKeys = @[];
     self.combinedKeys = @[];
 
+    self.keyCreationQueue = dispatch_queue_create("Public key creation queue", 0);
     self.bufferedPackets = [NSMutableArray array];
 
     return self;
@@ -118,11 +120,14 @@
                message:WHPMSendGlobalPublicKey];
             break;
 
-        case WHPMRequestPublicKey:
+        case WHPMRequestPublicKey: {
             NSLog(@"%p: Got request for our public key", self);
-            [self send:[WHKeyPair createKeyPairForJid:self.jid].publicKeyBits
-               message:WHPMSendPublicKey];
+            dispatch_async(self.keyCreationQueue, ^{
+                [self send:[WHKeyPair createKeyPairForJid:self.jid].publicKeyBits
+                   message:WHPMSendPublicKey];
+            });
             break;
+        }
 
         case WHPMRequestSymmetricKey:
             NSLog(@"%p: Got request for our symmetric key", self);
@@ -303,6 +308,7 @@
     self.outgoingKeys = [self.outgoingKeys arrayByAddingObject:[WHDiffieHellman createOutgoing]];
     [self send:[[self.outgoingKeys lastObject] publicKey] message:WHPMSendDhKey];
     [self maybeConnect];
+    dispatch_async(self.keyCreationQueue, ^{ [WHKeyPair createKeyPairForJid:self.jid]; });
     return self.connection;
 }
 
