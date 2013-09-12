@@ -19,6 +19,8 @@
 		3F50C62217A56B8100DC76C1 /* WHXMPPRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F50C62117A56B8100DC76C1 /* WHXMPPRoster.m */; };
 		3F5F3C2C17E20C2400A43334 /* WHWelcomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5F3C2B17E20C2400A43334 /* WHWelcomeViewModel.m */; };
 		3F5F3C2D17E20C2400A43334 /* WHWelcomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5F3C2B17E20C2400A43334 /* WHWelcomeViewModel.m */; };
+		3F5F3C2F17E2647000A43334 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5F3C2E17E2647000A43334 /* CoreImage.framework */; };
+		3F5F3C3017E2647900A43334 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5F3C2E17E2647000A43334 /* CoreImage.framework */; };
 		3F5FCDA417999FC30075D3F0 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */; };
 		3F5FCDA61799A1F40075D3F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5FCDA51799A1F40075D3F0 /* libz.dylib */; };
 		3F5FCDA9179AD19B0075D3F0 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FCDA8179AD19B0075D3F0 /* NSData+Encryption.m */; };
@@ -156,6 +158,7 @@
 		3F50C62117A56B8100DC76C1 /* WHXMPPRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHXMPPRoster.m; path = Communication/WHXMPPRoster.m; sourceTree = "<group>"; };
 		3F5F3C2A17E20C2400A43334 /* WHWelcomeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHWelcomeViewModel.h; path = ViewModels/WHWelcomeViewModel.h; sourceTree = "<group>"; };
 		3F5F3C2B17E20C2400A43334 /* WHWelcomeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHWelcomeViewModel.m; path = ViewModels/WHWelcomeViewModel.m; sourceTree = "<group>"; };
+		3F5F3C2E17E2647000A43334 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		3F5FCDA217999FC20075D3F0 /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Compression.h"; path = "Crypto/NSData+Compression.h"; sourceTree = "<group>"; };
 		3F5FCDA317999FC20075D3F0 /* NSData+Compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Compression.m"; path = "Crypto/NSData+Compression.m"; sourceTree = "<group>"; };
 		3F5FCDA51799A1F40075D3F0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -259,6 +262,7 @@
 			files = (
 				3F77028417BA9F3F00EF5C50 /* CoreData.framework in Frameworks */,
 				3F77028517BA9F3F00EF5C50 /* CoreGraphics.framework in Frameworks */,
+				3F5F3C2F17E2647000A43334 /* CoreImage.framework in Frameworks */,
 				3F77028617BA9F3F00EF5C50 /* Foundation.framework in Frameworks */,
 				3F77028817BA9F3F00EF5C50 /* libPods.a in Frameworks */,
 				3F77028917BA9F3F00EF5C50 /* libresolv.dylib in Frameworks */,
@@ -274,6 +278,7 @@
 			files = (
 				3F8D1B8D1794A6690089B129 /* CoreData.framework in Frameworks */,
 				3FA0C5FB178CFDA1007E6ECC /* CoreGraphics.framework in Frameworks */,
+				3F5F3C3017E2647900A43334 /* CoreImage.framework in Frameworks */,
 				3FA0C5F9178CFDA1007E6ECC /* Foundation.framework in Frameworks */,
 				595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */,
 				3F7127D4178F0D6F00835DD2 /* libresolv.dylib in Frameworks */,
@@ -456,6 +461,7 @@
 			children = (
 				3F8D1B8C1794A6690089B129 /* CoreData.framework */,
 				3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */,
+				3F5F3C2E17E2647000A43334 /* CoreImage.framework */,
 				3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */,
 				D4B7E38D9F734B8398B629FC /* libPods.a */,
 				3F7127D3178F0D6F00835DD2 /* libresolv.dylib */,
