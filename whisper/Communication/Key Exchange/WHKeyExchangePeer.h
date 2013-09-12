@@ -6,24 +6,21 @@
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
-@class WHMultipeerBrowser;
-
-typedef void (^invitationHandler)(BOOL accept, MCSession *session);
+@class WHMultipeerManager;
+@class WHMultipeerSession;
 
 @interface WHKeyExchangePeer : NSObject
-@property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSString *peerJid;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *jid;
+@property (nonatomic, readonly) BOOL wantsToConnect;
 
-- (RACSignal *)connectWithJid:(NSString *)jid;
+- (RACSignal *)connect;
 - (void)reject;
+@end
 
-- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
-                     remotePeerID:(MCPeerID *)remotePeerID
-                          peerJid:(NSString *)peerJid
-                          browser:(WHMultipeerBrowser *)browser;
+@interface WHKeyExchangePeer (Manager)
+@property (nonatomic, readonly) BOOL hasSessions;
 
-- (instancetype)initWithOwnPeerID:(MCPeerID *)ownPeerID
-                     remotePeerID:(MCPeerID *)remotePeerID
-                          peerJid:(NSString *)peerJid
-                    invitation:(invitationHandler)invitation;
+- (void)addSession:(WHMultipeerSession *)session;
+- (void)removeSession:(WHMultipeerSession *)session;
 @end

@@ -7,10 +7,15 @@
 //
 
 @interface WHDiffieHellman : NSObject
+@property (nonatomic, readonly) int32_t ourKeyId;
+@property (nonatomic, readonly) int32_t theirKeyId;
 @property (nonatomic, readonly) NSData *publicKey;
 
-- (void)setOtherPublic:(NSData *)otherPublic;
++ (WHDiffieHellman *)createOutgoing;
++ (WHDiffieHellman *)createIncomingWithKey:(NSData *)keyData keyId:(int32_t)keyId;
 
-- (NSData *)encrypt:(NSData *)data;
-- (NSData *)decrypt:(NSData *)data;
+- (WHDiffieHellman *)combineWith:(WHDiffieHellman *)other;
+
+- (NSData *)encrypt:(NSData *)data iterations:(uint32_t)iteration;
+- (NSData *)decrypt:(NSData *)data iterations:(uint32_t)iteration;
 @end

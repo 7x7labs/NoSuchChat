@@ -50,8 +50,6 @@
         [dest setContact:self.sequeContact];
     if ([dest respondsToSelector:@selector(setClient:)])
         [dest setClient:self.client];
-    if ([dest respondsToSelector:@selector(setContacts:)])
-        [dest setContacts:self.client.contacts];
 }
 
 - (void)showChatWithJid:(NSString *)jid {

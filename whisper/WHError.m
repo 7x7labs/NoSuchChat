@@ -14,8 +14,4 @@
                             code:0
                         userInfo:@{NSLocalizedDescriptionKey: description}];
 }
-
-+ (RACSignal *)errorSignalWithDescription:(NSString *)description {
-    return [RACSignal error:[self errorWithDescription:description]];
-}
 @end

@@ -35,8 +35,7 @@
         RACBind(self.status, highlighted) = RACBind(self, viewModel.status);
         RACBind(self.unreadCount, text)   = RACBind(self, viewModel.unreadCount);
         
-        RAC(self.unreadBadge, hidden) = [[RACAbleWithStart(self, viewModel.unreadCount)
-                                         doNext:^(NSString *count) {}]
+        RAC(self.unreadBadge, hidden) = [RACAbleWithStart(self, viewModel.unreadCount)
                                          map:^(NSString *value) { return @([value length] == 0); }];
     }
 }

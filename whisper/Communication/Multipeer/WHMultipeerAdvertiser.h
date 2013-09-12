@@ -7,11 +7,10 @@
 //
 
 @interface WHMultipeerAdvertiser : NSObject
-@property (nonatomic, strong) NSString *displayName;
 @property (nonatomic) BOOL advertising;
 
 @property (nonatomic, readonly) MCPeerID *peerID;
-@property (nonatomic, readonly) RACSignal *invitations;
+@property (nonatomic, readonly) RACSignal *incoming;
 
-- (instancetype)initWithJid:(NSString *)jid;
+- (instancetype)initWithJid:(NSString *)jid displayName:(NSString *)displayName;
 @end

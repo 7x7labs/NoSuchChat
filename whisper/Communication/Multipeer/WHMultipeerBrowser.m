@@ -11,8 +11,8 @@
 #import "WHMultipeerSession.h"
 
 @interface WHMultipeerBrowser () <MCNearbyServiceBrowserDelegate>
+@property (nonatomic, strong) NSString *ownJid;
 @property (nonatomic, strong) RACSubject *peers;
-@property (nonatomic, strong) RACSubject *removedPeers;
 @property (nonatomic, strong) MCNearbyServiceBrowser *browser;
 @end
 
@@ -21,12 +21,12 @@
     [self.browser stopBrowsingForPeers];
 }
 
-- (instancetype)initWithPeer:(MCPeerID *)peerID {
+- (instancetype)initWithDisplayName:(NSString *)displayName jid:(NSString *)ownJid {
     if (!(self = [super init])) return self;
 
+    self.ownJid = ownJid;
     self.peers = [RACSubject subject];
-    self.removedPeers = [RACSubject subject];
-    self.browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peerID
+    self.browser = [[MCNearbyServiceBrowser alloc] initWithPeer:[[MCPeerID alloc] initWithDisplayName:displayName]
                                                     serviceType:@"7x7-whisper"];
     self.browser.delegate = self;
 
@@ -35,12 +35,6 @@
 
 - (void)startBrowsing {
     [self.browser startBrowsingForPeers];
-}
-
-- (WHMultipeerSession *)connectToPeer:(MCPeerID *)peerID ownJid:(NSString *)jid {
-    return [[WHMultipeerSession alloc] initWithRemotePeerID:peerID
-                                                     ownJid:jid
-                                             serviceBrowser:self.browser];
 }
 
 #pragma mark - MCNearbyServiceBrowserDelegate
@@ -52,10 +46,13 @@
       foundPeer:(MCPeerID *)peerID
 withDiscoveryInfo:(NSDictionary *)info
 {
-    [(RACSubject *)self.peers sendNext:RACTuplePack(peerID, info[@"jid"])];
+    if ([self.ownJid isEqual:info[@"jid"]]) return;
+
+    [(RACSubject *)self.peers sendNext:[[WHMultipeerSession alloc] initWithRemotePeerID:peerID
+                                                                                peerJid:info[@"jid"]
+                                                                                 ownJid:self.ownJid
+                                                                         serviceBrowser:self.browser]];
 }
 
-- (void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID {
-    [(RACSubject *)self.removedPeers sendNext:peerID];
-}
+- (void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID { }
 @end

@@ -8,13 +8,17 @@
 
 #import "WHMultipeerSession.h"
 
+#import "WHMultipeerAdvertiser.h"
+#import "WHMultipeerPacket.h"
+
 @interface WHMultipeerSession () <MCSessionDelegate>
+@property (nonatomic, strong) NSString *peerJid;
+@property (nonatomic) BOOL connected;
+@property (nonatomic, strong) RACReplaySubject *incomingData;
+@property (nonatomic, weak) WHMultipeerAdvertiser *advertiser;
+
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCSession *session;
-@property (nonatomic, strong) RACSubject *connected;
-@property (nonatomic, strong) NSData *readBuffer;
-@property (nonatomic, strong) NSCondition *readLock;
-@property (nonatomic) BOOL cancelled;
 @end
 
 @implementation WHMultipeerSession
@@ -22,23 +26,24 @@
     [self.session disconnect];
 }
 
-- (instancetype)initWithSelf:(MCPeerID *)ownPeer remote:(MCPeerID *)remotePeer {
+- (instancetype)initWithSelf:(MCPeerID *)ownPeer remote:(MCPeerID *)remotePeer jid:(NSString *)jid {
     if (!(self = [super init])) return self;
+    self.peerJid = jid;
     self.peerID = remotePeer;
     self.session = [[MCSession alloc] initWithPeer:ownPeer
                                   securityIdentity:nil
                               encryptionPreference:MCEncryptionNone];
     self.session.delegate = self;
-    self.connected = [RACReplaySubject subject];
-    self.readLock = [NSCondition new];
+    self.incomingData = [RACReplaySubject replaySubjectWithCapacity:1];
     return self;
 }
 
 - (instancetype)initWithRemotePeerID:(MCPeerID *)remotePeer
+                             peerJid:(NSString *)peerJid
                               ownJid:(NSString *)ownJid
                       serviceBrowser:(MCNearbyServiceBrowser *)browser
 {
-    if (!(self = [self initWithSelf:browser.myPeerID remote:remotePeer])) return self;
+    if (!(self = [self initWithSelf:browser.myPeerID remote:remotePeer jid:peerJid])) return self;
     [browser invitePeer:self.peerID
               toSession:self.session
             withContext:[ownJid dataUsingEncoding:NSUTF8StringEncoding]
@@ -48,9 +53,12 @@
 
 - (instancetype)initWithSelf:(MCPeerID *)ownPeer
                       remote:(MCPeerID *)remotePeer
+                     peerJid:(NSString *)peerJid
                   invitation:(invitationHandler)invitation
+                  advertiser:(WHMultipeerAdvertiser *)advertiser
 {
-    if (!(self = [self initWithSelf:ownPeer remote:remotePeer])) return self;
+    if (!(self = [self initWithSelf:ownPeer remote:remotePeer jid:peerJid])) return self;
+    self.advertiser = advertiser;
     invitation(YES, self.session);
     return self;
 }
@@ -64,59 +72,24 @@
     return error;
 }
 
-- (NSData *)read {
-    [self.readLock lock];
-
-    NSData *ret = nil;
-    if (!self.readBuffer)
-        [self.readLock wait];
-
-    ret = self.readBuffer;
-    _readBuffer = nil;
-    [self.readLock unlock];
-    return ret;
-}
-
-- (void)disconnect {
-    [self.session disconnect];
-    self.session = nil;
-}
-
-- (void)cancel {
-    self.cancelled = YES;
-    [self disconnect];
-    self.readBuffer = nil;
-    [(RACSubject *)self.connected sendNext:@NO];
-    [(RACSubject *)self.connected sendCompleted];
-}
-
-- (void)setReadBuffer:(NSData *)data {
-    [self.readLock lock];
-    _readBuffer = data;
-    [self.readLock broadcast];
-    [self.readLock unlock];
-}
-
 #pragma mark - MCSessionDelegate
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state {
     switch (state) {
         case MCSessionStateConnected:
-            [(RACSubject *)self.connected sendNext:@YES];
-            [(RACSubject *)self.connected sendCompleted];
+            self.connected = YES;
             break;
         case MCSessionStateConnecting:
             break;
         case MCSessionStateNotConnected:
-            [(RACSubject *)self.connected sendNext:@NO];
-            [(RACSubject *)self.connected sendCompleted];
-            self.readBuffer = nil;
+            if (self.connected)
+                self.advertiser.advertising = self.advertiser.advertising;
+            self.connected = NO;
             break;
     }
 }
 
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID {
-    if (!self.cancelled)
-        self.readBuffer = data;
+    [(RACSubject *)self.incomingData sendNext:data];
 }
 
 // Required methods we don't use

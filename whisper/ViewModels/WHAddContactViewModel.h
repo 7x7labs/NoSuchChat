@@ -7,6 +7,7 @@
 //
 
 @class WHChatClient;
+@class WHKeyExchangePeer;
 
 @interface WHPotentialContactViewModel : NSObject
 @property (nonatomic, readonly) NSString *name;
@@ -19,7 +20,9 @@
 @interface WHAddContactViewModel : NSObject
 @property (nonatomic, readonly) NSInteger count;
 @property (nonatomic, readonly) BOOL advertising;
+@property (nonatomic, readonly) RACSignal *invitations;
 
-- (instancetype)initWithClient:(WHChatClient *)client contacts:(NSArray *)contacts;
+- (instancetype)initWithClient:(WHChatClient *)client;
 - (WHPotentialContactViewModel *)objectAtIndexedSubscript:(NSUInteger)index;
+- (WHPotentialContactViewModel *)viewModelForPeer:(WHKeyExchangePeer *)peer;
 @end

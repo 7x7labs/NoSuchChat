@@ -8,5 +8,4 @@
 
 @interface WHError : NSError
 + (WHError *)errorWithDescription:(NSString *)description;
-+ (RACSignal *)errorSignalWithDescription:(NSString *)description;
 @end
