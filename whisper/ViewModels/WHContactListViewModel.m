@@ -25,7 +25,7 @@
 
     // Note: one-way bindings since that's all that makes sense at the moment
     RAC(self, avatar) = [RACAbleWithStart(contact, jid) map:^id(NSString *jid) {
-        return jid ? [WHAvatar avatarWithEmail:jid] : nil;
+        return jid ? [WHAvatar avatarForEmail:jid] : nil;
     }];
     RAC(self, unreadCount) = [RACAbleWithStart(contact, unreadCount) map:^id(NSNumber *value) {
         return [value intValue] > 0 ? [value stringValue] : @"";

@@ -12,12 +12,28 @@
 
 @implementation WHAvatar
 
-// generate identicon and invert with CIColorInvert to get lighter colors
-+ (UIImage *)avatarWithEmail:(NSString *)email
++ (NSMutableDictionary *)cache
 {
+    static dispatch_once_t once;
+    static NSMutableDictionary* dict;
+    dispatch_once(&once, ^{
+        dict = [[NSMutableDictionary alloc] init];
+    });
+
+    return dict;
+}
+
+// generate identicon and invert with CIColorInvert to get lighter colors
++ (UIImage *)avatarForEmail:(NSString *)email
+{
+    if ([self cache][email])
+        return [self cache][email];
+    
     UIImage *identicon;
     identicon = [IGIdenticon identiconWithString:email size:68 backgroundColor:[UIColor whiteColor]];
     identicon = [self invertImage:identicon];
+
+    [self cache][email] = identicon;
     
     return identicon;
 }

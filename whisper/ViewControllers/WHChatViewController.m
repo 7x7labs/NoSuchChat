@@ -146,7 +146,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.message resignFirstResponder];
+    [self.view endEditing:YES];
 }
 
 #pragma mark UITableViewDataSource

@@ -10,6 +10,6 @@
 
 @interface WHAvatar : NSObject
 
-+ (UIImage *)avatarWithEmail:(NSString *)email;
++ (UIImage *)avatarForEmail:(NSString *)email;
 
 @end

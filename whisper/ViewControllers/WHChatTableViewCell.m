@@ -10,10 +10,12 @@
 
 #import "Contact.h"
 #import "Message.h"
+#import "WHAvatar.h"
 
 #import "UIView+Position.h"
 
 @interface WHChatTableViewCell ()
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (weak, nonatomic) IBOutlet UIImageView *bubbleImage;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
@@ -42,30 +44,29 @@
 
 - (void)populateControls
 {
+    self.avatarImage.image = [WHAvatar avatarForEmail:self.jid];
+    
+    // resize labels
     self.messageLabel.text = self.text;
     self.timestampLabel.attributedText = [self formatTimestamp:self.message.sent];
-    
-    self.messageLabel.frameWidth = 240;
+
+    self.timestampLabel.frameWidth = 100;
+    [self.timestampLabel sizeToFit];
+
+    self.messageLabel.frameWidth = 230;
     [self.messageLabel sizeToFit];
     
-
+    // set bubble height
+    int defaultBubbleHeight = 52;
+    int defaultMessageHeight = 21;
+    int bubbleHeight = self.messageLabel.frameHeight - defaultMessageHeight + defaultBubbleHeight;
+    self.bubbleImage.frameHeight = bubbleHeight;
     
-    
-    
-    
-    
-    int w = self.messageLabel.frameWidth + 35;
-    if (w<100) w = 100;
-    
-    
-    
-    
-    self.bubbleImage.frameWidth = w;
-    
-    
-    
-    
-    
+    // set bubble width
+    int widthPadding = 24;
+    int messageWidth = self.messageLabel.frameWidth;
+    int timestampWidth = self.timestampLabel.frameWidth;
+    self.bubbleImage.frameWidth = fmaxf(timestampWidth, messageWidth) + widthPadding;
     
     if ([self incoming]) {
         self.bubbleImage.image = [[UIImage imageNamed:@"bubble-left"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
@@ -73,9 +74,10 @@
     else {
         self.bubbleImage.image = [[UIImage imageNamed:@"bubble-right"] stretchableImageWithLeftCapWidth:15 topCapHeight:15];
         
-        int defaultBubbleX = 310;
+        int defaultBubbleX = 272;
         self.bubbleImage.frameX = defaultBubbleX - self.bubbleImage.frameWidth;
-        self.messageLabel.frameX = defaultBubbleX - self.messageLabel.frameWidth - 21;
+        self.messageLabel.frameX = defaultBubbleX - self.messageLabel.frameWidth - 16;
+        self.timestampLabel.frameX = defaultBubbleX - self.timestampLabel.frameWidth - 16;
     }
 }
 
@@ -109,10 +111,12 @@
 {
     NSString *text = message.text ?: @"";
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0];
-    CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(240, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(230, 1000) lineBreakMode:NSLineBreakByWordWrapping];
     
-    int padding = 48;
-    int height = size.height + padding;
+    int defaultRowHeight = 58;
+    int defaultMessageHeight = 21;
+
+    int height = defaultRowHeight - defaultMessageHeight + size.height;
     
     return height;
 }

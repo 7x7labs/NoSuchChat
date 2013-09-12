@@ -33,7 +33,7 @@
     if (!(self = [super init])) return self;
 
     self.name = peer.name;
-    self.avatar = [WHAvatar avatarWithEmail:peer.jid];
+    self.avatar = [WHAvatar avatarForEmail:peer.jid];
     self.peer = peer;
     self.jid = peer.jid;
 
