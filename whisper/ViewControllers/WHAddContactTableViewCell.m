@@ -11,7 +11,6 @@
 #import "WHAddContactViewModel.h"
 
 #import <libextobjc/EXTScope.h>
-#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface WHAddContactTableViewCell ()
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
@@ -26,13 +25,13 @@
 
 - (void)setupWithPeer:(WHPotentialContactViewModel *)viewModel {
     if (!self.viewModel) {
-        RAC(self.nameLabel, text) = RACAble(self, viewModel.name);
-        RAC(self.addButton, hidden) = RACAble(self, viewModel.connecting);
-        RAC(self.spinner, hidden) = [RACAble(self, viewModel.connecting) not];
-        RAC(self, userInteractionEnabled) = [RACAble(self, viewModel.connecting) not];
-        [self.avatarImage rac_liftSelector:@selector(setImageWithURL:)
-                               withObjects:RACAbleWithStart(self, viewModel.avatarURL)];
 
+        RAC(self.addButton, hidden)       = RACAble(self, viewModel.connecting);
+        RAC(self.avatarImage, image)      = RACAble(self, viewModel.avatar);
+        RAC(self.nameLabel, text)         = RACAble(self, viewModel.name);
+        RAC(self.spinner, hidden)         = [RACAble(self, viewModel.connecting) not];
+        RAC(self, userInteractionEnabled) = [RACAble(self, viewModel.connecting) not];
+        
         @weakify(self);
         [RACAble(self, viewModel.connecting) subscribeNext:^(NSNumber *value) {
             @strongify(self);

@@ -10,7 +10,7 @@
 
 @interface WHPotentialContactViewModel : NSObject
 @property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSURL *avatarURL;
+@property (nonatomic, readonly) UIImage *avatar;
 @property (nonatomic, readonly) BOOL connecting;
 
 - (RACSignal *)connect;

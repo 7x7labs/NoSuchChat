@@ -10,9 +10,8 @@
 
 #import "Contact.h"
 #import "Message.h"
-#import "UIView+Position.h"
 
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIView+Position.h"
 
 @interface WHChatTableViewCell ()
 @property (weak, nonatomic) IBOutlet UIImageView *bubbleImage;

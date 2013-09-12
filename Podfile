@@ -3,7 +3,6 @@ pod 'Expecta', :inhibit_warnings => true
 pod 'OCMock'
 pod 'Reachability'
 pod 'ReactiveCocoa'
-pod 'SDWebImage'
 pod 'SSKeychain'
 pod 'Specta'
 pod 'XMPPFramework/Reconnect', :head

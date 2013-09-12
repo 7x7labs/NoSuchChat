@@ -10,9 +10,9 @@
 @class WHChatClient;
 
 @interface WHContactRowViewModel : NSObject
+@property (nonatomic, readonly) UIImage *avatar;
 @property (nonatomic, readonly) NSString *displayName;
 @property (nonatomic, readonly) NSNumber *status;
-@property (nonatomic, readonly) NSString *gravatarURL;
 @property (nonatomic, readonly) NSString *unreadCount;
 @end
 

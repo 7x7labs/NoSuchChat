@@ -9,12 +9,13 @@
 #import "WHContactListViewModel.h"
 
 #import "Contact.h"
+#import "WHAvatar.h"
 #import "WHChatClient.h"
 
 @interface WHContactRowViewModel ()
+@property (nonatomic, strong) UIImage *avatar;
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, strong) NSNumber *status;
-@property (nonatomic, strong) NSString *gravatarURL;
 @property (nonatomic, strong) NSString *unreadCount;
 @end
 
@@ -23,14 +24,15 @@
     if (!(self = [super init])) return self;
 
     // Note: one-way bindings since that's all that makes sense at the moment
-    RAC(self, displayName) = RACAbleWithStart(contact, name);
-    RAC(self, status) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
-    RAC(self, gravatarURL) = [RACAbleWithStart(contact, jid) map:^id(NSString *jid) {
-        return jid ? [Contact avatarURLForEmail:jid] : nil;
+    RAC(self, avatar) = [RACAbleWithStart(contact, jid) map:^id(NSString *jid) {
+        return jid ? [WHAvatar avatarWithEmail:jid] : nil;
     }];
     RAC(self, unreadCount) = [RACAbleWithStart(contact, unreadCount) map:^id(NSNumber *value) {
         return [value intValue] > 0 ? [value stringValue] : @"";
     }];
+    
+    RAC(self, displayName) = RACAbleWithStart(contact, name);
+    RAC(self, status) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
 
     return self;
 }

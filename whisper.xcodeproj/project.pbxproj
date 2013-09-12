@@ -110,6 +110,10 @@
 		3FBCCD8D17CEF65200731107 /* WHChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */; };
 		3FE4839417A828D600E7938E /* WHCheckList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4839317A828D600E7938E /* WHCheckList.m */; };
 		595ECADD98D648A1B091A2DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B7E38D9F734B8398B629FC /* libPods.a */; };
+		A91BAF0E17E1356800701503 /* IGIdenticon.m in Sources */ = {isa = PBXBuildFile; fileRef = A91BAF0D17E1356800701503 /* IGIdenticon.m */; };
+		A91BAF0F17E1356800701503 /* IGIdenticon.m in Sources */ = {isa = PBXBuildFile; fileRef = A91BAF0D17E1356800701503 /* IGIdenticon.m */; };
+		A91BAF1217E13B7F00701503 /* WHAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = A91BAF1117E13B7F00701503 /* WHAvatar.m */; };
+		A91BAF1317E13B7F00701503 /* WHAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = A91BAF1117E13B7F00701503 /* WHAvatar.m */; };
 		A92782FB17DBC997008A70A2 /* WHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A92782FA17DBC997008A70A2 /* WHTextField.m */; };
 		A92782FC17DBC997008A70A2 /* WHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A92782FA17DBC997008A70A2 /* WHTextField.m */; };
 		A955092017CE97C60088780D /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = A955091F17CE97C60088780D /* UIView+Position.m */; };
@@ -118,8 +122,6 @@
 		A978069017D7F71400DB12B3 /* WHAddContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */; };
 		A9789FF417CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */; };
 		A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */; };
-		A98834EC17E0D72400426BF9 /* UIImage+Inversion.m in Sources */ = {isa = PBXBuildFile; fileRef = A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */; };
-		A98834ED17E0D72400426BF9 /* UIImage+Inversion.m in Sources */ = {isa = PBXBuildFile; fileRef = A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */; };
 		A9E0827817D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
 		A9E0827917D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
 /* End PBXBuildFile section */
@@ -230,6 +232,10 @@
 		3FBCCD8B17CEF65200731107 /* WHChatViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatViewModel.m; path = ViewModels/WHChatViewModel.m; sourceTree = "<group>"; };
 		3FE4839217A828D600E7938E /* WHCheckList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHCheckList.h; path = Views/WHCheckList.h; sourceTree = "<group>"; };
 		3FE4839317A828D600E7938E /* WHCheckList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHCheckList.m; path = Views/WHCheckList.m; sourceTree = "<group>"; };
+		A91BAF0C17E1356800701503 /* IGIdenticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IGIdenticon.h; path = Vendor/IGIdenticon.h; sourceTree = "<group>"; };
+		A91BAF0D17E1356800701503 /* IGIdenticon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IGIdenticon.m; path = Vendor/IGIdenticon.m; sourceTree = "<group>"; };
+		A91BAF1017E13B7F00701503 /* WHAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAvatar.h; path = Views/WHAvatar.h; sourceTree = "<group>"; };
+		A91BAF1117E13B7F00701503 /* WHAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAvatar.m; path = Views/WHAvatar.m; sourceTree = "<group>"; };
 		A92782F917DBC997008A70A2 /* WHTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHTextField.h; path = Views/WHTextField.h; sourceTree = "<group>"; };
 		A92782FA17DBC997008A70A2 /* WHTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHTextField.m; path = Views/WHTextField.m; sourceTree = "<group>"; };
 		A955091E17CE97C60088780D /* UIView+Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Position.h"; path = "Vendor/UIView+Position.h"; sourceTree = "<group>"; };
@@ -238,8 +244,6 @@
 		A978068E17D7F71400DB12B3 /* WHAddContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAddContactTableViewCell.m; path = ViewControllers/WHAddContactTableViewCell.m; sourceTree = "<group>"; };
 		A9789FF217CFBB6F00B55CFC /* WHChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHChatTableViewCell.h; path = ViewControllers/WHChatTableViewCell.h; sourceTree = "<group>"; };
 		A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHChatTableViewCell.m; path = ViewControllers/WHChatTableViewCell.m; sourceTree = "<group>"; };
-		A98834EA17E0D72400426BF9 /* UIImage+Inversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Inversion.h"; path = "Vendor/UIImage+Inversion.h"; sourceTree = "<group>"; };
-		A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Inversion.m"; path = "Vendor/UIImage+Inversion.m"; sourceTree = "<group>"; };
 		A9E0827617D03B2D002409E6 /* WHWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHWelcomeViewController.h; path = ViewControllers/WHWelcomeViewController.h; sourceTree = "<group>"; };
 		A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHWelcomeViewController.m; path = ViewControllers/WHWelcomeViewController.m; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -520,6 +524,8 @@
 			children = (
 				3F4709DE17AC150A007A1DF7 /* WHAlert.h */,
 				3F4709DF17AC150A007A1DF7 /* WHAlert.m */,
+				A91BAF1017E13B7F00701503 /* WHAvatar.h */,
+				A91BAF1117E13B7F00701503 /* WHAvatar.m */,
 				3FE4839217A828D600E7938E /* WHCheckList.h */,
 				3FE4839317A828D600E7938E /* WHCheckList.m */,
 				A92782F917DBC997008A70A2 /* WHTextField.h */,
@@ -531,8 +537,8 @@
 		A955091D17CE97850088780D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				A98834EA17E0D72400426BF9 /* UIImage+Inversion.h */,
-				A98834EB17E0D72400426BF9 /* UIImage+Inversion.m */,
+				A91BAF0C17E1356800701503 /* IGIdenticon.h */,
+				A91BAF0D17E1356800701503 /* IGIdenticon.m */,
 				A955091E17CE97C60088780D /* UIView+Position.h */,
 				A955091F17CE97C60088780D /* UIView+Position.m */,
 			);
@@ -812,6 +818,7 @@
 				A92782FC17DBC997008A70A2 /* WHTextField.m in Sources */,
 				3F77025C17BA9F3F00EF5C50 /* WHAddContactViewController.m in Sources */,
 				3F63EF4417D7FD52009898E1 /* WHAddContactViewModel.m in Sources */,
+				A91BAF0F17E1356800701503 /* IGIdenticon.m in Sources */,
 				3F77025D17BA9F3F00EF5C50 /* WHAlert.m in Sources */,
 				3F77025E17BA9F3F00EF5C50 /* WHAppDelegate.m in Sources */,
 				3F77025F17BA9F3F00EF5C50 /* WHChatClient.m in Sources */,
@@ -823,9 +830,9 @@
 				3F77026217BA9F3F00EF5C50 /* WHContactsViewController.m in Sources */,
 				3F8707CD17D03D01001D70F0 /* WHContactTableViewCell.m in Sources */,
 				3F77026317BA9F3F00EF5C50 /* WHCoreData.m in Sources */,
+				A91BAF1317E13B7F00701503 /* WHAvatar.m in Sources */,
 				3F77026417BA9F3F00EF5C50 /* WHCrypto.m in Sources */,
 				3F3BEC6B17CBE59700F4D41A /* WHDiffieHellman.m in Sources */,
-				A98834ED17E0D72400426BF9 /* UIImage+Inversion.m in Sources */,
 				3F77026517BA9F3F00EF5C50 /* WHError.m in Sources */,
 				3F77026617BA9F3F00EF5C50 /* WHKeyExchangePeer.m in Sources */,
 				3F77026717BA9F3F00EF5C50 /* WHKeyPair.m in Sources */,
@@ -862,6 +869,7 @@
 				A92782FB17DBC997008A70A2 /* WHTextField.m in Sources */,
 				3F8D1B991794E6A10089B129 /* WHAddContactViewController.m in Sources */,
 				3F63EF4317D7FD52009898E1 /* WHAddContactViewModel.m in Sources */,
+				A91BAF0E17E1356800701503 /* IGIdenticon.m in Sources */,
 				3F4709E017AC150A007A1DF7 /* WHAlert.m in Sources */,
 				3FA0C609178CFDA1007E6ECC /* WHAppDelegate.m in Sources */,
 				3F8EB1901796FB7E009F938D /* WHChatClient.m in Sources */,
@@ -873,9 +881,9 @@
 				3F8D1B931794DD200089B129 /* WHContactsViewController.m in Sources */,
 				3F8707CC17D03D01001D70F0 /* WHContactTableViewCell.m in Sources */,
 				3F8D1B8A1794A12E0089B129 /* WHCoreData.m in Sources */,
+				A91BAF1217E13B7F00701503 /* WHAvatar.m in Sources */,
 				3F8EB1981798424C009F938D /* WHCrypto.m in Sources */,
 				3F3BEC6A17CBE59700F4D41A /* WHDiffieHellman.m in Sources */,
-				A98834EC17E0D72400426BF9 /* UIImage+Inversion.m in Sources */,
 				3FB2968817AC34D600D24E0D /* WHError.m in Sources */,
 				3F5FEAFB179F4D3000C6BF62 /* WHKeyExchangePeer.m in Sources */,
 				3F8EB1A41798DC8C009F938D /* WHKeyPair.m in Sources */,

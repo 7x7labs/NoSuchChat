@@ -10,10 +10,6 @@
 
 #import "WHContactListViewModel.h"
 
-#import "UIImage+Inversion.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
-
 @interface WHContactTableViewCell ()
 @property (nonatomic, strong) WHContactRowViewModel *viewModel;
 
@@ -33,20 +29,14 @@
     // model changes
     if (bind) {
 
+        RACBind(self.avatar, image)       = RACBind(self, viewModel.avatar);
         RACBind(self.name, text)          = RACBind(self, viewModel.displayName);
         RACBind(self.name, highlighted)   = RACBind(self, viewModel.status);
         RACBind(self.status, highlighted) = RACBind(self, viewModel.status);
         RACBind(self.unreadCount, text)   = RACBind(self, viewModel.unreadCount);
-
-        [RACAbleWithStart(self.viewModel.gravatarURL) subscribeNext:^(NSURL *url) {
-            [self.avatar setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                self.avatar.image = [UIImage invert:image];
-            }];
-        }];
         
         RAC(self.unreadBadge, hidden) = [[RACAbleWithStart(self, viewModel.unreadCount)
-                                         doNext:^(NSString *count) {
-                                         }]
+                                         doNext:^(NSString *count) {}]
                                          map:^(NSString *value) { return @([value length] == 0); }];
     }
 }

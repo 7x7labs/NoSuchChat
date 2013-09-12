@@ -9,6 +9,7 @@
 #import "WHAddContactViewModel.h"
 
 #import "Contact.h"
+#import "WHAvatar.h"
 #import "WHChatClient.h"
 #import "WHPeerList.h"
 #import "WHKeyExchangePeer.h"
@@ -20,7 +21,7 @@
 
 @interface WHPotentialContactViewModel ()
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSURL *avatarURL;
+@property (nonatomic, strong) UIImage *avatar;
 @property (nonatomic) BOOL connecting;
 
 @property (nonatomic, strong) WHKeyExchangePeer *peer;
@@ -32,7 +33,7 @@
     if (!(self = [super init])) return self;
 
     self.name = peer.name;
-    self.avatarURL = [Contact avatarURLForEmail:peer.peerJid];
+    self.avatar = [WHAvatar avatarWithEmail:peer.peerJid];
     self.peer = peer;
     self.jid = jid;
 
