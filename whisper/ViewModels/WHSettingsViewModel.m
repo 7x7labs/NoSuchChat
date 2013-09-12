@@ -50,6 +50,7 @@
     [WHAccount delete];
 
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstRun"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"Nickname" forKey:@"displayName"];
 
     self.deleting = NO;
 }

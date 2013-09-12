@@ -45,7 +45,7 @@
 {
     if (!(self = [super init])) return self;
 
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"User Name"}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"displayName": @"Nickname"}];
 
     WHAccount *account = [WHAccount get];
     self.jid = account.jid;
