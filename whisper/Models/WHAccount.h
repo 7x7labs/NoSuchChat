@@ -15,4 +15,5 @@
 
 /// Get the Whisper account for this device, creating it if needed.
 + (WHAccount *)get;
++ (void)delete;
 @end

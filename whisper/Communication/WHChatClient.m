@@ -135,4 +135,9 @@
 - (NSString *)availability {
     return self.xmpp.roster.show;
 }
+
+- (void)disconnect {
+    [self.cancelSignal sendCompleted];
+    self.xmpp = nil;
+}
 @end

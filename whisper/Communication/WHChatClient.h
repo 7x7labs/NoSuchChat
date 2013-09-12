@@ -17,6 +17,8 @@
 - (RACSignal *)sendMessage:(NSString *)body to:(Contact *)contact;
 - (void)setStatus:(NSString *)status;
 
+- (void)disconnect;
+
 @property (nonatomic, strong) NSString *displayName;
 
 @property (nonatomic, readonly) NSArray *contacts;

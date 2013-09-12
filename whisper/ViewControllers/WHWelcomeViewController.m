@@ -9,41 +9,33 @@
 #import "WHWelcomeViewController.h"
 
 #import "WHChatClient.h"
-#import "WHSettingsViewModel.h"
+#import "WHWelcomeViewModel.h"
+
+#import <libextobjc/EXTScope.h>
 
 @interface WHWelcomeViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *displayName;
 @property (weak, nonatomic) IBOutlet UIButton *getStarted;
 
 @property (nonatomic, strong) WHChatClient *client;
-@property (nonatomic, strong) WHSettingsViewModel *viewModel;
+@property (nonatomic, strong) WHWelcomeViewModel *viewModel;
 @property (nonatomic, strong) NSString *contactJid;
 @end
 
 @implementation WHWelcomeViewController
 - (void)viewDidLoad {
-    [super viewDidLoad];
-
-    self.client = [WHChatClient clientForServer:kXmppServerHost port:5222];
-    self.viewModel = [[WHSettingsViewModel alloc] initWithClient:self.client];
-    
-    // TODO: Add `isFirstRun` bool to NSUserDefaults
-    if (![self.client.displayName isEqualToString:@"User Name"]) {
-        [self performSegueWithIdentifier:@"LoadMainNavigation" sender:self];
-    }
-    
-    // TODO: Create a ViewModel for this
-    RAC(self.getStarted, enabled) = RACAbleWithStart(self.client, connected);
-
-    RAC(self.displayName, text) = [RACAbleWithStart(self.viewModel, displayName)
+    RAC(self.getStarted, enabled) = [RACAbleWithStart(self, viewModel.canSave)
+                                     map:^id(id value) { return value ?: @NO; }];
+    RAC(self, viewModel.displayName) = self.displayName.rac_textSignal;
+    RAC(self.displayName, text) = [RACAbleWithStart(self, viewModel.displayName)
                                    filter:^BOOL(NSString *text) {
                                        return [text rangeOfString:@"\uFFFC"].location == NSNotFound;
                                    }];
-    RAC(self.viewModel.displayName) = self.displayName.rac_textSignal;
 
-    // TODO: Respect viewModel.valid
+    @weakify(self)
     [[self.getStarted rac_signalForControlEvents:UIControlEventTouchUpInside]
      subscribeNext:^(id _) {
+         @strongify(self);
          [self.viewModel save];
      }];
 }
@@ -51,6 +43,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
+
+    self.client = [WHChatClient clientForServer:kXmppServerHost port:5222];
+    self.viewModel = [[WHWelcomeViewModel alloc] initWithClient:self.client];
+
+    if (!self.viewModel.isFirstRun)
+        [self performSegueWithIdentifier:@"LoadMainNavigation" sender:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

@@ -26,4 +26,5 @@
 + (WHKeyPair *)getGlobalKeyFromJid:(NSString *)jid;
 
 + (void)deleteKeysForJid:(NSString *)jid;
++ (void)deleteAll;
 @end

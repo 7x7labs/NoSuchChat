@@ -53,4 +53,8 @@ static NSString *generateRandomString() {
     return account;
 }
 
++ (void)delete {
+    for (NSDictionary *account in [SSKeychain accountsForService:serviceName()])
+        [SSKeychain deletePasswordForService:serviceName() account:account[kSSKeychainAccountKey]];
+}
 @end

@@ -265,4 +265,14 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
         [self deleteKeyForJid:jid ofType:type];
 }
 
++ (void)deleteAll {
+    listKeys(@"Before deleteAll");
+
+    NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassKey};
+    OSStatus err = SecItemDelete((__bridge CFDictionaryRef)query);
+    if (err != errSecSuccess)
+        NSLog(@"Failed deleting keys: %d", (int)err);
+
+    listKeys(@"After deleteAll");
+}
 @end

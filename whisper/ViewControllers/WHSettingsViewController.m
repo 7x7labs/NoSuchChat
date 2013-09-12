@@ -11,6 +11,8 @@
 #import "WHCheckList.h"
 #import "WHSettingsViewModel.h"
 
+#import <libextobjc/EXTScope.h>
+
 @interface WHSettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *displayName;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
@@ -23,6 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    @weakify(self)
 
     self.viewModel = [[WHSettingsViewModel alloc] initWithClient:self.client];
 
@@ -34,14 +37,23 @@
 
     self.saveButton.rac_command = [RACCommand commandWithCanExecuteSignal:RACAbleWithStart(self.viewModel.valid)];
     [self.saveButton.rac_command subscribeNext:^(id _) {
+        @strongify(self)
         [self.viewModel save];
         [self.navigationController popViewControllerAnimated:YES];
     }];
     
     self.cancelButton.rac_command = [RACCommand command];
     [self.cancelButton.rac_command subscribeNext:^(id _) {
+        @strongify(self)
         [self.navigationController popViewControllerAnimated:YES];
     }];
+}
+
+- (IBAction)reset {
+    [self.viewModel deleteAll];
+    UINavigationController *nc = self.navigationController;
+    [nc popViewControllerAnimated:NO];
+    [nc popViewControllerAnimated:NO];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

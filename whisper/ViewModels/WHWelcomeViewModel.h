@@ -1,19 +1,18 @@
 //
-//  WHSettingsViewModel.h
+//  WHWelcomeViewModel.h
 //  whisper
 //
-//  Created by Thomas Goyne on 7/26/13.
+//  Created by Thomas Goyne on 9/12/13.
 //  Copyright (c) 2013 7x7 Labs. All rights reserved.
 //
 
 @class WHChatClient;
 
-@interface WHSettingsViewModel : NSObject
+@interface WHWelcomeViewModel : NSObject
+@property (nonatomic, readonly) BOOL isFirstRun;
 @property (nonatomic, strong) NSString *displayName;
-@property (nonatomic) BOOL valid;
-@property (nonatomic) BOOL deleting;
+@property (nonatomic, readonly) BOOL canSave;
 
 - (instancetype)initWithClient:(WHChatClient *)client;
 - (void)save;
-- (void)deleteAll;
 @end

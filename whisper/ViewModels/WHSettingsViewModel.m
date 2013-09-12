@@ -8,7 +8,10 @@
 
 #import "WHSettingsViewModel.h"
 
+#import "Contact.h"
+#import "wHAccount.h"
 #import "WHChatClient.h"
+#import "WHKeyPair.h"
 
 @interface WHSettingsViewModel ()
 @property (nonatomic, strong) WHChatClient *client;
@@ -22,11 +25,10 @@
     self.client = client;
     self.displayName = client.displayName;
     
-    RAC(self.valid) = [RACSignal
-                       combineLatest:@[RACAbleWithStart(self, displayName)]
-                       reduce:^(NSString *displayName) {
+    RAC(self.valid) = [RACAbleWithStart(self, displayName)
+                       map:^(NSString *displayName) {
                            return @([displayName length] > 0 &&
-                                    [displayName rangeOfString:@"\uFFFC"].location == NSNotFound);
+                           [displayName rangeOfString:@"\uFFFC"].location == NSNotFound);
                        }];
 
     return self;
@@ -35,5 +37,20 @@
 - (void)save {
     NSAssert(self.valid, @"Cannot save invalid viewmodel");
     self.client.displayName = self.displayName;
+}
+
+- (void)deleteAll {
+    self.deleting = YES;
+
+    for (Contact *contact in [Contact all])
+        [contact delete];
+
+    [self.client disconnect];
+    [WHKeyPair deleteAll];
+    [WHAccount delete];
+
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstRun"];
+
+    self.deleting = NO;
 }
 @end
