@@ -75,7 +75,8 @@
     // MCSessionSendDataReliable claims to guarantee in-order deliver, but that
     // isn't actually true so we may sometimes get a packet that uses a key
     // before we receive the key.
-    if (packet.message > WHPMReject && packet.senderKeyId > [[self.incomingKeys lastObject] theirKeyId]) {
+    if (packet.message > WHPMReject && ([self.incomingKeys count] == 0 ||
+                                        packet.senderKeyId > [[self.incomingKeys lastObject] theirKeyId])) {
         [self.bufferedPackets addObject:packet];
         return;
     }
@@ -169,7 +170,10 @@
                                      return value.theirKeyId == theirId;
                                  }];
     NSAssert(ourKey && theirKey, @"Invalid DH key IDs");
-    if (!ourKey || !theirKey) return nil;
+    if (!ourKey || !theirKey) {
+        NSLog(@"Invalid DH key IDs: %d %d", ourId, theirId);
+        return nil;
+    }
 
     dh = [ourKey combineWith:theirKey];
     self.combinedKeys = [self.combinedKeys arrayByAddingObject:dh];
