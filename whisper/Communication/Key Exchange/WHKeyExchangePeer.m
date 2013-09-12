@@ -16,8 +16,11 @@
 #import "WHMultipeerPacket.h"
 
 #import <libextobjc/EXTScope.h>
+#import <libkern/OSAtomic.h>
 
-@interface WHKeyExchangePeer ()
+@interface WHKeyExchangePeer () {
+    volatile int32_t pendingSends;
+}
 @property (nonatomic) BOOL wantsToConnect;
 
 @property (nonatomic, strong) NSMutableDictionary *sessions;
@@ -40,6 +43,8 @@
 @implementation WHKeyExchangePeer
 - (instancetype)init {
     self = [super init];
+
+    pendingSends = 0;
 
     self.sessions = [NSMutableDictionary new];
 
@@ -116,13 +121,15 @@
 
         case WHPMRequestGlobalPublicKey:
             NSLog(@"%p: Got request for our global public key", self);
+            OSAtomicIncrement32(&pendingSends);
             [self send:[WHKeyPair getOwnGlobalKeyPair].publicKeyBits
                message:WHPMSendGlobalPublicKey];
             break;
 
         case WHPMRequestPublicKey: {
             NSLog(@"%p: Got request for our public key", self);
-            dispatch_async(self.keyCreationQueue, ^{
+            OSAtomicIncrement32(&pendingSends);
+            dispatch_sync(self.keyCreationQueue, ^{
                 [self send:[WHKeyPair createKeyPairForJid:self.jid].publicKeyBits
                    message:WHPMSendPublicKey];
             });
@@ -131,6 +138,7 @@
 
         case WHPMRequestSymmetricKey:
             NSLog(@"%p: Got request for our symmetric key", self);
+            OSAtomicIncrement32(&pendingSends);
             [self send:[WHKeyPair getOwnGlobalKeyPair].symmetricKey
                message:WHPMSendSymmetricKey];
             break;
@@ -232,7 +240,7 @@
 
     @weakify(self)
     NSLog(@"%p: Sending %d to %@", self, message, self.jid);
-    [[[[[[RACAbleWithStart(self, sessions)
+    [[[[[[[RACAbleWithStart(self, sessions)
      flattenMap:^RACStream *(NSMutableDictionary *sessions) {
          return sessions.rac_valueSequence.signal;
      }]
@@ -245,6 +253,16 @@
      filter:^BOOL(NSNumber *didSend) { return [didSend boolValue]; }]
      take:1]
      timeout:30]
+     finally:^{
+         @strongify(self)
+         if (message == WHPMSendGlobalPublicKey ||
+             message == WHPMSendPublicKey ||
+             message == WHPMSendSymmetricKey)
+         {
+             if (OSAtomicDecrement32(&pendingSends) == 0)
+                 [self checkComplete];
+         }
+     }]
      subscribeError:^(NSError *error) {
          @strongify(self)
          [self.connection sendError:error];
@@ -260,6 +278,7 @@
     if (!self.globalPublicKey) return;
     if (!self.symmetricKey) return;
     if (self.complete) return;
+    if (pendingSends > 0) return;
 
     NSLog(@"%p: Got all keys", self);
     self.complete = YES;
@@ -311,5 +330,4 @@
     dispatch_async(self.keyCreationQueue, ^{ [WHKeyPair createKeyPairForJid:self.jid]; });
     return self.connection;
 }
-
 @end
