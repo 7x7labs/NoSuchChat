@@ -57,8 +57,9 @@
          if ([button intValue] != 1) return;
          [self.viewModel deleteAll];
          UINavigationController *nc = self.navigationController;
-         [nc popViewControllerAnimated:NO];
-         [nc popViewControllerAnimated:NO];
+         NSUInteger vcCount = [[nc viewControllers] count];
+         for (NSUInteger i = 0; i < vcCount - 1; ++i)
+             [nc popViewControllerAnimated:NO];
      }];
 }
 

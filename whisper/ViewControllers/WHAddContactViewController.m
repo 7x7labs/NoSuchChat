@@ -90,6 +90,12 @@
     [self.cancelSignal sendCompleted];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    id dest = segue.destinationViewController;
+    if ([dest respondsToSelector:@selector(setClient:)])
+        [dest setClient:self.client];
+}
+
 - (void)showChatWithJid:(NSString *)jid {
     NSArray *vcs = [self.navigationController viewControllers];
     [self.navigationController popViewControllerAnimated:NO];

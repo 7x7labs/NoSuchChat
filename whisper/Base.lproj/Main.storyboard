@@ -265,7 +265,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="it rubs the lotion on its back" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VlB-zL-3qg">
-                                                    <rect key="frame" x="53.000000000000007" y="7" width="207" height="21"/>
+                                                    <rect key="frame" x="53" y="7" width="207" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -370,7 +370,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6hT-ul-d92" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1877" y="155"/>
+            <point key="canvasLocation" x="1926" y="791"/>
         </scene>
         <!--Settings View Controller - Settings-->
         <scene sceneID="dAP-ho-cOf">
@@ -606,7 +606,16 @@ Then disable Wifi and enable Bluetooth.</string>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Contact" id="adV-Ce-6Pj"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Add Contact" id="adV-Ce-6Pj">
+                        <barButtonItem key="rightBarButtonItem" image="settings-button" id="PH5-eM-qa5">
+                            <color key="tintColor" red="0.047058823530000002" green="0.90196078430000004" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="Zcm-cM-eCu" kind="push" id="p5d-zg-ncx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="browsingPanel" destination="3Xm-cD-rYL" id="4VD-kt-1aN"/>
                         <outlet property="disableWifiPanel" destination="4Qx-XK-UIF" id="BwA-Cx-Jy4"/>
@@ -615,7 +624,7 @@ Then disable Wifi and enable Bluetooth.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kxQ-BH-t8t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1947" y="854"/>
+            <point key="canvasLocation" x="1926" y="122"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rfs-Dg-o9Z">
@@ -655,4 +664,7 @@ Then disable Wifi and enable Bluetooth.</string>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="p5d-zg-ncx"/>
+    </inferredMetricsTieBreakers>
 </document>
