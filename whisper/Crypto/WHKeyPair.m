@@ -191,11 +191,15 @@ static NSDictionary *rsaDictionary(NSString *jid, NSString *type, CFTypeRef key,
 }
 
 + (WHKeyPair *)getOwnGlobalKeyPair {
-    WHKeyPair *kp = [self getOwnKeyPairForJid:@"self"];
-    if (kp)
-        [kp getSymmetricKeyForJid:@"self"];
-    else
-        kp = [self createOwnGlobalKeyPair];
+    static WHKeyPair *kp;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kp = [self getOwnKeyPairForJid:@"self"];
+        if (kp)
+            [kp getSymmetricKeyForJid:@"self"];
+        else
+            kp = [self createOwnGlobalKeyPair];
+    });
     return kp;
 }
 

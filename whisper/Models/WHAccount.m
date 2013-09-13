@@ -20,7 +20,6 @@ static NSString *serviceName() {
 @interface WHAccount ()
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) WHKeyPair *globalKey;
 @end
 
 static NSString *generateRandomString() {
@@ -39,7 +38,6 @@ static NSString *generateRandomString() {
         WHAccount *account = [WHAccount new];
         account.jid = accounts[0][kSSKeychainAccountKey];
         account.password = [SSKeychain passwordForService:serviceName() account:account.jid];
-        account.globalKey = [WHKeyPair getOwnGlobalKeyPair];
         return account;
     }
 
@@ -47,7 +45,10 @@ static NSString *generateRandomString() {
     WHAccount *account = [WHAccount new];
     account.jid = [generateRandomString() stringByAppendingFormat:@"@%@", kXmppServerHost];
     account.password = generateRandomString();
-    account.globalKey = [WHKeyPair createOwnGlobalKeyPair];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        (void)[WHKeyPair getOwnGlobalKeyPair];
+    });
 
     [SSKeychain setPassword:account.password forService:serviceName() account:account.jid];
     return account;

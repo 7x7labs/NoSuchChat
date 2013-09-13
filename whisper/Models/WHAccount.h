@@ -11,7 +11,6 @@
 @interface WHAccount : NSObject
 @property (nonatomic, strong, readonly) NSString *jid;
 @property (nonatomic, strong, readonly) NSString *password;
-@property (nonatomic, strong, readonly) WHKeyPair *globalKey;
 
 /// Get the Whisper account for this device, creating it if needed.
 + (WHAccount *)get;
