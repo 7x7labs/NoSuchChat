@@ -55,7 +55,7 @@
 
     self.messageLabel.frameWidth = 230;
     [self.messageLabel sizeToFit];
-    
+
     // set bubble height
     int defaultBubbleHeight = 52;
     int defaultMessageHeight = 21;
@@ -68,16 +68,12 @@
     int timestampWidth = self.timestampLabel.frameWidth;
     self.bubbleImage.frameWidth = fmaxf(timestampWidth, messageWidth) + widthPadding;
     
-    if ([self incoming]) {
-        self.bubbleImage.image = [[UIImage imageNamed:@"bubble-left"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
-    }
-    else {
-        self.bubbleImage.image = [[UIImage imageNamed:@"bubble-right"] stretchableImageWithLeftCapWidth:15 topCapHeight:15];
-        
+    if (![self incoming]) {
         int defaultBubbleX = 272;
         self.bubbleImage.frameX = defaultBubbleX - self.bubbleImage.frameWidth;
-        self.messageLabel.frameX = defaultBubbleX - self.messageLabel.frameWidth - 16;
-        self.timestampLabel.frameX = defaultBubbleX - self.timestampLabel.frameWidth - 16;
+        
+        self.messageLabel.frameX = self.bubbleImage.frameX + 10;
+        self.timestampLabel.frameX = self.bubbleImage.frameX + 10;
     }
 }
 
@@ -116,7 +112,7 @@
     int defaultRowHeight = 58;
     int defaultMessageHeight = 21;
 
-    int height = defaultRowHeight - defaultMessageHeight + size.height;
+    int height = defaultRowHeight - defaultMessageHeight + ceil(size.height);
     
     return height;
 }
