@@ -6,6 +6,7 @@ pod 'Reachability'
 pod 'ReactiveCocoa'
 pod 'SSKeychain'
 pod 'Specta'
+pod 'TestFlightSDK'
 pod 'XMPPFramework/Reconnect', :head
 pod 'XMPPFramework/XEP-0082', :head
 pod 'XMPPFramework/XEP-0203', :head

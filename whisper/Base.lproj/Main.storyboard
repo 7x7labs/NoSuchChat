@@ -632,6 +632,9 @@ Then disable Wifi and enable Bluetooth.</string>
     <resources>
         <image name="add-contact-button" width="22" height="22"/>
         <image name="avatar-placeholder" width="91" height="91"/>
+        <image name="avatar-placeholder" width="91" height="91"/>
+        <image name="avatar-placeholder" width="91" height="91"/>
+        <image name="avatar-placeholder" width="91" height="91"/>
         <image name="bubble-left" width="43" height="32"/>
         <image name="bubble-right" width="43" height="32"/>
         <image name="contact-offline-icon" width="15" height="15"/>

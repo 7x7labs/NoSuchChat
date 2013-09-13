@@ -14,6 +14,7 @@
 
 #import "DDLog.h"
 #import "DDTTYLogger.h"
+#import "TestFlight.h"
 
 @interface WHAppDelegate ()
 @property (nonatomic, strong) void (^completionHandler)(UIBackgroundFetchResult);
@@ -28,6 +29,8 @@
     }
 #endif
 
+    [TestFlight takeOff:@"44014be3-88b6-4a25-b7fb-48fd53de7780"];
+    
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [WHCoreData initSqliteContext];
     [Message deleteOlderThan:[NSDate dateWithTimeIntervalSinceNow:-(60 * 60 * 24 * 7)]];
