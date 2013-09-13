@@ -29,7 +29,7 @@
     }
 #endif
 
-    [TestFlight takeOff:@"44014be3-88b6-4a25-b7fb-48fd53de7780"];
+    [TestFlight takeOff:@"7aaf3986-4173-443b-8474-ff3df504d034"];
     
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [WHCoreData initSqliteContext];
