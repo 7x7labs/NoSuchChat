@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3F77024417BA9F3F00EF5C50"
-               BuildableName = "NS Chat.app"
+               BuildableName = "NoSuchChat.app"
                BlueprintName = "whisper - tigase.im"
                ReferencedContainer = "container:whisper.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F77024417BA9F3F00EF5C50"
-            BuildableName = "NS Chat.app"
+            BuildableName = "NoSuchChat.app"
             BlueprintName = "whisper - tigase.im"
             ReferencedContainer = "container:whisper.xcodeproj">
          </BuildableReference>
@@ -44,7 +44,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
@@ -52,7 +52,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F77024417BA9F3F00EF5C50"
-            BuildableName = "NS Chat.app"
+            BuildableName = "NoSuchChat.app"
             BlueprintName = "whisper - tigase.im"
             ReferencedContainer = "container:whisper.xcodeproj">
          </BuildableReference>
@@ -70,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F77024417BA9F3F00EF5C50"
-            BuildableName = "NS Chat.app"
+            BuildableName = "NoSuchChat.app"
             BlueprintName = "whisper - tigase.im"
             ReferencedContainer = "container:whisper.xcodeproj">
          </BuildableReference>
