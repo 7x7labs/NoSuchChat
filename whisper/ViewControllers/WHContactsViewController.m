@@ -19,6 +19,8 @@
 #import <EXTScope.h>
 
 @interface WHContactsViewController ()
+@property (nonatomic, strong) IBOutlet UIView *tableHeader;
+
 @property (nonatomic, strong) WHChatClient *client;
 @property (nonatomic, strong) WHContactListViewModel *viewModel;
 
@@ -36,6 +38,15 @@
     [RACAble(self.viewModel, count) subscribeNext:^(id _) {
         @strongify(self)
         [self.tableView reloadData];
+    }];
+    
+    [RACAble(self.client, connected) subscribeNext:^(NSNumber *connected) {
+        @strongify(self)
+        if (connected.boolValue) {
+            [self.tableView setTableHeaderView:nil];
+        } else {
+            [self.tableView setTableHeaderView:self.tableHeader];
+        }
     }];
 
     if (self.contactJid) {

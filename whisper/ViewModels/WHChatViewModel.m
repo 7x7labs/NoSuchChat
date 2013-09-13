@@ -15,6 +15,7 @@
 
 @interface WHChatViewModel ()
 @property (nonatomic) BOOL canSend;
+@property (nonatomic) BOOL connected;
 @property (nonatomic) BOOL online;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *userJid;
@@ -30,6 +31,8 @@
 
     self.client = client;
     self.contact = contact;
+
+    RAC(self, connected) = RACAbleWithStart(self.client, connected);
     RAC(self, online) = [RACAbleWithStart(contact, online) map:^id(id value) { return value ?: @NO; }];
     RAC(self, title) = RACAbleWithStart(contact, name);
     RAC(self, userJid) = RACAbleWithStart(self.client, jid);

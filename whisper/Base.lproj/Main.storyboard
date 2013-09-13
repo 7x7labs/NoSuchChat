@@ -15,9 +15,23 @@
                         <color key="separatorColor" red="0.20000001788139343" green="0.20000001788139343" blue="0.20000001788139343" alpha="1" colorSpace="deviceRGB"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" alpha="0.80000001192092896" contentMode="scaleToFill" id="jYr-KQ-O87">
+                            <rect key="frame" x="0.0" y="64" width="320" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="connecting to server ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ABU-eU-xol">
+                                    <rect key="frame" x="52" y="-1" width="217" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
+                                    <color key="textColor" red="0.96057586189999999" green="0.95901719600000002" blue="0.98624320649999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.50312898596938771" green="0.50312898596938771" blue="0.50312898596938771" alpha="0.5" colorSpace="calibratedRGB"/>
+                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="ihQ-Vu-TQs" customClass="WHContactTableViewCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="106" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ihQ-Vu-TQs" id="6dt-SP-rwq">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -79,6 +93,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
+                        <outlet property="tableHeader" destination="jYr-KQ-O87" id="sUn-J5-lph"/>
                         <segue destination="dg0-6N-Xr7" kind="push" identifier="show chat" id="E4g-79-i68"/>
                     </connections>
                 </tableViewController>
@@ -314,15 +329,29 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="contact is offline" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Klu-37-Ztf">
-                                        <rect key="frame" x="11" y="-1" width="298" height="21"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="contact offline" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Klu-37-Ztf">
+                                        <rect key="frame" x="52" y="-1" width="217" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
                                         <color key="textColor" red="0.96057586189999999" green="0.95901719600000002" blue="0.98624320649999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.50668733020000001" green="0.048654329429999997" blue="0.040907098779999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.39363440688775508" green="0.040028614704096799" blue="0.035756990183564048" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="g2l-he-dYG">
+                                <rect key="frame" x="0.0" y="64" width="320" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="server connection offline" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Xf-OU-c8m">
+                                        <rect key="frame" x="52" y="-1" width="217" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
+                                        <color key="textColor" red="0.96057586189999999" green="0.95901719600000002" blue="0.98624320649999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.39363440690000001" green="0.040028614699999999" blue="0.035756990180000003" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -332,10 +361,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="chatLog" destination="gqg-sX-19K" id="hOA-nC-i24"/>
+                        <outlet property="connectionOffline" destination="g2l-he-dYG" id="big-Sb-d67"/>
+                        <outlet property="contactOffline" destination="uEK-dH-9qi" id="PAY-ya-MJ0"/>
                         <outlet property="message" destination="9VD-2K-7z1" id="CVW-Qn-par"/>
-                        <outlet property="messagePanel" destination="1Lu-Na-K7X" id="F67-xv-mkc"/>
+                        <outlet property="messageContainer" destination="1Lu-Na-K7X" id="grY-Qc-c9w"/>
                         <outlet property="send" destination="EeS-mt-haf" id="WEc-zL-zRm"/>
-                        <outlet property="statusPanel" destination="uEK-dH-9qi" id="ht8-dq-Dja"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6hT-ul-d92" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -532,14 +562,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching for contacts ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mhf-Ds-fAn">
-                                        <rect key="frame" x="50" y="75" width="219" height="21"/>
+                                        <rect key="frame" x="50" y="98" width="219" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="QiJ-jP-5gf">
-                                        <rect key="frame" x="140" y="28" width="37" height="37"/>
+                                        <rect key="frame" x="140" y="36" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
                                 </subviews>

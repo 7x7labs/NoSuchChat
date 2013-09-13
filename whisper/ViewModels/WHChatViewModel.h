@@ -11,6 +11,7 @@
 
 @interface WHChatViewModel : NSObject
 @property (nonatomic, readonly) BOOL canSend;
+@property (nonatomic, readonly) BOOL connected;
 @property (nonatomic, readonly) BOOL online;
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *userJid;

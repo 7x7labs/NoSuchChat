@@ -24,8 +24,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *send;
 @property (weak, nonatomic) IBOutlet UITableView *chatLog;
 @property (weak, nonatomic) IBOutlet UITextField *message;
-@property (weak, nonatomic) IBOutlet UIView *messagePanel;
-@property (weak, nonatomic) IBOutlet UIView *statusPanel;
+@property (weak, nonatomic) IBOutlet UIView *messageContainer;
+@property (weak, nonatomic) IBOutlet UIView *connectionOffline;
+@property (weak, nonatomic) IBOutlet UIView *contactOffline;
 
 @property (nonatomic, strong) WHChatViewModel *viewModel;
 @property (nonatomic, strong) RACSubject *cancelSignal;
@@ -43,8 +44,9 @@
     
     RACBind(self, title) = RACBind(self, viewModel.title);
     RACBind(self.send, enabled) = RACBind(self, viewModel.canSend);
-    RACBind(self.statusPanel, hidden) = RACBind(self, viewModel.online);
-
+    RACBind(self.connectionOffline, hidden) = RACBind(self, viewModel.connected);
+    RACBind(self.contactOffline, hidden) = RACBind(self, viewModel.online);
+    
     [RACAble(self, viewModel.messages) subscribeNext:^(id _) {
         @strongify(self)
         [self.chatLog reloadData];
@@ -115,7 +117,7 @@
     if (showing) height *= -1;
     
     [UIView animateWithDuration:animationDuration animations:^{
-        self.messagePanel.frameY += height;
+        self.messageContainer.frameY += height;
         self.chatLog.frameHeight += height;
     }];
     
