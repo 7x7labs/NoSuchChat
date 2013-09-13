@@ -70,15 +70,16 @@
      }];
 
     self.cancelSignal = [RACSubject subject];
-    [self rac_liftSelector:@selector(showChatWithJid:)
-               withObjects:[[[[[NSNotificationCenter.defaultCenter
-                                rac_addObserverForName:WHContactAddedNotification object:nil]
-                            takeUntil:self.cancelSignal]
-                            deliverOn:[RACScheduler mainThreadScheduler]]
-                            map:^(NSNotification *notification) {
-                                return [notification.userInfo[@"created"] jid];
-                            }]
-                            filter:^BOOL(id value) { return !!value; }]];
+    [self.navigationController
+     rac_liftSelector:@selector(popViewControllerAnimated:)
+     withObjects:[[[[[NSNotificationCenter.defaultCenter
+                      rac_addObserverForName:WHContactAddedNotification object:nil]
+                     takeUntil:self.cancelSignal]
+                    deliverOn:[RACScheduler mainThreadScheduler]]
+                   map:^(NSNotification *notification) {
+                       return @(!![notification.userInfo[@"created"] jid]);
+                   }]
+                  filter:^BOOL(id value) { return [value boolValue]; }]];
 }
 
 - (void)dealloc {
