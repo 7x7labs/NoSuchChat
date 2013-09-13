@@ -74,6 +74,9 @@
     RAC(self, contactJids) = [RACAbleWithStart(self.client, contacts) map:^(NSArray *contacts) {
         return [NSSet setWithArray:[contacts valueForKey:@"jid"]];
     }];
+    RAC(self, canGoBack) = [RACAbleWithStart(self.client, contacts) map:^(NSArray *contacts) {
+        return @([contacts count] > 0);
+    }];
 
     @weakify(self)
     RAC(self, peers) = [RACAble(self, manager.peers)

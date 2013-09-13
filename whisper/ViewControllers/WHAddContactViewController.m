@@ -80,6 +80,10 @@
                        return @(!![notification.userInfo[@"created"] jid]);
                    }]
                   filter:^BOOL(id value) { return [value boolValue]; }]];
+
+    [self.navigationItem
+     rac_liftSelector:@selector(setHidesBackButton:)
+     withObjects:[RACAbleWithStart(self.viewModel, canGoBack) not]];
 }
 
 - (void)dealloc {

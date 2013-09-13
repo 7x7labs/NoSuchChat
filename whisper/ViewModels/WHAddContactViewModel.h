@@ -20,6 +20,7 @@
 @interface WHAddContactViewModel : NSObject
 @property (nonatomic, readonly) NSInteger count;
 @property (nonatomic, readonly) BOOL advertising;
+@property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) RACSignal *invitations;
 
 - (instancetype)initWithClient:(WHChatClient *)client;
