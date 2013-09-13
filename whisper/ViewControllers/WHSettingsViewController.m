@@ -50,8 +50,8 @@
 }
 
 - (IBAction)reset {
-    [[WHAlert alertWithMessage:@"This will delete all application data, including contacts, messages, and private keys."
-                         title:@"Are you sure you'd like to reset?"
+    [[WHAlert alertWithMessage:@"This action will delete all application data, including contacts, messages, and private keys.  Do you want to proceed?"
+                         title:@"Reset Application"
                        buttons:@[@"Cancel", @"Reset"]]
      subscribeNext:^(NSNumber *button) {
          if ([button intValue] != 1) return;
