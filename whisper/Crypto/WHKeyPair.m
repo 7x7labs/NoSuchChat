@@ -13,7 +13,7 @@
 #if DEBUG // The tests take a few minutes with 4096 bit keys
 #define kKeyBits @512
 #else
-#define kKeyBits @4096
+#define kKeyBits @2048
 #endif
 
 #define KEY_LOGGING 0
