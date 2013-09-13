@@ -87,7 +87,7 @@
                         <barButtonItem key="rightBarButtonItem" image="add-contact-button" id="de5-Mu-SNB">
                             <color key="tintColor" red="0.047058823530000002" green="0.90196078430000004" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="js2-y8-xGG" kind="push" id="3zx-3y-z4V"/>
+                                <segue destination="js2-y8-xGG" kind="push" identifier="add contact" id="3zx-3y-z4V"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -639,9 +639,6 @@ Then disable Wifi and enable Bluetooth.</string>
     </scenes>
     <resources>
         <image name="add-contact-button" width="22" height="22"/>
-        <image name="avatar-placeholder" width="91" height="91"/>
-        <image name="avatar-placeholder" width="91" height="91"/>
-        <image name="avatar-placeholder" width="91" height="91"/>
         <image name="avatar-placeholder" width="91" height="91"/>
         <image name="bubble-left" width="43" height="32"/>
         <image name="bubble-right" width="43" height="32"/>

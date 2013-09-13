@@ -39,19 +39,18 @@
         @strongify(self)
         [self.tableView reloadData];
     }];
-    
-    [RACAble(self.client, connected) subscribeNext:^(NSNumber *connected) {
-        @strongify(self)
-        if (connected.boolValue) {
-            [self.tableView setTableHeaderView:nil];
-        } else {
-            [self.tableView setTableHeaderView:self.tableHeader];
-        }
-    }];
+
+    [self.tableView rac_liftSelector:@selector(setTableHeaderView:)
+                         withObjects:[RACSignal if:RACAble(self.client, connected)
+                                              then:[RACSignal return:nil]
+                                              else:[RACSignal return:self.tableHeader]]];
 
     if (self.contactJid) {
         [self showChatWithJid:self.contactJid];
         self.contactJid = nil;
+    }
+    else if ([self.client.contacts count] == 0) {
+        [self performSegueWithIdentifier:@"add contact" sender:self];
     }
 }
 
