@@ -50,7 +50,9 @@
 }
 
 - (IBAction)reset {
-    [[WHAlert alertWithMessage:@"Are you sure you want to delete all stuff" title:nil buttons:@[@"Cancel", @"Nuke"]]
+    [[WHAlert alertWithMessage:@"This will delete all application data, including contacts, messages, and private keys."
+                         title:@"Are you sure you'd like to reset?"
+                       buttons:@[@"Cancel", @"Reset"]]
      subscribeNext:^(NSNumber *button) {
          if ([button intValue] != 1) return;
          [self.viewModel deleteAll];
