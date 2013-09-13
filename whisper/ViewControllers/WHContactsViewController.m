@@ -41,7 +41,7 @@
     }];
 
     [self.tableView rac_liftSelector:@selector(setTableHeaderView:)
-                         withObjects:[RACSignal if:RACAble(self.client, connected)
+                         withObjects:[RACSignal if:RACAbleWithStart(self.client, connected)
                                               then:[RACSignal return:nil]
                                               else:[RACSignal return:self.tableHeader]]];
 
