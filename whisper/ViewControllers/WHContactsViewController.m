@@ -49,9 +49,12 @@
         [self showChatWithJid:self.contactJid];
         self.contactJid = nil;
     }
-    else if ([self.client.contacts count] == 0) {
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if ([self.client.contacts count] == 0)
         [self performSegueWithIdentifier:@"add contact" sender:self];
-    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
