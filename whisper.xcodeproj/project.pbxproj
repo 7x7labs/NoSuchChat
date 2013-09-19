@@ -169,7 +169,7 @@
 		3F63EF4117D7FD52009898E1 /* WHAddContactViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHAddContactViewModel.h; path = ViewModels/WHAddContactViewModel.h; sourceTree = "<group>"; };
 		3F63EF4217D7FD52009898E1 /* WHAddContactViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHAddContactViewModel.m; path = ViewModels/WHAddContactViewModel.m; sourceTree = "<group>"; };
 		3F7127D3178F0D6F00835DD2 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
-		3F77029517BA9F3F00EF5C50 /* NS Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NS Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F77029517BA9F3F00EF5C50 /* NoSuchChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoSuchChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F81033317A9C5EE006FBFBE /* WHMultipeerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerAdvertiser.h; path = Communication/Multipeer/WHMultipeerAdvertiser.h; sourceTree = "<group>"; };
 		3F81033417A9C5EE006FBFBE /* WHMultipeerAdvertiser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHMultipeerAdvertiser.m; path = Communication/Multipeer/WHMultipeerAdvertiser.m; sourceTree = "<group>"; };
 		3F81033617A9C768006FBFBE /* WHMultipeerBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHMultipeerBrowser.h; path = Communication/Multipeer/WHMultipeerBrowser.h; sourceTree = "<group>"; };
@@ -214,7 +214,7 @@
 		3F8EB1A21798DC8C009F938D /* WHKeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHKeyPair.h; path = Crypto/WHKeyPair.h; sourceTree = "<group>"; };
 		3F8EB1A31798DC8C009F938D /* WHKeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHKeyPair.m; path = Crypto/WHKeyPair.m; sourceTree = "<group>"; };
 		3F94B76517B07BA600B1B3B9 /* hostname.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hostname.m; sourceTree = "<group>"; };
-		3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NS Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C5F5178CFDA1007E6ECC /* NoSuchChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoSuchChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3FA0C5FC178CFDA1007E6ECC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -226,7 +226,7 @@
 		3FA0C608178CFDA1007E6ECC /* WHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHAppDelegate.m; sourceTree = "<group>"; };
 		3FA0C60B178CFDA1007E6ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3FA0C610178CFDA1007E6ECC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3FA0C616178CFDA1007E6ECC /* NS Chat.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NS Chat.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA0C616178CFDA1007E6ECC /* NoSuchChat.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoSuchChat.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA0C617178CFDA1007E6ECC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FA0C61F178CFDA1007E6ECC /* whisperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "whisperTests-Info.plist"; sourceTree = "<group>"; };
 		3FA0C621178CFDA1007E6ECC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -449,9 +449,9 @@
 		3FA0C5F6178CFDA1007E6ECC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3F77029517BA9F3F00EF5C50 /* NS Chat.app */,
-				3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */,
-				3FA0C616178CFDA1007E6ECC /* NS Chat.octest */,
+				3F77029517BA9F3F00EF5C50 /* NoSuchChat.app */,
+				3FA0C5F5178CFDA1007E6ECC /* NoSuchChat.app */,
+				3FA0C616178CFDA1007E6ECC /* NoSuchChat.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -575,7 +575,7 @@
 			);
 			name = "whisper - tigase.im";
 			productName = whisper;
-			productReference = 3F77029517BA9F3F00EF5C50 /* NS Chat.app */;
+			productReference = 3F77029517BA9F3F00EF5C50 /* NoSuchChat.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3FA0C5F4178CFDA1007E6ECC /* whisper - localhost */ = {
@@ -596,7 +596,7 @@
 			);
 			name = "whisper - localhost";
 			productName = whisper;
-			productReference = 3FA0C5F5178CFDA1007E6ECC /* NS Chat.app */;
+			productReference = 3FA0C5F5178CFDA1007E6ECC /* NoSuchChat.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3FA0C615178CFDA1007E6ECC /* whisperTests */ = {
@@ -614,7 +614,7 @@
 			);
 			name = whisperTests;
 			productName = whisperTests;
-			productReference = 3FA0C616178CFDA1007E6ECC /* NS Chat.octest */;
+			productReference = 3FA0C616178CFDA1007E6ECC /* NoSuchChat.octest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -992,8 +992,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: 7x7 Labs Incorporated (HMZPVRBV86)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: 7x7 Labs Incorporated (HMZPVRBV86)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "whisper/whisper-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
