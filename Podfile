@@ -1,11 +1,11 @@
 platform :ios, '7.0'
-pod 'Expecta', :inhibit_warnings => true
+# pod 'Expecta', :inhibit_warnings => true
 pod 'Mantle'
 pod 'OCMock'
 pod 'Reachability'
 pod 'ReactiveCocoa'
 pod 'SSKeychain'
-pod 'Specta'
+# pod 'Specta'
 pod 'TestFlightSDK'
 pod 'XMPPFramework/Reconnect', :head
 pod 'XMPPFramework/XEP-0082', :head
