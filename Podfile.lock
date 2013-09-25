@@ -24,7 +24,7 @@ PODS:
     - libextobjc/EXTScope (~> 0.3.0)
   - ReactiveCocoa/RACExtensions (1.9.7):
     - ReactiveCocoa/Core
-  - SSKeychain (1.2.0)
+  - SSKeychain (1.2.1)
   - TestFlightSDK (2.0)
   - XMPPFramework/Authentication (HEAD based on 3.6.1):
     - XMPPFramework/Core
@@ -53,7 +53,7 @@ DEPENDENCIES:
   - curve25519-donna (from `podspecs/curve25519-donna.podspec`)
   - Mantle
   - Reachability
-  - ReactiveCocoa
+  - ReactiveCocoa (~> 1.9.0)
   - SSKeychain
   - TestFlightSDK
   - XMPPFramework/Reconnect (HEAD)
@@ -73,7 +73,7 @@ SPEC CHECKSUMS:
   Mantle: c3e963daaad6f1418feacce974d789b2d0465539
   Reachability: 2be6bc2fd2bd31d97f5db33e75e4b29c79e95883
   ReactiveCocoa: 86033375e366207afad5a5067f2dd10a1f2d8f32
-  SSKeychain: 2fe90c92034129d9615a508529b601a520f297d1
+  SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
   TestFlightSDK: 940906d4b2550cf397c6f2d2fcc4ebfdcd8ae858
   XMPPFramework: c2acbcf47ddf53238aac8252a6b7d9a50b82d0d8
 
