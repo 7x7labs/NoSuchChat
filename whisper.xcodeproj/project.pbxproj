@@ -127,6 +127,7 @@
 		A9789FF517CFBB6F00B55CFC /* WHChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9789FF317CFBB6F00B55CFC /* WHChatTableViewCell.m */; };
 		A9E0827817D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
 		A9E0827917D03B2D002409E6 /* WHWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */; };
+		EC746A1B72B7472AA768ED07 /* libPods-whisperTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C5E25A41F64C4695FC648B /* libPods-whisperTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,6 +253,8 @@
 		A9E0827617D03B2D002409E6 /* WHWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHWelcomeViewController.h; path = ViewControllers/WHWelcomeViewController.h; sourceTree = "<group>"; };
 		A9E0827717D03B2D002409E6 /* WHWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHWelcomeViewController.m; path = ViewControllers/WHWelcomeViewController.m; sourceTree = "<group>"; };
 		D4B7E38D9F734B8398B629FC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3C5E25A41F64C4695FC648B /* libPods-whisperTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-whisperTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFC71B56E6894C95AFB706AE /* Pods-whisperTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whisperTests.xcconfig"; path = "Pods/Pods-whisperTests.xcconfig"; sourceTree = "<group>"; };
 		FFED660267384000B03310C3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA0C619178CFDA1007E6ECC /* Foundation.framework in Frameworks */,
+				EC746A1B72B7472AA768ED07 /* libPods-whisperTests.a in Frameworks */,
 				3F8D1B8F1794CBF00089B129 /* SenTestingKit.framework in Frameworks */,
 				3FA0C61A178CFDA1007E6ECC /* UIKit.framework in Frameworks */,
 			);
@@ -442,6 +446,7 @@
 				3FA0C5F6178CFDA1007E6ECC /* Products */,
 				3FA0C5FE178CFDA1007E6ECC /* whisper */,
 				3FA0C61D178CFDA1007E6ECC /* whisperTests */,
+				FFC71B56E6894C95AFB706AE /* Pods-whisperTests.xcconfig */,
 				FFED660267384000B03310C3 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
@@ -463,6 +468,7 @@
 				3FA0C5FA178CFDA1007E6ECC /* CoreGraphics.framework */,
 				3F5F3C2E17E2647000A43334 /* CoreImage.framework */,
 				3FA0C5F8178CFDA1007E6ECC /* Foundation.framework */,
+				F3C5E25A41F64C4695FC648B /* libPods-whisperTests.a */,
 				D4B7E38D9F734B8398B629FC /* libPods.a */,
 				3F7127D3178F0D6F00835DD2 /* libresolv.dylib */,
 				3F5FCDA51799A1F40075D3F0 /* libz.dylib */,
@@ -603,9 +609,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3FA0C62A178CFDA1007E6ECC /* Build configuration list for PBXNativeTarget "whisperTests" */;
 			buildPhases = (
+				0783B6ADC7C44673B5CCCC0F /* Check Pods Manifest.lock */,
 				3FA0C612178CFDA1007E6ECC /* Sources */,
 				3FA0C613178CFDA1007E6ECC /* Frameworks */,
 				3FA0C614178CFDA1007E6ECC /* Resources */,
+				74675FFA67034DF3B7EC49EA /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -691,6 +699,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0783B6ADC7C44673B5CCCC0F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		3F77024517BA9F3F00EF5C50 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -801,6 +824,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		74675FFA67034DF3B7EC49EA /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-whisperTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1137,7 +1175,7 @@
 		};
 		3FA0C62B178CFDA1007E6ECC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFED660267384000B03310C3 /* Pods.xcconfig */;
+			baseConfigurationReference = FFC71B56E6894C95AFB706AE /* Pods-whisperTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/whisper.app/whisper";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1150,6 +1188,10 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
@@ -1158,7 +1200,7 @@
 		};
 		3FA0C62C178CFDA1007E6ECC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFED660267384000B03310C3 /* Pods.xcconfig */;
+			baseConfigurationReference = FFC71B56E6894C95AFB706AE /* Pods-whisperTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/whisper.app/whisper";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1167,6 +1209,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "whisper/whisper-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "whisperTests/whisperTests-Info.plist";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
