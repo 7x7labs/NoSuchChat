@@ -1177,7 +1177,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FFC71B56E6894C95AFB706AE /* Pods-whisperTests.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/whisper.app/whisper";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NoSuchChat.app/NoSuchChat";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1202,7 +1202,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FFC71B56E6894C95AFB706AE /* Pods-whisperTests.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/whisper.app/whisper";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NoSuchChat.app/NoSuchChat";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
