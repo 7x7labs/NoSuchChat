@@ -13,6 +13,7 @@
 @interface WHWelcomeViewModel ()
 @property (nonatomic) BOOL isFirstRun;
 @property (nonatomic) BOOL canSave;
+@property (nonatomic, strong) NSString *disabledText;
 
 @property (nonatomic, strong) WHChatClient *client;
 @end
@@ -35,7 +36,11 @@
                                    && [displayName rangeOfString:@"\uFFFC"].location == NSNotFound
                                    && [connected boolValue]);
                          }];
-
+    RAC(self, disabledText) = [RACAbleWithStart(self.client, failedToConnect)
+                               map:^(NSNumber *value) {
+                                   return [value boolValue] ? @"failed to connect to server"
+                                                            : @"... connecting ...";
+                               }];
     return self;
 }
 

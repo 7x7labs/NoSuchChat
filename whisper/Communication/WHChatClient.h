@@ -25,6 +25,7 @@
 @property (nonatomic, readonly) NSString *jid;
 @property (nonatomic, readonly) NSString *availability;
 @property (nonatomic, readonly) BOOL connected;
+@property (nonatomic, readonly) BOOL failedToConnect;
 
 @property (nonatomic, readonly) RACSignal *incomingMessages;
 @end

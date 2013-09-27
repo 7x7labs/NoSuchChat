@@ -32,6 +32,9 @@
                                    filter:^BOOL(NSString *text) {
                                        return [text rangeOfString:@"\uFFFC"].location == NSNotFound;
                                    }];
+    [self.getStarted rac_liftSelector:@selector(setTitle:forState:)
+                          withObjects:RACAbleWithStart(self, viewModel.disabledText),
+                                      @(UIControlStateDisabled)];
 
     @weakify(self)
     [[self.getStarted rac_signalForControlEvents:UIControlEventTouchUpInside]

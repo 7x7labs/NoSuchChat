@@ -12,6 +12,7 @@
 @property (nonatomic, readonly) BOOL isFirstRun;
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, readonly) BOOL canSave;
+@property (nonatomic, readonly) NSString *disabledText;
 
 - (instancetype)initWithClient:(WHChatClient *)client;
 - (void)save;

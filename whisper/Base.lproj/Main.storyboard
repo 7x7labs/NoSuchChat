@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="8Z4-yt-Hjc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="8Z4-yt-Hjc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
@@ -136,7 +136,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="byF-22-foG">
-                                        <rect key="frame" x="104" y="276" width="112" height="30"/>
+                                        <rect key="frame" x="72" y="276" width="177" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Get Started">
@@ -649,10 +649,14 @@ Then disable Wifi and enable Bluetooth.</string>
     <resources>
         <image name="add-contact-button" width="22" height="22"/>
         <image name="avatar-placeholder" width="91" height="91"/>
+        <image name="avatar-placeholder" width="91" height="91"/>
+        <image name="avatar-placeholder" width="91" height="91"/>
+        <image name="avatar-placeholder" width="91" height="91"/>
         <image name="bubble-left" width="43" height="32"/>
         <image name="bubble-right" width="43" height="32"/>
         <image name="contact-offline-icon" width="15" height="15"/>
         <image name="contact-online-icon" width="15" height="15"/>
+        <image name="settings-button" width="20" height="20"/>
         <image name="settings-button" width="20" height="20"/>
         <image name="unread-message-badge" width="22" height="22"/>
         <image name="welcome-logo" width="112" height="154"/>

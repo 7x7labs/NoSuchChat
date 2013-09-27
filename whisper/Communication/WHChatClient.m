@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSArray *contacts;
 @property (nonatomic, strong) NSString *jid;
 @property (nonatomic) BOOL connected;
+@property (nonatomic) BOOL failedToConnect;
 @property (nonatomic, strong) RACSubject *cancelSignal;
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) RACSignal *incomingMessages;
@@ -56,6 +57,9 @@
                                                      forKey:@"displayName"];
     RACBind(self.xmpp, displayName) = RACBind(self, displayName);
     RACBind(self, connected) = RACBind(self.xmpp, connected);
+    RAC(self, failedToConnect) = [[RACAbleWithStart(self.xmpp, connected)
+                                  filter:^BOOL(id value) { return [value boolValue]; }]
+                                  not];
 
     @weakify(self)
     self.cancelSignal = [RACSubject subject];
@@ -111,7 +115,9 @@
                                                  username:account.jid
                                                  password:account.password];
     [connectSignal subscribeError:^(NSError *error) {
-         [WHAlert alertWithError:error];
+        @strongify(self)
+        NSLog(@"Failed to connect to xmpp: %@", error);
+        self.failedToConnect = YES;
     }];
 
     [self.xmpp.roster setShow:@""];
