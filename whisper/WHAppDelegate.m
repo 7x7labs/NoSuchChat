@@ -36,15 +36,44 @@
     [Message deleteOlderThan:[NSDate dateWithTimeIntervalSinceNow:-(60 * 60 * 24 * 7)]];
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 
-    UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
-    if (notification)
+    id notification;
+    if ((notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]))
         [self application:application didReceiveLocalNotification:notification];
+    else if ((notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]))
+        [self application:application didReceiveRemoteNotification:notification];
+
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert];
 
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
 }
+
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"Device token: %@", deviceToken);
+}
+
+- (void)application:(UIApplication *)application
+didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"Error registering for push notifications: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSString *jid = userInfo[@"jid"];
+    NSAssert(jid, @"Remote notification should have contact jid");
+
+    id activeViewController = [(UINavigationController *)self.window.rootViewController topViewController];
+    NSAssert([activeViewController respondsToSelector:@selector(showChatWithJid:)],
+             @"All view controllers must implement showChatWithJid:");
+
+    if ([activeViewController respondsToSelector:@selector(showChatWithJid:)])
+        [(id)activeViewController showChatWithJid:jid];
+}
+
 - (void)application:(UIApplication *)application
 didReceiveLocalNotification:(UILocalNotification *)notification
 {
