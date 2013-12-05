@@ -158,6 +158,16 @@
     // Reconnect module now handles monitoring the connection
     [self.reach stopNotifier];
     self.reach = nil;
+
+    @weakify(self)
+    [[RACAbleWithStart(((WHAppDelegate *)[[UIApplication sharedApplication] delegate]), deviceToken)
+     filter:^BOOL (NSData *deviceToken) { return !!deviceToken; }]
+     subscribeNext:^(NSData *deviceToken) {
+         @strongify(self)
+         NSXMLElement *element = [NSXMLElement elementWithName:@"deviceToken" xmlns:@"7x7:apns"];
+         element.stringValue = [deviceToken xmpp_hexStringValue];
+         [self.stream sendElement:[XMPPIQ iqWithType:@"set" child:element]];
+     }];
 }
 
 - (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)_ {

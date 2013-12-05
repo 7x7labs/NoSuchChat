@@ -53,7 +53,8 @@
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    NSLog(@"Device token: %@", deviceToken);
+    NSLog(@"Got device token: %@", deviceToken);
+    self.deviceToken = deviceToken;
 }
 
 - (void)application:(UIApplication *)application
