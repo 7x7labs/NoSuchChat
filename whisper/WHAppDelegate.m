@@ -8,6 +8,7 @@
 
 #import "WHAppDelegate.h"
 
+#import "Contact.h"
 #import "Message.h"
 #import "WHCoreData.h"
 #import "WHWelcomeViewController.h"
@@ -39,8 +40,17 @@
     id notification;
     if ((notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]))
         [self application:application didReceiveLocalNotification:notification];
-    else if ((notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]))
-        [self application:application didReceiveRemoteNotification:notification];
+    else if ((notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey])) {
+        NSString *jid = notification[@"jid"];
+        NSAssert(jid, @"Remote notification should have contact jid");
+
+        id activeViewController = [(UINavigationController *)self.window.rootViewController topViewController];
+        NSAssert([activeViewController respondsToSelector:@selector(showChatWithJid:)],
+                 @"All view controllers must implement showChatWithJid:");
+
+        if ([activeViewController respondsToSelector:@selector(showChatWithJid:)])
+            [(id)activeViewController showChatWithJid:jid];
+    }
 
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert];
 
@@ -64,15 +74,20 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    NSString *jid = userInfo[@"jid"];
-    NSAssert(jid, @"Remote notification should have contact jid");
+    // Normally shouldn't be called, since it means we're running, connected to
+    // the internet and the server is up, but we're not connected to the server,
+    // but it could happen if our connection is temporarily interrupted (or
+    // just due to a bug).
+    // Remote notifications while we're running don't display a banner, so turn
+    // it into a local notification.
+    Contact *contact = [Contact contactForJid:userInfo[@"jid"]
+                         managedObjectContext:[WHCoreData managedObjectContext]];
+    if (!contact) return;
 
-    id activeViewController = [(UINavigationController *)self.window.rootViewController topViewController];
-    NSAssert([activeViewController respondsToSelector:@selector(showChatWithJid:)],
-             @"All view controllers must implement showChatWithJid:");
-
-    if ([activeViewController respondsToSelector:@selector(showChatWithJid:)])
-        [(id)activeViewController showChatWithJid:jid];
+    UILocalNotification *localNotification = [UILocalNotification new];
+    localNotification.alertBody = [NSString stringWithFormat:@"New message from %@", contact.name];;
+    localNotification.userInfo = @{@"jid": contact.jid};
+    [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
 }
 
 - (void)application:(UIApplication *)application
