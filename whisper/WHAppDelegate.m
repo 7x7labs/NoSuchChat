@@ -17,10 +17,6 @@
 #import "DDTTYLogger.h"
 #import "TestFlight.h"
 
-@interface WHAppDelegate ()
-@property (nonatomic, strong) void (^completionHandler)(UIBackgroundFetchResult);
-@end
-
 @implementation WHAppDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #if DEBUG
@@ -122,18 +118,5 @@ didReceiveLocalNotification:(UILocalNotification *)notification
     NSError *error;
     if ([[WHCoreData managedObjectContext] hasChanges] && ![[WHCoreData managedObjectContext] save:&error])
         NSLog(@"Error saving pending changes: %@", error);
-}
-
-- (void)application:(UIApplication *)application
-performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
-{
-    self.completionHandler = completionHandler;
-}
-
-- (void)backgroundFetchComplete {
-    if (self.completionHandler) {
-        self.completionHandler(UIBackgroundFetchResultNewData);
-        self.completionHandler = nil;
-    }
 }
 @end
